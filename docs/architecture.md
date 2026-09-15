@@ -26,6 +26,9 @@ captures unhandled exceptions only — routine flow logging goes through Pino/Ax
   network, since Neon's branching model makes a throwaway local DB redundant.
 - Prisma client is a global singleton (`lib/db.ts`) to avoid exhausting Neon's
   connection limit across Next.js hot-reloads in dev.
+- Admin auth is enforced once, centrally, in `middleware.ts` (Clerk) for every route
+  matching `/admin(.*)`, rather than per-page — later admin pages need no auth logic
+  of their own. See `docs/routes-and-components.md` for the route table.
 
 *(Phase 1 adds the Prisma schema and the availability/pricing/hold algorithms to this
 document.)*

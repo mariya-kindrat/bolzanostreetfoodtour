@@ -44,6 +44,6 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 - [`docs/infrastructure.md`](docs/infrastructure.md) — environments, hosting, CI/CD,
   monitoring, deploy/rollback
 - [`docs/routes-and-components.md`](docs/routes-and-components.md) — route map and
-  component inventory (added in Phase 2)
+  component inventory
 - [`CLAUDE.md`](CLAUDE.md) — full project instructions and standards
 - [`PLAN.md`](PLAN.md) — phase roadmap
