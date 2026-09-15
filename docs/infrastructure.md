@@ -29,7 +29,9 @@ Neon dev branch. See `README.md` for setup steps.
 
 ## Monitoring
 
-- **Sentry** — unhandled exceptions, both environments.
+- **Sentry** — unhandled exceptions, both environments. Wired via `@sentry/nextjs`
+  (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`,
+  `instrumentation.ts`), DSN from `SENTRY_DSN`.
 - **Axiom** — structured JSON logs via Pino, both environments.
 - **Uptime monitoring** — configured in Phase 7, once there's a real deployed URL worth
   monitoring continuously.
