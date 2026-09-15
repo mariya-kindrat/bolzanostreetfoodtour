@@ -6,3 +6,17 @@ node_modules/
 .env.local
 .env*.local
 .worktrees/
+
+# next.js
+/out/
+next-env.d.ts
+
+# testing / coverage
+/coverage
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+*.pem
