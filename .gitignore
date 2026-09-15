@@ -20,3 +20,6 @@ next-env.d.ts
 # typescript
 *.tsbuildinfo
 *.pem
+
+# prisma generated client
+/lib/generated/prisma
