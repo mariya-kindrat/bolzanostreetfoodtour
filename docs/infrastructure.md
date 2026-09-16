@@ -16,7 +16,17 @@ preview deployment.
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `lint`, `type-check`, `test` (Vitest),
 and `e2e` (Playwright) on every PR against `main` or `dev`. Both branches require all
-four checks green plus one approving review before merge (branch protection).
+four checks green before merge (branch protection); there is no required-approving-review
+count, since GitHub can't satisfy that for a solo developer's own PRs (self-approval isn't
+allowed) — `enforce_admins` is also off so the repo owner can merge once checks are green.
+
+(The "workflow must already exist on the base branch" restriction only applies to
+`pull_request` runs from forked repositories, for security reasons — this repo has no
+forks, so a same-repo PR runs its checks normally the first time a workflow file is
+added, confirmed by PR #1's `lint`/`type-check`/`test`/`e2e` runs, which executed and
+gated the merge before `dev` had `ci.yml` in its own tree. The only real first-time
+wrinkle: GitHub took roughly a minute to register and start the very first workflow run
+in this repo — after that, runs start immediately.)
 
 The `test` job runs `tests/unit` only (`vitest.config.ts`). `tests/integration` (e.g.
 `tests/integration/db.test.ts`, which round-trips the real Neon dev database) is
