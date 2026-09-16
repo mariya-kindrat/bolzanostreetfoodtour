@@ -1,7 +1,12 @@
 version: 2
 updates:
+  # target-branch: dev on both entries so dependency-update PRs go through
+  # the same dev-first release gate as everything else (CLAUDE.md /
+  # docs/infrastructure.md) instead of defaulting to the repo's default
+  # branch, main.
   - package-ecosystem: npm
     directory: "/"
+    target-branch: dev
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
@@ -10,5 +15,6 @@ updates:
         dependency-type: development
   - package-ecosystem: github-actions
     directory: "/"
+    target-branch: dev
     schedule:
       interval: weekly
