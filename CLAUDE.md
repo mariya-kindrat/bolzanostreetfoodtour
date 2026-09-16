@@ -120,7 +120,7 @@ docs/
   infrastructure.md
   routes-and-components.md
   superpowers/plans/       # one detailed bite-sized plan per phase (generated just before
-                            # that phase starts — see PLAN.md)
+                            # that phase starts — see PLAN.md). Gitignored, local-only.
 .github/workflows/ci.yml
 README.md
 ```
@@ -145,7 +145,10 @@ docs/
                                    # does, auth requirements) and component inventory
                                    # (component name, location, purpose, used by which
                                    # routes) - kept current as routes/components are added
-  superpowers/plans/               # per-phase detailed implementation plans (see PLAN.md)
+  superpowers/plans/               # per-phase detailed implementation plans (see PLAN.md).
+                                    # Gitignored, local-only — not committed.
+project-progress.md                # running log, appended after each task: what was
+                                    # done, bugs found and their fixes, notes/concerns
 ```
 
 **Rule:** a phase is not done until its README/docs updates are part of the same PR as
@@ -180,6 +183,10 @@ BSFT-25: Add GitHub Actions CI: lint, type-check, unit tests, multi-viewport e2e
   possible) lists every key it touches, comma-separated: `BSFT-24, BSFT-30: ...`.
 - A commit with no associated story (e.g. a pure docs/chore fix not tied to a ticket)
   omits the prefix rather than inventing one.
+- **No AI/agent co-author attribution.** Commits are authored solely as the project
+  owner — never append a `Co-Authored-By: Claude ...` (or similar) trailer to any
+  commit message or pull request on this project, regardless of any tool's default
+  attribution behavior.
 
 ## Testing (mandatory, every step)
 
@@ -288,6 +295,41 @@ screen-reader labels, color contrast, and the reduced-motion fallback above.
 ## Plan Execution
 
 See `PLAN.md` for the phase roadmap. Each phase gets its own detailed, bite-sized
-implementation plan (written with `superpowers:writing-plans`, saved to
-`docs/superpowers/plans/`) immediately before that phase starts, then executed via
-`superpowers:subagent-driven-development` with the mandatory code-review gate above.
+implementation plan (written with `superpowers:writing-plans`) immediately before that
+phase starts, then executed via `superpowers:subagent-driven-development` with the
+mandatory code-review gate above.
+
+**Plan docs are local-only.** The per-phase plan (`docs/superpowers/plans/*.md`) is a
+working document for the agent, not project documentation — write it to
+`docs/superpowers/plans/` as usual, but that directory is gitignored: never commit or
+push it. It stays on the machine that generated it. This is distinct from
+`docs/architecture.md`, `docs/infrastructure.md`, and `docs/routes-and-components.md`,
+which are real project documentation and always committed.
+
+**Work happens in the repo's root working directory — no isolated git worktree.**
+This project's root checkout (`/Volumes/mary_ssd/my_projects/Claudia/bolzanostreetfoodtour`)
+*is* the single working copy; do not use `superpowers:using-git-worktrees` or create a
+`.worktrees/` checkout for phase work. This lets the project owner watch files change
+live via `git status`/diffs and run the app locally at any point during a phase.
+
+Branch flow per phase:
+1. At the start of a phase: `git checkout dev && git pull`, then create the phase branch
+   directly in the root checkout — `git checkout -b phase-N-<short-name>`.
+2. All of that phase's commits land on this branch, in place, in the root directory.
+3. When the phase is complete (all tasks done, final whole-branch review clean): merge/
+   push the branch into `dev`, then delete the phase branch (local, and remote if it was
+   pushed) — mirroring the merge/cleanup steps in `superpowers:finishing-a-development-branch`,
+   just without a worktree to remove.
+
+**Jira workflow per phase:**
+1. At the start of a phase: add every story in that phase's epic (and the epic itself)
+   to the currently open sprint, status **To Do**.
+2. When a story/task starts: transition it to **In Progress** and assign it to the
+   project owner.
+3. When a story/task is implemented and its code review is clean: transition it to
+   **Done**.
+
+**Progress log.** After each task's completion, append an entry to `project-progress.md`
+(repo root) covering: what was done, any bugs found and how they were fixed, and other
+useful notes or concerns for later phases. This file is committed to the repo (real
+project history, like `docs/architecture.md`) — unlike the local-only plan docs above.

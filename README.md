@@ -13,22 +13,58 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 
 ## Local setup
 
-1. Copy `.env.example` to `.env.local` and fill in dev/test values.
-2. Run with Docker:
+1. **Clone the repo and check out `dev`** (the active development branch — `main` only
+   ever receives merges from `dev` after a manual release gate, so it will look empty
+   of app code until then):
+
+   ```bash
+   git clone https://github.com/mariya-kindrat/bolzanostreetfoodtour.git
+   cd bolzanostreetfoodtour
+   git checkout dev
+   ```
+
+2. **Set up environment variables.** Copy `.env.example` to `.env.local`:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Fill in `.env.local` with dev/test values — `.env.example` lists which dashboard
+   each one comes from (Neon, Stripe, Clerk, Resend, OpenRouter, Sentry, Axiom). At
+   minimum you need `DATABASE_URL` (a Neon **dev** branch connection string) to run
+   migrations and hit the database; the app will run without the rest, just with those
+   integrations disabled/erroring.
+
+3. **Install dependencies** (needed even if you plan to run via Docker, so editors/
+   type-checking work and so `prisma generate` produces the client):
+
+   ```bash
+   npm install
+   ```
+
+4. **Apply database migrations** against your Neon dev branch:
+
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+   (`migrate dev` also works locally and is what you use when you're adding a new
+   migration; `migrate deploy` just applies existing ones without prompting.)
+
+5. **Start the app**, either with Docker:
 
    ```bash
    docker build -f docker/Dockerfile.dev -t bsft-dev .
    docker run --rm -p 3000:3000 --env-file .env.local bsft-dev
    ```
 
-   Or without Docker:
+   or directly with Node:
 
    ```bash
-   npm install
    npm run dev
    ```
 
-3. Apply database migrations: `npx prisma migrate dev`
+   Then open [http://localhost:3000](http://localhost:3000).
 
 ## Running tests
 
@@ -53,3 +89,5 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
   component inventory
 - [`CLAUDE.md`](CLAUDE.md) — full project instructions and standards
 - [`PLAN.md`](PLAN.md) — phase roadmap
+- [`project-progress.md`](project-progress.md) — running log of what's been built,
+  bugs found and fixed, and open concerns, phase by phase
