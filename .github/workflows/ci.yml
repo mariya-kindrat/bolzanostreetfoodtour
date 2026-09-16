@@ -34,11 +34,12 @@ jobs:
   # DATABASE_URL, and no DATABASE_URL secret is configured for CI yet —
   # adding real database integration testing to CI is a future follow-up.
   #
-  # No --coverage / 80% threshold gate yet (CLAUDE.md's Testing section):
-  # Phase 0's only source is scaffolding (layouts, config, one placeholder
-  # admin page) with no domain logic to meaningfully measure. Wiring
-  # coverage enforcement lands in Phase 1, once lib/availability and
-  # lib/pricing exist and a threshold means something.
+  # Coverage threshold (CLAUDE.md's Testing section) is enforced for
+  # lib/availability/resolve.ts and lib/pricing/** — the domain logic
+  # Phase 1 owns. hold.ts is verified via integration tests
+  # (tests/integration/availability/hold.test.ts), not unit-coverage gate,
+  # because real Postgres + pg_advisory_xact_lock concurrency can't be
+  # meaningfully mocked.
   test:
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +49,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run test
+      - run: npm run test:coverage
 
   # middleware.ts scopes clerkMiddleware to /admin only, so the public
   # routes smoke.spec.ts exercises have no Clerk dependency and need no
