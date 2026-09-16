@@ -25,18 +25,20 @@ enum PriceTierType {
 }
 
 model Tour {
-  id              String           @id @default(cuid())
-  slug            String           @unique
-  title           String
-  category        TourCategory
-  summary         String
-  description     String
-  heroImageUrl    String?
-  isActive        Boolean          @default(true)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  priceTiers      PriceTier[]
-  customQuestions CustomQuestion[]
+  id                      String                   @id @default(cuid())
+  slug                    String                   @unique
+  title                   String
+  category                TourCategory
+  summary                 String
+  description             String
+  heroImageUrl            String?
+  isActive                Boolean                  @default(true)
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  priceTiers              PriceTier[]
+  customQuestions         CustomQuestion[]
+  seasonalAvailabilities  SeasonalAvailability[]
+  dateOverrides           DateOverride[]
 }
 
 model PriceTier {
@@ -59,5 +61,34 @@ model CustomQuestion {
   question  String
   required  Boolean  @default(false)
   sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model SeasonalAvailability {
+  id        String   @id @default(cuid())
+  tourId    String
+  tour      Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  capacity  Int
+  createdAt DateTime @default(now())
+}
+
+model DateOverride {
+  id               String   @id @default(cuid())
+  tourId           String
+  tour             Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  date             DateTime @db.Date
+  isBlocked        Boolean  @default(false)
+  capacityOverride Int?
+  createdAt        DateTime @default(now())
+
+  @@unique([tourId, date])
+}
+
+model GlobalBlackout {
+  id        String   @id @default(cuid())
+  date      DateTime @unique @db.Date
+  reason    String?
   createdAt DateTime @default(now())
 }
