@@ -165,6 +165,22 @@ This is exactly the kind of documentation drift the code-review gate below shoul
   invariant), never for *what* the code does.
 - No emojis anywhere in code, commit messages, or UI copy.
 
+## Commit Messages
+
+Every commit starts with its Jira story key, followed by a colon and the usual
+imperative-mood summary, e.g.:
+
+```text
+BSFT-25: Add GitHub Actions CI: lint, type-check, unit tests, multi-viewport e2e
+```
+
+- Use the story (not epic) key — `JIRA_TICKETS.md`'s table maps each story to its key
+  (e.g. ticket 0.6 → BSFT-25).
+- A commit spanning more than one story (rare — keep steps scoped to one story where
+  possible) lists every key it touches, comma-separated: `BSFT-24, BSFT-30: ...`.
+- A commit with no associated story (e.g. a pure docs/chore fix not tied to a ticket)
+  omits the prefix rather than inventing one.
+
 ## Testing (mandatory, every step)
 
 - Every implementation step ships with tests before being considered done — write the
