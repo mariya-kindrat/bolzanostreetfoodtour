@@ -11,3 +11,53 @@ model HealthCheck {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 }
+
+enum TourCategory {
+  COOKING_CLASS
+  WINE_TOUR
+  WINTER_TOUR
+}
+
+enum PriceTierType {
+  ADULT
+  CHILD
+  INFANT
+}
+
+model Tour {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  title           String
+  category        TourCategory
+  summary         String
+  description     String
+  heroImageUrl    String?
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  priceTiers      PriceTier[]
+  customQuestions CustomQuestion[]
+}
+
+model PriceTier {
+  id         String        @id @default(cuid())
+  tourId     String
+  tour       Tour          @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  type       PriceTierType
+  priceCents Int
+  minPersons Int           @default(1)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([tourId, type])
+}
+
+model CustomQuestion {
+  id        String   @id @default(cuid())
+  tourId    String
+  tour      Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  question  String
+  required  Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
