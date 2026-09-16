@@ -1,22 +1,8 @@
 import { defineConfig } from "prisma/config";
-import * as fs from "fs";
-import * as path from "path";
+import dotenv from "dotenv";
 
-// Load .env.local if it exists
-const envLocalPath = path.join(process.cwd(), ".env.local");
-if (fs.existsSync(envLocalPath)) {
-  const envContent = fs.readFileSync(envLocalPath, "utf-8");
-  const lines = envContent.split("\n");
-  for (const line of lines) {
-    const [key, ...valueParts] = line.split("=");
-    if (key && valueParts.length > 0) {
-      const value = valueParts.join("=");
-      if (!process.env[key]) {
-        process.env[key] = value;
-      }
-    }
-  }
-}
+// Load .env.local if it exists for local development (e.g., DATABASE_URL)
+dotenv.config({ path: ".env.local" });
 
 // Prisma 7 no longer supports `url = env(...)` inline in schema.prisma;
 // the datasource URL is configured here instead.
