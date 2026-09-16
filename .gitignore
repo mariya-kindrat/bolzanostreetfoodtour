@@ -7,3 +7,22 @@ node_modules/
 .env*.local
 .worktrees/
 .creds
+
+# next.js
+/out/
+next-env.d.ts
+
+# testing / coverage
+/coverage
+/test-results
+/playwright-report
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+*.pem
+
+# prisma generated client
+/lib/generated/prisma
