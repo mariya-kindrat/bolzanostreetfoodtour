@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
         provider: "v8",
         include: ["lib/availability/resolve.ts", "lib/pricing/**"],
         thresholds: {
+          perFile: true,
           lines: 80,
           functions: 80,
           branches: 80,
