@@ -1,13 +1,15 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
-
-export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
-    await auth.protect();
-  }
+// Only /admin is Clerk-protected. Scoping the matcher down to it (rather
+// than every route) keeps the public marketing site free of any runtime
+// dependency on Clerk being configured/reachable.
+export default clerkMiddleware(async (auth) => {
+  await auth.protect();
 });
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"],
+  // Explicit /admin/(.*) (not a bare /admin(.*) glob) so this only matches
+  // /admin and its sub-paths, not any future public route whose slug merely
+  // starts with "admin" (e.g. /admin-tips).
+  matcher: ["/admin", "/admin/(.*)"],
 };

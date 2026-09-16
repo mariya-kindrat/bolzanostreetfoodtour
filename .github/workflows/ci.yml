@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run type-check
+
+  # Runs tests/unit only (see vitest.config.ts). tests/integration is
+  # excluded here because it hits the real Neon dev database via
+  # DATABASE_URL, and no DATABASE_URL secret is configured for CI yet —
+  # adding real database integration testing to CI is a future follow-up.
+  #
+  # No --coverage / 80% threshold gate yet (CLAUDE.md's Testing section):
+  # Phase 0's only source is scaffolding (layouts, config, one placeholder
+  # admin page) with no domain logic to meaningfully measure. Wiring
+  # coverage enforcement lands in Phase 1, once lib/availability and
+  # lib/pricing exist and a threshold means something.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test
+
+  # middleware.ts scopes clerkMiddleware to /admin only, so the public
+  # routes smoke.spec.ts exercises have no Clerk dependency and need no
+  # Clerk env vars here. tests/e2e/admin-auth.spec.ts (which does exercise
+  # /admin) needs a real Clerk-hosted sign-in redirect, which requires real
+  # credentials CI doesn't have, so it's skipped in CI (see
+  # playwright.config.ts) — a real CLERK_SECRET_KEY /
+  # NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY GitHub Actions secret pair, plus
+  # Clerk's official Playwright Testing Token setup, is a future follow-up.
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

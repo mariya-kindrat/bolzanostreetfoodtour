@@ -32,7 +32,9 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 
 ## Running tests
 
-- Unit/integration: `npm run test`
+- Unit: `npm run test` (this is also what CI's `test` job runs)
+- Integration (needs `.env.local` with a real `DATABASE_URL`, not run in CI —
+  see `vitest.config.ts`): `npm run test:integration`
 - End-to-end: `npm run test:e2e`
 - Lint: `npm run lint`
 - Type-check: `npm run type-check`

@@ -18,6 +18,18 @@ GitHub Actions (`.github/workflows/ci.yml`) runs `lint`, `type-check`, `test` (V
 and `e2e` (Playwright) on every PR against `main` or `dev`. Both branches require all
 four checks green plus one approving review before merge (branch protection).
 
+The `test` job runs `tests/unit` only (`vitest.config.ts`). `tests/integration` (e.g.
+`tests/integration/db.test.ts`, which round-trips the real Neon dev database) is
+excluded from CI because no `DATABASE_URL` secret is configured there yet; run it
+on demand locally with `npm run test:integration`. Adding a `DATABASE_URL` GitHub
+Actions secret so CI can run database integration tests is a future follow-up.
+
+The `test` job does not yet enforce the 80% coverage threshold from `CLAUDE.md`'s
+Testing section — Phase 0's source is scaffolding only (layouts, config, one placeholder
+admin page), so a coverage number here wouldn't mean anything yet. Wiring `--coverage`
+and the threshold gate into this job is a Phase 1 follow-up, once `lib/availability` and
+`lib/pricing` give coverage something real to measure.
+
 **Release gate:** CI passing alone does not promote to prod. After CI is green on a PR
 into `dev`, the change is manually reviewed on the dev environment (click through the
 booking flow + any visual change) before a separate PR merges `dev` into `main`.

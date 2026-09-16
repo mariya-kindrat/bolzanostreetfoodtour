@@ -11,7 +11,9 @@
 
 `middleware.ts` runs `clerkMiddleware()` and calls `auth.protect()` for any route
 matching `/admin(.*)`. Unauthenticated requests are redirected to Clerk's hosted
-sign-in page.
+sign-in page. `ClerkProvider` is likewise scoped to `app/admin/layout.tsx` rather
+than the root layout, so the public marketing site has no runtime dependency on
+Clerk being configured or reachable.
 
 ## Components
 
