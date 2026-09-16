@@ -156,3 +156,41 @@ model Coupon {
   bookings  Booking[]
   createdAt DateTime   @default(now())
 }
+
+model TransferRoute {
+  id          String               @id @default(cuid())
+  origin      String
+  destination String
+  priceCents  Int
+  maxPax      Int
+  maxLuggage  Int
+  isActive    Boolean              @default(true)
+  supplements TransferSupplement[]
+  createdAt   DateTime             @default(now())
+}
+
+model TransferSupplement {
+  id              String        @id @default(cuid())
+  transferRouteId String
+  transferRoute   TransferRoute @relation(fields: [transferRouteId], references: [id], onDelete: Cascade)
+  label           String
+  priceCents      Int
+  createdAt       DateTime      @default(now())
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  content     String
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AdminNote {
+  id        String   @id @default(cuid())
+  subject   String
+  content   String
+  createdAt DateTime @default(now())
+}
