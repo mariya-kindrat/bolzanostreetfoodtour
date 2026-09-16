@@ -39,6 +39,8 @@ model Tour {
   customQuestions         CustomQuestion[]
   seasonalAvailabilities  SeasonalAvailability[]
   dateOverrides           DateOverride[]
+  bookings                Booking[]
+  bookingHolds            BookingHold[]
 }
 
 model PriceTier {
@@ -91,4 +93,66 @@ model GlobalBlackout {
   date      DateTime @unique @db.Date
   reason    String?
   createdAt DateTime @default(now())
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  REFUNDED
+}
+
+enum CouponType {
+  PERCENTAGE
+  FIXED
+}
+
+model Booking {
+  id            String               @id @default(cuid())
+  tourId        String
+  tour          Tour                 @relation(fields: [tourId], references: [id])
+  date          DateTime             @db.Date
+  status        BookingStatus        @default(PENDING)
+  customerName  String
+  customerEmail String
+  totalCents    Int
+  couponId      String?
+  coupon        Coupon?              @relation(fields: [couponId], references: [id])
+  participants  BookingParticipant[]
+  hold          BookingHold?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+}
+
+model BookingParticipant {
+  id        String        @id @default(cuid())
+  bookingId String
+  booking   Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  tier      PriceTierType
+  count     Int
+
+  @@unique([bookingId, tier])
+}
+
+model BookingHold {
+  id                String   @id @default(cuid())
+  tourId            String
+  tour              Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  date              DateTime @db.Date
+  participantsCount Int
+  expiresAt         DateTime
+  bookingId         String?  @unique
+  booking           Booking? @relation(fields: [bookingId], references: [id])
+  createdAt         DateTime @default(now())
+}
+
+model Coupon {
+  id        String     @id @default(cuid())
+  code      String     @unique
+  type      CouponType
+  value     Int
+  isActive  Boolean    @default(true)
+  expiresAt DateTime?
+  bookings  Booking[]
+  createdAt DateTime   @default(now())
 }
