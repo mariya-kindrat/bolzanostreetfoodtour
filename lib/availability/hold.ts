@@ -1,10 +1,22 @@
 import { db } from "@/lib/db";
 import { resolveAvailability } from "./resolve";
+import type { AvailabilityReason } from "./types";
 
 export class CapacityExceededError extends Error {
-  constructor(public remaining: number, public requested: number) {
+  constructor(
+    public remaining: number,
+    public requested: number,
+    public reason?: AvailabilityReason,
+  ) {
     super(`Requested ${requested} participants but only ${remaining} remain`);
     this.name = "CapacityExceededError";
+  }
+}
+
+export class InvalidParticipantsCountError extends Error {
+  constructor(public requested: number) {
+    super(`Participants count must be at least 1, got ${requested}`);
+    this.name = "InvalidParticipantsCountError";
   }
 }
 
@@ -28,6 +40,10 @@ export async function createBookingHold(params: {
   participantsCount: number;
   holdMinutes?: number;
 }) {
+  if (params.participantsCount < 1) {
+    throw new InvalidParticipantsCountError(params.participantsCount);
+  }
+
   const date = new Date(params.date.toISOString().slice(0, 10) + "T00:00:00.000Z");
   const holdMinutes = params.holdMinutes ?? DEFAULT_HOLD_MINUTES;
 
@@ -37,10 +53,19 @@ export async function createBookingHold(params: {
     const now = new Date();
     const [seasonalAvailabilities, dateOverrides, globalBlackouts, activeHolds, confirmedParticipants] =
       await Promise.all([
-        tx.seasonalAvailability.findMany({ where: { tourId: params.tourId } }),
+        // Ordered so an overlapping pair of seasonal windows resolves deterministically
+        // (resolve.ts picks the first match) rather than by arbitrary Postgres row order.
+        tx.seasonalAvailability.findMany({
+          where: { tourId: params.tourId },
+          orderBy: { startDate: "asc" },
+        }),
         tx.dateOverride.findMany({ where: { tourId: params.tourId } }),
         tx.globalBlackout.findMany(),
-        tx.bookingHold.findMany({ where: { tourId: params.tourId, expiresAt: { gt: now } } }),
+        // bookingId: null excludes holds already converted into a Booking — those
+        // participants are counted by the confirmed-participants query instead.
+        tx.bookingHold.findMany({
+          where: { tourId: params.tourId, expiresAt: { gt: now }, bookingId: null },
+        }),
         tx.bookingParticipant.findMany({
           where: { booking: { tourId: params.tourId, date, status: { in: ["PENDING", "CONFIRMED"] } } },
         }),
@@ -58,8 +83,12 @@ export async function createBookingHold(params: {
       now,
     });
 
-    if (params.participantsCount > availability.remaining) {
-      throw new CapacityExceededError(availability.remaining, params.participantsCount);
+    if (!availability.isAvailable || params.participantsCount > availability.remaining) {
+      throw new CapacityExceededError(
+        availability.remaining,
+        params.participantsCount,
+        availability.reason,
+      );
     }
 
     return tx.bookingHold.create({

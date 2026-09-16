@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { createBookingHold, CapacityExceededError } from "@/lib/availability/hold";
+import {
+  createBookingHold,
+  CapacityExceededError,
+  InvalidParticipantsCountError,
+} from "@/lib/availability/hold";
 import { TourCategory } from "@/lib/generated/prisma/client";
 
 async function makeTourWithCapacity(capacity: number) {
@@ -35,6 +39,30 @@ describe("createBookingHold", () => {
     }
   });
 
+  it("rejects a hold for fewer than one participant", async () => {
+    const tour = await makeTourWithCapacity(10);
+    try {
+      await expect(
+        createBookingHold({ tourId: tour.id, date: new Date("2026-07-04"), participantsCount: 0 }),
+      ).rejects.toThrow(InvalidParticipantsCountError);
+    } finally {
+      await db.tour.delete({ where: { id: tour.id } });
+    }
+  });
+
+  it("rejects a hold on a blocked date and reports why", async () => {
+    const tour = await makeTourWithCapacity(10);
+    const date = new Date("2026-07-05");
+    try {
+      await db.dateOverride.create({ data: { tourId: tour.id, date, isBlocked: true } });
+      await expect(
+        createBookingHold({ tourId: tour.id, date, participantsCount: 2 }),
+      ).rejects.toMatchObject({ name: "CapacityExceededError", reason: "blocked" });
+    } finally {
+      await db.tour.delete({ where: { id: tour.id } });
+    }
+  });
+
   it("allows exactly one of two simultaneous holds for the last spot to succeed", async () => {
     const tour = await makeTourWithCapacity(5);
     try {
@@ -48,6 +76,10 @@ describe("createBookingHold", () => {
       const rejected = results.filter((r) => r.status === "rejected");
       expect(fulfilled).toHaveLength(1);
       expect(rejected).toHaveLength(1);
+      expect((rejected[0] as PromiseRejectedResult).reason).toBeInstanceOf(CapacityExceededError);
+
+      const holds = await db.bookingHold.findMany({ where: { tourId: tour.id, date } });
+      expect(holds).toHaveLength(1);
     } finally {
       await db.tour.delete({ where: { id: tour.id } });
     }

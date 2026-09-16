@@ -5,8 +5,12 @@ function isSameDate(a: Date, b: Date): boolean {
 }
 
 export function resolveAvailability(input: AvailabilityInput): AvailabilityResult {
-  const { date, seasonalAvailabilities, dateOverrides, globalBlackouts, activeHolds, confirmedParticipantCount } = input;
+  const { seasonalAvailabilities, dateOverrides, globalBlackouts, activeHolds, confirmedParticipantCount } = input;
   const now = input.now ?? new Date();
+  // Seasonal windows are compared as raw instants, so the input date is normalized to
+  // UTC midnight here (not at each caller) to keep that check consistent with the
+  // day-granularity blackout/override/hold matching below.
+  const date = new Date(input.date.toISOString().slice(0, 10) + "T00:00:00.000Z");
 
   if (globalBlackouts.some((b) => isSameDate(b.date, date))) {
     return { isAvailable: false, capacity: 0, remaining: 0, reason: "blackout" };
