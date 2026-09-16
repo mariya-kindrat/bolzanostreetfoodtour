@@ -16,11 +16,15 @@ export default defineConfig(({ mode }) => {
       // run it on demand with `npm run test:integration`. tests/e2e is
       // Playwright's own test suite (`npm run test:e2e`), never Vitest's.
       include: ["tests/unit/**/*.test.ts"],
-      // hold.ts is verified via its integration test suite (tests/integration/availability/hold.test.ts),
-      // not the unit-coverage gate, because real Postgres + pg_advisory_xact_lock concurrency can't be meaningfully mocked.
       coverage: {
         provider: "v8",
-        include: ["lib/availability/resolve.ts", "lib/pricing/**"],
+        // Whole-directory globs so files added later are gated automatically.
+        include: ["lib/availability/**", "lib/pricing/**"],
+        // hold.ts is verified via its integration test suite
+        // (tests/integration/availability/hold.test.ts), not the unit-coverage gate,
+        // because real Postgres + pg_advisory_xact_lock concurrency can't be
+        // meaningfully mocked.
+        exclude: ["lib/availability/hold.ts"],
         thresholds: {
           perFile: true,
           lines: 80,

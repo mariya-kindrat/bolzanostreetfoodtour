@@ -32,7 +32,11 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 
 ## Running tests
 
-- Unit: `npm run test` (this is also what CI's `test` job runs)
+- Unit: `npm run test`
+- Unit + coverage gate: `npm run test:coverage` (this is what CI's `test` job runs). It
+  enforces an 80% per-file threshold, currently scoped to `lib/availability/**`
+  (excluding `hold.ts`, covered by integration tests) and `lib/pricing/**` — see
+  `docs/architecture.md` for why the scope is narrower than the whole codebase.
 - Integration (needs `.env.local` with a real `DATABASE_URL`, not run in CI —
   see `vitest.config.ts`): `npm run test:integration`
 - End-to-end: `npm run test:e2e`

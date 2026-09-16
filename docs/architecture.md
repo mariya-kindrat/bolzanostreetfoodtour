@@ -74,6 +74,20 @@ client to confirm this is the intended cutoff.
 `pg_advisory_xact_lock` keyed by tour+date, then re-checks availability and inserts
 the hold — serializing concurrent attempts for the same tour+date without locking
 unrelated tour+date pairs. This is what guarantees the last spot is never oversold.
+It rejects a request for fewer than one participant up front, and carries the
+resolver's `reason` on `CapacityExceededError` so callers can tell "sold out" apart
+from "blocked", "blackout", or "out of season".
+
 Its correctness is verified by the integration test suite
 (`tests/integration/availability/hold.test.ts`), not the unit-coverage gate, because
 real Postgres + `pg_advisory_xact_lock` concurrency can't be meaningfully mocked.
+
+## Coverage gate scope (Phase 1 deviation)
+
+`CLAUDE.md` calls for an 80% coverage gate "across the whole codebase". Phase 1 scopes
+it to `lib/availability/**` (minus `hold.ts`, above) and `lib/pricing/**` — the code
+this phase actually owns — because Phase 0 shipped untested UI scaffolding that a
+truly global gate would fail against immediately, blocking every PR for reasons
+unrelated to the change under review. The globs are whole directories, so files added
+to those modules later are gated automatically. Widening the gate to the rest of the
+codebase is a follow-up for the later phases that ship their own tested code.
