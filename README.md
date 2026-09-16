@@ -88,6 +88,6 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 - [`docs/routes-and-components.md`](docs/routes-and-components.md) — route map and
   component inventory
 - [`CLAUDE.md`](CLAUDE.md) — full project instructions and standards
-- [`PLAN.md`](PLAN.md) — phase roadmap
-- [`project-progress.md`](project-progress.md) — running log of what's been built,
-  bugs found and fixed, and open concerns, phase by phase
+- [`planning/PLAN.md`](planning/PLAN.md) — phase roadmap
+- [`planning/project-progress.md`](planning/project-progress.md) — running log of
+  what's been built, bugs found and fixed, and open concerns, phase by phase

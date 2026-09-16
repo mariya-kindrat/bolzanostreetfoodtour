@@ -120,7 +120,8 @@ docs/
   infrastructure.md
   routes-and-components.md
   superpowers/plans/       # one detailed bite-sized plan per phase (generated just before
-                            # that phase starts — see PLAN.md). Gitignored, local-only.
+                            # that phase starts — see planning/PLAN.md). Gitignored,
+                            # local-only.
 .github/workflows/ci.yml
 README.md
 ```
@@ -145,9 +146,15 @@ docs/
                                    # does, auth requirements) and component inventory
                                    # (component name, location, purpose, used by which
                                    # routes) - kept current as routes/components are added
-  superpowers/plans/               # per-phase detailed implementation plans (see PLAN.md).
-                                    # Gitignored, local-only — not committed.
-project-progress.md                # running log, appended after each task: what was
+  superpowers/plans/               # per-phase detailed implementation plans (see
+                                    # planning/PLAN.md). Gitignored, local-only.
+planning/
+  PLAN.md                          # phase roadmap
+  JIRA_TICKETS.md                  # Jira backlog source (readable source of truth,
+                                    # propagated to Jira manually)
+  START_NEW_PROJECT.md             # reusable playbook for how this project's docs
+                                    # were bootstrapped
+  project-progress.md              # running log, appended after each task: what was
                                     # done, bugs found and their fixes, notes/concerns
 ```
 
@@ -177,7 +184,7 @@ imperative-mood summary, e.g.:
 BSFT-25: Add GitHub Actions CI: lint, type-check, unit tests, multi-viewport e2e
 ```
 
-- Use the story (not epic) key — `JIRA_TICKETS.md`'s table maps each story to its key
+- Use the story (not epic) key — `planning/JIRA_TICKETS.md`'s table maps each story to its key
   (e.g. ticket 0.6 → BSFT-25).
 - A commit spanning more than one story (rare — keep steps scoped to one story where
   possible) lists every key it touches, comma-separated: `BSFT-24, BSFT-30: ...`.
@@ -238,7 +245,7 @@ everywhere. The 3D accent must:
 **Accessibility**: WCAG 2.1 AA is a real, testable requirement — keyboard navigation,
 screen-reader labels, color contrast, and the reduced-motion fallback above.
 
-## Booking Domain Rules (see PLAN.md Phase 1 for the full data model)
+## Booking Domain Rules (see planning/PLAN.md Phase 1 for the full data model)
 
 - Single-booking checkout — no multi-item cart.
 - Full payment upfront via Stripe (no deposits).
@@ -294,7 +301,7 @@ screen-reader labels, color contrast, and the reduced-motion fallback above.
 
 ## Plan Execution
 
-See `PLAN.md` for the phase roadmap. Each phase gets its own detailed, bite-sized
+See `planning/PLAN.md` for the phase roadmap. Each phase gets its own detailed, bite-sized
 implementation plan (written with `superpowers:writing-plans`) immediately before that
 phase starts, then executed via `superpowers:subagent-driven-development` with the
 mandatory code-review gate above.
@@ -329,7 +336,8 @@ Branch flow per phase:
 3. When a story/task is implemented and its code review is clean: transition it to
    **Done**.
 
-**Progress log.** After each task's completion, append an entry to `project-progress.md`
-(repo root) covering: what was done, any bugs found and how they were fixed, and other
-useful notes or concerns for later phases. This file is committed to the repo (real
-project history, like `docs/architecture.md`) — unlike the local-only plan docs above.
+**Progress log.** After each task's completion, append an entry to
+`planning/project-progress.md` covering: what was done, any bugs found and how they
+were fixed, and other useful notes or concerns for later phases. This file is
+committed to the repo (real project history, like `docs/architecture.md`) — unlike the
+local-only plan docs above.
