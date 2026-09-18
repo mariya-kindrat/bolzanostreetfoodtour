@@ -1,0 +1,134 @@
+/* Background, backdrop-filter, border and box-shadow are all set inline
+   from Header.tsx (interpolated continuously from scroll position) rather
+   than toggled here — a discrete class swap can't produce a gradual blend.
+   A short, scroll-tuned transition (not --motion-duration, which is meant
+   for discrete hover/press feedback and would visibly lag behind the
+   scroll position) smooths over the gaps between scroll-event ticks. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition:
+    background-color 0.12s ease-out,
+    backdrop-filter 0.12s ease-out,
+    border-color 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Three-zone layout: a left nav group, the centered brand, and a right nav
+   group + CTA — each desktop group is its own <ul> so the brand link can
+   sit between them instead of trailing after one long list. */
+.desktopGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.desktopGroupLeft {
+  flex: 1;
+}
+
+.desktopGroupRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* The mobile disclosure list combines both desktop groups into one column;
+   hidden on desktop, hidden-until-toggled on mobile (see media query). */
+.mobileGroup {
+  display: none;
+  list-style: none;
+}
+
+/* Booking CTA + Menu toggle, shown together on mobile (see media query) —
+   the desktop groups already carry their own "Book a tour" button, so this
+   stays hidden there. Unlike the rest of the nav, the CTA is never hidden
+   behind the Menu disclosure: it's the primary conversion action. */
+.mobileActions {
+  display: none;
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  list-style: none;
+  background: var(--color-cream);
+  box-shadow: var(--shadow-sm);
+  padding-block: 0.5rem;
+  min-width: 220px;
+}
+
+.inlineChildren {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.dropdownLink {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 640px) {
+  .desktopGroupLeft,
+  .desktopGroupRight {
+    display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .mobileGroup:global(.is-open) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    padding-block: 1rem;
+  }
+}
+
+.wordmark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  color: var(--color-forest-dark);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .wordmark {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: none;
+  }
+}
