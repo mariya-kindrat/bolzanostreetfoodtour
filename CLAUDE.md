@@ -230,8 +230,13 @@ Sentry is for exceptions only — routine flow logging goes through Pino/Axiom, 
 
 **Alpine Editorial**: muted forest greens, warm terracotta, cream backgrounds; serif
 headlines; generous whitespace; large full-bleed photography. Reads like a premium travel
-magazine, not a template booking site — avoid generic stock tour-operator UI patterns
-(carousel-of-cards homepage, default Bootstrap-ish component shapes).
+magazine, not a template booking site — avoid default Bootstrap-ish component shapes.
+
+As of the 2026-09-18 redesign pass (see `planning/REDESIGN.md`), structural patterns like
+grid layouts, carousels, category-filter navigation, and hero-with-CTA compositions are
+back in scope — the "premium travel magazine, not a template booking site" test is met by
+abundant real photography (food, wine, market, Dolomites), editorial serif type, and the
+Alpine Editorial palette, not by banning familiar layout shapes outright.
 
 **Motion**: moderate. Scroll-triggered reveals and hover micro-interactions throughout,
 plus **one** signature 3D accent (react-three-fiber) in the homepage hero — not 3D

@@ -2,10 +2,10 @@
 
 ## Environments
 
-| Environment | Branch | Database | Stripe | Clerk |
-|---|---|---|---|---|
-| dev | `dev` | Neon dev branch | test keys | dev instance |
-| prod | `main` | Neon prod branch | live keys | prod instance |
+| Environment | Branch | Database         | Stripe    | Clerk         |
+| ----------- | ------ | ---------------- | --------- | ------------- |
+| dev         | `dev`  | Neon dev branch  | test keys | dev instance  |
+| prod        | `main` | Neon prod branch | live keys | prod instance |
 
 ## Hosting
 
@@ -30,15 +30,35 @@ in this repo — after that, runs start immediately.)
 
 The `test` job runs `tests/unit` only (`vitest.config.ts`). `tests/integration` (e.g.
 `tests/integration/db.test.ts`, which round-trips the real Neon dev database) is
-excluded from CI because no `DATABASE_URL` secret is configured there yet; run it
-on demand locally with `npm run test:integration`. Adding a `DATABASE_URL` GitHub
-Actions secret so CI can run database integration tests is a future follow-up.
+excluded from CI because the `test` job is given no `DATABASE_URL`; run it on demand
+locally with `npm run test:integration`. Pointing the `test` job at the same
+`DATABASE_URL_CI` secret the `e2e` job uses (below), so CI runs the database integration
+tests too, is a future follow-up.
 
-The `test` job does not yet enforce the 80% coverage threshold from `CLAUDE.md`'s
-Testing section — Phase 0's source is scaffolding only (layouts, config, one placeholder
-admin page), so a coverage number here wouldn't mean anything yet. Wiring `--coverage`
-and the threshold gate into this job is a Phase 1 follow-up, once `lib/availability` and
-`lib/pricing` give coverage something real to measure.
+The `test` job runs `npm run test:coverage` and enforces the 80% per-file threshold over
+the scoped globs described in `docs/architecture.md` ("Coverage gate scope").
+
+### The `e2e` job's database (Phase 2)
+
+Phase 2's pages render real database content, so `generateStaticParams` returns `[]` and
+every catalog/tour/blog page builds empty against an unseeded database — the Playwright
+suite would fail on a technicality rather than on a regression. The `e2e` job therefore
+runs `npx prisma migrate deploy` and `npm run db:seed` against a dedicated database
+before `npm run test:e2e` (whose `webServer` does the Next.js build).
+
+> **Pending human action — not yet provisioned.** That job reads
+> `DATABASE_URL` from a `DATABASE_URL_CI` GitHub Actions repository secret, which does
+> **not** exist yet. Create a dedicated Neon branch (e.g. `ci`, branched off `dev`) so CI
+> seeding never collides with local development, and add its connection string as
+> `DATABASE_URL_CI` under Settings → Secrets and variables → Actions. Until that secret
+> exists, the `e2e` job runs against an empty `DATABASE_URL` and fails.
+
+### `REVALIDATE_SECRET`
+
+Unlike every other entry in `.env.example`, `REVALIDATE_SECRET` is not issued by an
+external dashboard — it is self-generated (`openssl rand -hex 32`) and set independently
+per environment in Vercel, because dev and prod must not be able to bust each other's
+cache. It is the sole credential on `POST /api/revalidate` (see `docs/architecture.md`).
 
 **Release gate:** CI passing alone does not promote to prod. After CI is green on a PR
 into `dev`, the change is manually reviewed on the dev environment (click through the

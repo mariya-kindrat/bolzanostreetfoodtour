@@ -212,6 +212,14 @@ availability/pricing/hold algorithms to `docs/architecture.md`.
 
 **Epic goal:** every public page live, navigable, fast, accessible, and SEO-correct.
 
+> **Reopened 2026-09-18:** all of 2.1–2.15 below previously shipped (see
+> `planning/project-progress.md`) but are reopened for a redesign pass toward a new
+> "Wanderlust Editorial"-inspired direction (see `planning/REDESIGN.md`'s 2026-09-18
+> update). Work proceeds element-by-element with explicit approval at each step, starting
+> with 2.2 (Home page). On 2026-09-18 EPIC-2 (BSFT-14) and stories BSFT-41 to BSFT-55 were
+> transitioned from Done back to To Do in real Jira, and the Phase 2 git history was
+> rewritten into one commit per story (see `planning/project-progress.md`).
+
 ### 2.1 — Alpine Editorial design system
 **Description:** Build the reusable design-system components (typography, color
 tokens, spacing) implementing the Alpine Editorial direction: muted forest greens, warm
@@ -401,6 +409,13 @@ with the checkout sequence and the Stripe webhook contract.
 
 **Epic goal:** the business can run entirely from the admin panel, no developer required
 for day-to-day operations.
+
+> **2026-09-18:** Category CRUD (`/admin/categories`) shipped early, as part of the
+> homepage redesign — the `Category` model replaced the old fixed `TourCategory` enum so
+> the hero rotation and catalog pages could be admin-driven. See `docs/architecture.md`'s
+> "Category model (2026-09-18)" section. Story 4.2 (Tour CRUD) below will need a
+> category-picker field once it's built — `Category` already exists and is queryable via
+> `lib/content/categories.ts`, no new schema work needed for that part.
 
 ### 4.1 — Admin dashboard
 **Description:** Build the dashboard: calendar view of tour dates/capacity plus a list

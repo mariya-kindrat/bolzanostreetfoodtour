@@ -51,7 +51,25 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
    (`migrate dev` also works locally and is what you use when you're adding a new
    migration; `migrate deploy` just applies existing ones without prompting.)
 
-5. **Start the app**, either with Docker:
+5. **Seed the database** with the real tour, blog and transfer content:
+
+   ```bash
+   npm run db:seed
+   ```
+
+   This step is required, not optional: without it every catalog, tour and blog page
+   renders empty, because `generateStaticParams` returns `[]` against an unseeded
+   database. The seed is idempotent, so re-running it is safe.
+
+6. **Start the app**, either with Docker Compose (simplest — builds `docker/Dockerfile.dev`
+   and wires up `.env.local`, still connecting to the Neon **dev** branch over the network,
+   not a local Postgres container):
+
+   ```bash
+   docker compose up
+   ```
+
+   or the same thing without Compose:
 
    ```bash
    docker build -f docker/Dockerfile.dev -t bsft-dev .
@@ -70,9 +88,11 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 
 - Unit: `npm run test`
 - Unit + coverage gate: `npm run test:coverage` (this is what CI's `test` job runs). It
-  enforces an 80% per-file threshold, currently scoped to `lib/availability/**`
-  (excluding `hold.ts`, covered by integration tests) and `lib/pricing/**` — see
-  `docs/architecture.md` for why the scope is narrower than the whole codebase.
+  enforces an 80% per-file threshold, currently scoped to `lib/availability/**`,
+  `lib/pricing/**`, `lib/content/**` and `lib/seo/**` — minus `lib/availability/hold.ts`
+  and the thin Prisma wrappers `lib/content/tours.ts`, `transfers.ts` and `blog.ts`,
+  which are covered by integration tests instead. See `docs/architecture.md` for why the
+  scope is narrower than the whole codebase.
 - Integration (needs `.env.local` with a real `DATABASE_URL`, not run in CI —
   see `vitest.config.ts`): `npm run test:integration`
 - End-to-end: `npm run test:e2e`

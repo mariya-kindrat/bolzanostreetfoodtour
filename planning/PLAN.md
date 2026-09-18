@@ -98,6 +98,13 @@ pricing/hold algorithms to `docs/architecture.md`.
 
 ## Phase 2 — Marketing Site & Content
 
+> **Reopened 2026-09-18:** this phase shipped once already but has been reopened for a
+> redesign pass toward a new "Wanderlust Editorial"-inspired direction (see
+> `planning/REDESIGN.md`'s 2026-09-18 update and `planning/JIRA_TICKETS.md`'s EPIC-2
+> stories 2.1–2.15). The goal/scope below still holds; the visual/structural execution of
+> each page is being redone element-by-element with explicit approval at each step, starting
+> with the Home page.
+
 **Goal:** every public page live, navigable, fast, accessible, and SEO-correct — using
 seeded content from the inventory spreadsheet (not yet admin-editable; that's Phase 4).
 
@@ -157,6 +164,22 @@ and the Stripe webhook contract.
 
 **Goal:** the business can run entirely from the admin panel, no developer required for
 day-to-day operations.
+
+> **2026-09-18:** Category CRUD (the first piece of this phase) already shipped, ahead of
+> the rest of it — see "Category model" in `docs/architecture.md` and
+> `app/admin/categories/`. The site's homepage hero now rotates through admin-manageable
+> `Category` rows (photo/name/description/slug/`sortOrder`/`isActive`/`isBookable`)
+> instead of a fixed enum, and each category gets an auto-generated catalog page. An
+> earlier same-day idea (an admin-picked single "flagship" tour with its own multi-photo
+> rotation, `TourPhoto` model, Vercel Blob storage) was considered and superseded by this
+> — category-level rotation was simpler (no per-tour photo-list curation) and showcases
+> the full catalog instead of one promoted tour. That earlier idea is still recorded in
+> the `project_hero-flagship-tour-photos` memory for context, but is **not** the design to
+> implement; don't resurrect it without checking with the project owner first. Tour CRUD
+> below should still include a real photo-upload mechanism per tour (Vercel Blob, same
+> reasoning as before: Vercel's filesystem is read-only at runtime) — that part of the
+> earlier idea remains relevant, just decoupled from the hero now that categories (not
+> individual tours) drive it.
 
 - Dashboard: calendar view + upcoming-bookings list needing attention
 - Tour CRUD: content sections, price tiers, minimum persons, capacity, custom questions

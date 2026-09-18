@@ -9,51 +9,62 @@ The clean, safe way to build this library is from libraries that grant free comm
 
 ---
 
-## 1. Dolomites Landscapes
-*Hero banners, "Gateway to the Dolomites" section, Winter Tours*
-- https://unsplash.com/s/photos/dolomites
-- https://www.pexels.com/search/dolomites/
-- https://pixabay.com/images/search/dolomites/
+## 1. South Tyrolean Food (speck, cheese, market stalls, street food)
+*Homepage hero, "Discover Our Tours" tiles, Street Food Tour pages*
+- https://unsplash.com/s/photos/south-tyrol-food
+- https://www.pexels.com/search/charcuterie%20board/
+- https://unsplash.com/s/photos/italian-market-food
 
-## 2. Bolzano Old Town / Piazza Walther
+## 2. Bolzano Old Town / Piazza Erbe Market
 *Homepage hero, tour meeting-point imagery, About page*
 - https://unsplash.com/s/photos/bolzano
 - https://www.pexels.com/search/bolzano%20italy/
 - https://pixabay.com/images/search/bolzano/
 
-## 3. South Tyrolean Food (speck, cheese, market stalls, street food)
-*Street Food Tour pages, homepage "Discover Our Tours" tiles*
-- https://unsplash.com/s/photos/south-tyrol-food
-- https://www.pexels.com/search/charcuterie%20board/
-- https://unsplash.com/s/photos/italian-market-food
+## 3. South Tyrol Wine Road / Vineyards / Cellars
+*Wine Tours catalog and detail pages, Cantina-style accent panels*
+- https://unsplash.com/s/photos/vineyard-italy
+- https://www.pexels.com/search/vineyard%20mountains/
+- https://pixabay.com/images/search/vineyard%20alps/
+- https://unsplash.com/s/photos/wine-cellar
 
-## 4. Bolzano / South Tyrol Christmas Markets
+## 4. Farmhouse / Maso Interiors and Cooking
+*Cooking Classes pages*
+- https://unsplash.com/s/photos/farmhouse-kitchen
+- https://www.pexels.com/search/rustic%20kitchen%20cooking/
+
+## 5. Bolzano / South Tyrol Christmas Markets
 *Christmas Edition tour page, Winter Tours catalog*
 - https://unsplash.com/s/photos/christmas-market
 - https://www.pexels.com/search/christmas%20market/
 - https://pixabay.com/images/search/christmas%20market%20europe/
 
-## 5. South Tyrol Wine Road / Vineyards
-*Wine Tours catalog and detail pages*
-- https://unsplash.com/s/photos/vineyard-italy
-- https://www.pexels.com/search/vineyard%20mountains/
-- https://pixabay.com/images/search/vineyard%20alps/
+## 6. Guide and Guest Portraits
+*Testimonials, About page, tour-in-progress photography*
+- https://unsplash.com/s/photos/tour-guide-market
+- https://www.pexels.com/search/food%20tour%20group/
 
-## 6. Alpe di Siusi / Seiser Alm Alpine Meadow
+## 7. Dolomites Landscapes (background/context only, not hero-led)
+*Winter Tours, occasional atmospheric backdrop — not the homepage hero or lead image on
+a food/wine/cooking page*
+- https://unsplash.com/s/photos/dolomites
+- https://www.pexels.com/search/dolomites/
+- https://pixabay.com/images/search/dolomites/
+
+## 8. Alpe di Siusi / Seiser Alm Alpine Meadow
 *Hike in the Dolomites & Cheese Workshop tour*
 - https://unsplash.com/s/photos/seiser-alm
 - https://www.pexels.com/search/alpine%20meadow/
 - https://pixabay.com/images/search/alpe%20di%20siusi/
 
-## 7. Cable Cars / Val Gardena / Ortisei
+## 9. Cable Cars / Val Gardena / Ortisei
 *Hike & Cheese Workshop tour, Winter Tours*
 - https://unsplash.com/s/photos/val-gardena
 - https://www.pexels.com/search/cable%20car%20mountains/
 
-## 8. Additional themes worth sourcing (not yet pulled — good next batch)
+## 10. Additional themes worth sourcing (not yet pulled — good next batch)
 - South Tyrol beer / craft brewery interiors (Beers & Bites tour)
 - Rooftop bar / aperitivo scenes (Rooftops of Bolzano tour)
-- Farmhouse / Maso interiors and cooking (Cooking Classes)
 - Trento old town, Duomo Square (Trento Street Food Tour)
 - Husky sledding, snowshoeing (Winter Tours)
 - Private van/minivan interior shots (Transfers page)
