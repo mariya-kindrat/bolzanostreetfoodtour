@@ -1,0 +1,139 @@
+/* Below 1120px the note sits in normal flow under the hero photo; from 1120px
+   up it overlays the photo's bottom-right corner, clear of the headline. */
+/* Desktop only: hidden on phones and tablets, and on short windows where it
+   would collide with the hero's top-right badge. The hero headline block is
+   608px wide, so from 1024px the note (min 19rem) always clears it. Width
+   scales with the window between 19rem and 26rem, and everything inside is
+   sized from the note's own width (cqw) so the type scales with the paper. */
+.note {
+  display: none;
+  margin: 0;
+}
+
+@media (min-width: 1024px) and (min-height: 600px) {
+  .note {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 5;
+    width: clamp(19rem, 30vw, 26rem);
+  }
+}
+
+/* Unrolling: --unroll goes 0 (closed scroll, both rolls side by side at the
+   centre) to 1 (fully open). Each roll is 7.6% of the image wide and travels
+   outward from the centre; --left/--right are the inner edges of the revealed
+   paper, which sits between them. */
+@property --unroll {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.paper {
+  --left: calc(42.4% * (1 - var(--unroll)) + 7.6%);
+  --right: calc(50% + 42.4% * var(--unroll));
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+  transform: rotate(-1deg);
+  color: #2b1d0e;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
+}
+
+.unrolled {
+  animation: unroll 2s cubic-bezier(0.3, 0.7, 0.25, 1) 0.4s both;
+}
+
+@keyframes unroll {
+  from {
+    --unroll: 0;
+  }
+  to {
+    --unroll: 1;
+  }
+}
+
+/* The scroll image is 921x360; aspect-ratio sets the preferred height and the
+   box still grows if a quote needs more room. Clipped to the span between the two rolls. */
+.sheet {
+  position: relative;
+  box-sizing: border-box;
+  aspect-ratio: 921 / 360;
+  display: flex;
+  align-items: center;
+  padding: 0 13%;
+  clip-path: inset(0 calc(100% - var(--right)) 0 var(--left));
+}
+
+.roll {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7.6%;
+  overflow: hidden;
+}
+
+.rollLeft {
+  left: calc(var(--left) - 7.6%);
+}
+
+.rollRight {
+  left: var(--right);
+}
+
+.quotes {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+}
+
+/* Every quote occupies the same grid cell so the note is always as tall as its
+   longest quote and never jumps when the quote changes. */
+.quote {
+  grid-area: 1 / 1;
+  margin: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.active {
+  visibility: visible;
+  opacity: 1;
+  animation: fadeIn 0.9s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.text {
+  margin: 0;
+  font-family: var(--font-fell), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.72rem, 3.65cqw, 0.95rem);
+  line-height: 1.4;
+}
+
+.author {
+  margin-top: 0.3em;
+  font-family: var(--font-fell), Georgia, serif;
+  font-size: clamp(0.62rem, 3.1cqw, 0.8rem);
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper {
+    --unroll: 1;
+  }
+
+  .unrolled,
+  .active {
+    animation: none;
+  }
+}
