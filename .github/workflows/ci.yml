@@ -30,16 +30,18 @@ jobs:
       - run: npm run type-check
 
   # Runs tests/unit only (see vitest.config.ts). tests/integration is
-  # excluded here because it hits the real Neon dev database via
-  # DATABASE_URL, and no DATABASE_URL secret is configured for CI yet —
-  # adding real database integration testing to CI is a future follow-up.
+  # excluded here because it hits a real database via DATABASE_URL, which
+  # this job is not given — pointing it at the same DATABASE_URL_CI secret
+  # the e2e job below uses is a future follow-up.
   #
-  # Coverage threshold (CLAUDE.md's Testing section) is enforced for
-  # lib/availability/resolve.ts and lib/pricing/** — the domain logic
-  # Phase 1 owns. hold.ts is verified via integration tests
-  # (tests/integration/availability/hold.test.ts), not unit-coverage gate,
-  # because real Postgres + pg_advisory_xact_lock concurrency can't be
-  # meaningfully mocked.
+  # Coverage threshold (CLAUDE.md's Testing section) is enforced over
+  # lib/availability/**, lib/pricing/**, lib/content/** and lib/seo/** — the
+  # domain and content logic the project owns — not the whole tree. Excluded:
+  # lib/availability/hold.ts and the thin Prisma wrappers lib/content/tours.ts,
+  # transfers.ts and blog.ts, each verified by an integration test instead
+  # (tests/integration/) because their real behaviour is a database round-trip
+  # that can't be meaningfully mocked. See docs/architecture.md, "Coverage gate
+  # scope", for the full rationale.
   test:
     runs-on: ubuntu-latest
     steps:
@@ -59,8 +61,15 @@ jobs:
   # playwright.config.ts) — a real CLERK_SECRET_KEY /
   # NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY GitHub Actions secret pair, plus
   # Clerk's official Playwright Testing Token setup, is a future follow-up.
+  #
+  # DATABASE_URL comes from the DATABASE_URL_CI repo secret, a dedicated
+  # Neon branch (e.g. "ci", branched off dev) reserved for this job so e2e
+  # runs don't collide with local dev seeding. Migrate + seed it before the
+  # Next.js build so pages that query lib/content/** have real data to render.
   e2e:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL_CI }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -68,5 +77,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npx prisma migrate deploy
+      - run: npm run db:seed
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

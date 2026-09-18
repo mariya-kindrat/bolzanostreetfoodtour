@@ -1,0 +1,13 @@
+.kicker {
+  font-family: var(--font-sans);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-terracotta);
+  margin-bottom: 0.5rem;
+}
+
+.onDark {
+  color: var(--color-cream-dark);
+}

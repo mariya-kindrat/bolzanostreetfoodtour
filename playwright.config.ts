@@ -15,9 +15,11 @@ export default defineConfig({
   testIgnore: process.env.CI ? ["tests/e2e/admin-auth.spec.ts"] : undefined,
   use: {
     baseURL: `http://localhost:${PORT}`,
+    locale: "en-US",
+    timezoneId: "UTC",
   },
   webServer: {
-    command: `npm run build && PORT=${PORT} npm run start`,
+    command: `npm run build && env TZ=UTC PORT=${PORT} npm run start`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

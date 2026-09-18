@@ -1,0 +1,62 @@
+.chip {
+  position: absolute;
+  filter: drop-shadow(var(--shadow-sm));
+  pointer-events: none;
+}
+
+.chipShape {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  padding: 0.4rem 0.65rem 0.55rem;
+  clip-path: polygon(
+    10% 0%,
+    90% 0%,
+    100% 20%,
+    100% 80%,
+    90% 100%,
+    10% 100%,
+    0% 80%,
+    0% 20%
+  );
+}
+
+.number {
+  display: block;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.08em;
+  color: var(--color-terracotta);
+}
+
+.label {
+  font-size: var(--type-sm);
+  font-weight: 700;
+}
+
+.seal {
+  position: absolute;
+  bottom: -7px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-seal);
+}
+
+.topRight {
+  top: -8px;
+  right: -6px;
+  transform: rotate(-4deg);
+}
+
+.bottomLeft {
+  bottom: -8px;
+  left: -6px;
+  transform: rotate(3deg);
+}

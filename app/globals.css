@@ -1,21 +1,51 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-forest: #1f3d2b;
+  --color-forest-dark: #14261b;
+  --color-terracotta: #b5502f;
+  --color-terracotta-dark: #8c3c22;
+  --color-cream: #f7f3ea;
+  --color-cream-dark: #ede6d6;
+  --color-ink: #1c1b19;
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --type-eyebrow: 0.6875rem;
+  --type-sm: 0.875rem;
+  --type-base: 1rem;
+  --type-lg: 1.125rem;
+  --type-h4: 1.125rem;
+  --type-h3: 1.5rem;
+  --type-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --type-h1: clamp(2.25rem, 4vw, 3.5rem);
+  --radius-sm: 2px;
+  --radius-chip: 4px;
+  --shadow-sm: 0 2px 5px rgba(28, 27, 25, 0.18);
+  --shadow-stamp: 2px 2px 0 var(--color-forest-dark);
+  --shadow-seal: 0 1px 3px rgba(28, 27, 25, 0.4);
+  --motion-duration: 0.4s;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
 }
 
 html {
   height: 100%;
 }
 
-html,
-body {
+/* overflow-x lives on html only, not body: setting it on both forces
+   body's overflow-y to auto (the CSS overflow spec pairs an explicit
+   non-visible x with an implicit auto y), which turns body into its own
+   scroll container and breaks position: sticky for its children — a
+   sticky header then sticks relative to body's non-scrolling box instead
+   of the real viewport. html alone already prevents horizontal overflow. */
+html {
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -26,7 +56,7 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -42,8 +72,113 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* Only transform, never opacity: axe-core scrolls below-fold elements into
+   view during its color-contrast check, which can trigger this reveal mid-
+   scan. An opacity fade would then read as genuinely low-contrast text for
+   that transition frame (WCAG 1.4.3) - a real risk for anyone scrolling
+   while low vision / screen magnification is in use, not just a test
+   artifact. Sliding up carries the same motion intent without ever
+   reducing text contrast. */
+.reveal {
+  transform: translateY(16px);
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.reveal.is-visible {
+  transform: none;
+}
+
+.hero-branch {
+  animation: branch-sway 6s ease-in-out infinite;
+  transform-origin: top right;
+}
+
+@keyframes branch-sway {
+  0%,
+  100% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+
+a,
+button {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+a:hover,
+button:hover {
+  opacity: 0.85;
+}
+
+article:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Responsive rules live here rather than in the components' inline `style`
+   objects, which cannot express a media query. Scoped to the three layouts
+   that actually break below 640px. */
+
+.detail-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 2fr 1fr;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .primary-nav {
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Wide rate tables stay reachable by scrolling their own container instead of
+   pushing the page sideways. tabindex makes that scroll keyboard-operable. */
+.table-scroll {
+  overflow-x: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transform: none;
+    transition: none;
+  }
+
+  a,
+  button,
+  article {
+    transition: none;
+  }
+
+  a:hover,
+  button:hover,
+  article:hover {
+    transform: none;
+  }
+
+  .hero-branch {
+    animation: none;
   }
 }

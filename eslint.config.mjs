@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Gitignored Vitest coverage output - generated HTML/JS, never linted.
+    "coverage/**",
   ]),
   // Must be last: disables ESLint formatting rules that conflict with Prettier.
   prettier,

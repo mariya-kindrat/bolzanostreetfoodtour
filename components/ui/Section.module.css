@@ -1,0 +1,19 @@
+.section {
+  padding-block: var(--space-8);
+}
+
+.white {
+  background: #fff;
+}
+
+.cream {
+  background: var(--color-cream);
+}
+
+.forest {
+  background: var(--color-forest);
+}
+
+.forestDark {
+  background: var(--color-forest-dark);
+}

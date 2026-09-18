@@ -19,12 +19,29 @@ export default defineConfig(({ mode }) => {
       coverage: {
         provider: "v8",
         // Whole-directory globs so files added later are gated automatically.
-        include: ["lib/availability/**", "lib/pricing/**"],
-        // hold.ts is verified via its integration test suite
-        // (tests/integration/availability/hold.test.ts), not the unit-coverage gate,
-        // because real Postgres + pg_advisory_xact_lock concurrency can't be
-        // meaningfully mocked.
-        exclude: ["lib/availability/hold.ts"],
+        include: [
+          "lib/availability/**",
+          "lib/pricing/**",
+          "lib/content/**",
+          "lib/seo/**",
+          "lib/hero/**",
+          "lib/homepage/**",
+          "lib/header/**",
+          "lib/admin/**",
+        ],
+        // hold.ts: real Postgres + pg_advisory_xact_lock concurrency can't be
+        // meaningfully mocked, verified via its integration test instead.
+        // tours.ts/transfers.ts/blog.ts/categories.ts: thin Prisma query
+        // wrappers with no branching logic of their own, verified via
+        // tests/integration/content/seed.test.ts instead — same precedent
+        // as hold.ts.
+        exclude: [
+          "lib/availability/hold.ts",
+          "lib/content/tours.ts",
+          "lib/content/transfers.ts",
+          "lib/content/blog.ts",
+          "lib/content/categories.ts",
+        ],
         thresholds: {
           perFile: true,
           lines: 80,

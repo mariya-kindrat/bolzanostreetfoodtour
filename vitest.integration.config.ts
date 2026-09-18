@@ -14,6 +14,13 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: "node",
       include: ["tests/integration/**/*.test.ts"],
+      // All integration tests share one live Neon dev database. Several
+      // schema tests create a transient Tour row and clean it up in a
+      // `finally` block; with vitest's default parallel file execution,
+      // those transient rows are intermittently visible to this suite's
+      // exact-count assertions (tests/integration/content/seed.test.ts).
+      // Running files sequentially avoids the race.
+      fileParallelism: false,
     },
   };
 });
