@@ -1,0 +1,9 @@
+import { expect, test } from "@playwright/test";
+
+// Mobile overflow for /private-transfers is covered by mobile-layout.spec.ts's
+// route list, which measures real (unclipped) overflow.
+test("transfers page renders all 7 rate rows and all 7 supplement rows", async ({ page }) => {
+  await page.goto("/private-transfers");
+  await expect(page.locator("table").first().locator("tbody tr")).toHaveCount(7);
+  await expect(page.locator("table").nth(1).locator("tbody tr")).toHaveCount(7);
+});
