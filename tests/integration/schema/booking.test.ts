@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { CouponType, PriceTierType, TourCategory } from "@/lib/generated/prisma/client";
+import { CouponType, PriceTierType } from "@/lib/generated/prisma/client";
 
 describe("Booking schema", () => {
   it("creates a booking with participants and an applied coupon", async () => {
     const tour = await db.tour.create({
-      data: { slug: `test-tour-${Date.now()}`, title: "Test Tour", category: TourCategory.COOKING_CLASS, summary: "s", description: "d" },
+      data: {
+        slug: `test-tour-${Date.now()}`,
+        title: "Test Tour",
+        category: { connect: { slug: "cooking-classes" } },
+        summary: "s",
+        description: "d",
+      },
     });
     const coupon = await db.coupon.create({
       data: { code: `TEST${Date.now()}`, type: CouponType.PERCENTAGE, value: 10 },

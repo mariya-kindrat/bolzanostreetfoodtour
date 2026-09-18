@@ -12,35 +12,67 @@ model HealthCheck {
   createdAt DateTime @default(now())
 }
 
-enum TourCategory {
-  COOKING_CLASS
-  WINE_TOUR
-  WINTER_TOUR
-}
-
 enum PriceTierType {
   ADULT
   CHILD
   INFANT
 }
 
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  photoUrl    String
+  altText     String
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  // Replaces the old hardcoded `tour.category === WINTER_TOUR` check for
+  // quote-only categories — data-driven so an admin-added category can
+  // declare itself quote-only without a code change.
+  isBookable  Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tours       Tour[]
+}
+
 model Tour {
-  id                      String                   @id @default(cuid())
-  slug                    String                   @unique
-  title                   String
-  category                TourCategory
-  summary                 String
-  description             String
-  heroImageUrl            String?
-  isActive                Boolean                  @default(true)
-  createdAt               DateTime                 @default(now())
-  updatedAt               DateTime                 @updatedAt
-  priceTiers              PriceTier[]
-  customQuestions         CustomQuestion[]
-  seasonalAvailabilities  SeasonalAvailability[]
-  dateOverrides           DateOverride[]
-  bookings                Booking[]
-  bookingHolds            BookingHold[]
+  id                     String                 @id @default(cuid())
+  slug                   String                 @unique
+  title                  String
+  categoryId             String
+  category               Category               @relation(fields: [categoryId], references: [id])
+  summary                String
+  description            String
+  heroImageUrl           String?
+  tourType               String?
+  groupSizeLabel         String?
+  language               String?
+  daysOffered            String?
+  startingTime           String?
+  durationLabel          String?
+  meetingPoint           String?
+  highlights             String[]
+  whatsIncluded          String?
+  whatsNotIncluded       String?
+  whatToWear             String?
+  weatherPolicy          String?
+  dietaryInfo            String?
+  whatToExpectFood       String?
+  whatToExpectHistory    String?
+  whoShouldTakeIt        String?
+  priceIsFrom            Boolean                @default(false)
+  priceOnRequest         Boolean                @default(false)
+  validityLabel          String?
+  isActive               Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  priceTiers             PriceTier[]
+  customQuestions        CustomQuestion[]
+  seasonalAvailabilities SeasonalAvailability[]
+  dateOverrides          DateOverride[]
+  bookings               Booking[]
+  bookingHolds           BookingHold[]
 }
 
 model PriceTier {
@@ -158,15 +190,18 @@ model Coupon {
 }
 
 model TransferRoute {
-  id          String               @id @default(cuid())
-  origin      String
-  destination String
-  priceCents  Int
-  maxPax      Int
-  maxLuggage  Int
-  isActive    Boolean              @default(true)
-  supplements TransferSupplement[]
-  createdAt   DateTime             @default(now())
+  id            String               @id @default(cuid())
+  origin        String
+  destination   String
+  priceCents    Int
+  maxPax        Int
+  maxLuggage    Int
+  durationLabel String?
+  isActive      Boolean              @default(true)
+  supplements   TransferSupplement[]
+  createdAt     DateTime             @default(now())
+
+  @@unique([origin, destination])
 }
 
 model TransferSupplement {
@@ -192,5 +227,20 @@ model AdminNote {
   id        String   @id @default(cuid())
   subject   String
   content   String
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
   createdAt DateTime @default(now())
 }

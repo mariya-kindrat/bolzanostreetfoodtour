@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { PriceTierType, TourCategory } from "@/lib/generated/prisma/client";
+import { PriceTierType } from "@/lib/generated/prisma/client";
 
 describe("Tour schema", () => {
   it("creates a tour with multiple price tiers and custom questions", async () => {
@@ -8,7 +8,7 @@ describe("Tour schema", () => {
       data: {
         slug: `test-tour-${Date.now()}`,
         title: "Test Cooking Class",
-        category: TourCategory.COOKING_CLASS,
+        category: { connect: { slug: "cooking-classes" } },
         summary: "A hands-on pasta class in Bolzano's old town.",
         description: "Full-length description goes here.",
         priceTiers: {

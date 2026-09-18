@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { TourCategory } from "@/lib/generated/prisma/client";
 
 describe("Availability schema", () => {
   it("creates a seasonal window, a per-tour override, and a global blackout independently", async () => {
@@ -8,7 +7,7 @@ describe("Availability schema", () => {
       data: {
         slug: `test-tour-${Date.now()}`,
         title: "Test Tour",
-        category: TourCategory.WINE_TOUR,
+        category: { connect: { slug: "wine-tours" } },
         summary: "s",
         description: "d",
       },

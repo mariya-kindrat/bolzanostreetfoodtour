@@ -5,11 +5,15 @@ import {
   CapacityExceededError,
   InvalidParticipantsCountError,
 } from "@/lib/availability/hold";
-import { TourCategory } from "@/lib/generated/prisma/client";
-
 async function makeTourWithCapacity(capacity: number) {
   const tour = await db.tour.create({
-    data: { slug: `hold-test-${Date.now()}`, title: "Hold Test Tour", category: TourCategory.COOKING_CLASS, summary: "s", description: "d" },
+    data: {
+      slug: `hold-test-${Date.now()}`,
+      title: "Hold Test Tour",
+      category: { connect: { slug: "cooking-classes" } },
+      summary: "s",
+      description: "d",
+    },
   });
   await db.seasonalAvailability.create({
     data: { tourId: tour.id, startDate: new Date("2026-01-01"), endDate: new Date("2026-12-31"), capacity },
