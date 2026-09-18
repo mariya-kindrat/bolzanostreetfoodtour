@@ -26,9 +26,21 @@ Jira stories were restarted from scratch.
   `backup/dev-before-rewrite` and `backup/branch-before-rewrite`.
 - **Jira:** BSFT-14 and BSFT-41 to BSFT-55 moved from Done back to To Do. Sprint membership and
   assignee were not changed.
-- **Remote:** GitHub rejected a force-push of `dev` (branch protection: "Cannot force-push to
-  this branch"), so `origin/dev` still has the old history until protection is lifted or a
-  different route is chosen.
+- **Remote:** GitHub first rejected the force-push of `dev` (branch protection: "Cannot
+  force-push to this branch"). The project owner temporarily enabled "Allow force pushes" on
+  the `dev` rule, the push then went through with `--force-with-lease` pinned to the old tip
+  (`2be99a0`), and the setting was to be switched off again afterwards. `origin/dev` now has
+  the rewritten history.
+- **CI after the push, two failures:**
+  - `test` (unit + coverage gate) failed because `lib/admin/categoryRoute.ts` was covered
+    only by integration tests, so the unit-only per-file 80% gate saw 0%. Fixed with
+    `tests/unit/admin/categoryRoute.test.ts` (commit `BSFT-44: Add unit tests for the admin
+    category route helpers`). The `test`, `lint` and `type-check` jobs are green.
+  - `e2e` fails at `prisma migrate deploy` with "Connection url is empty": the workflow's
+    `DATABASE_URL` comes from the `DATABASE_URL_CI` repository secret, which is not
+    provisioned (open task BSFT-98; documented in `docs/infrastructure.md`). The previous
+    `dev` run failed the same way, so this predates the rewrite. A human must create a
+    dedicated Neon branch and add the secret; until then CI on `dev` stays red on `e2e`.
 
 ---
 
