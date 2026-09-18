@@ -8,8 +8,10 @@ export default clerkMiddleware(async (auth) => {
 });
 
 export const config = {
-  // Explicit /admin/(.*) (not a bare /admin(.*) glob) so this only matches
-  // /admin and its sub-paths, not any future public route whose slug merely
+  // Explicit /admin/(.*) and /api/admin/(.*) (not bare /admin(.*)/
+  // /api/admin(.*) globs) so this only matches /admin and its sub-paths —
+  // including the admin API routes categories CRUD (and future admin
+  // mutations) live under — not any future public route whose slug merely
   // starts with "admin" (e.g. /admin-tips).
-  matcher: ["/admin", "/admin/(.*)"],
+  matcher: ["/admin", "/admin/(.*)", "/api/admin/(.*)"],
 };
