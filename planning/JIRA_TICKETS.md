@@ -224,6 +224,10 @@ availability/pricing/hold algorithms to `docs/architecture.md`.
 > real Jira as the element-by-element redesign resumed (hero, header, Discover our tours, Why
 > Bolzano and the wine feature done; Gateway, Where is it, trust block and newsletter remain).
 > All other EPIC-2 stories stay To Do until their own redesign is approved.
+>
+> **2026-09-20 (later):** BSFT-42 (2.2 Home page) moved In Progress -> Done in real Jira once
+> every Home element and the site footer were redesigned, approved and code-reviewed. EPIC-2
+> (BSFT-14) stays In Progress; BSFT-41 and BSFT-43 to BSFT-55 stay To Do.
 
 ### 2.1 — Alpine Editorial design system
 **Description:** Build the reusable design-system components (typography, color
