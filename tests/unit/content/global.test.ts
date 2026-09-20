@@ -24,8 +24,12 @@ describe("global content", () => {
     expect(NAV_ITEMS.every((item) => item.href !== "#" && item.href !== "")).toBe(true);
   });
 
-  it("has exactly 5 trust points", () => {
+  it("has exactly 5 trust points, each with a stamp label and a sentence", () => {
     expect(TRUST_POINTS).toHaveLength(5);
+    for (const point of TRUST_POINTS) {
+      expect(point.stamp).toBeTruthy();
+      expect(point.text).toBeTruthy();
+    }
   });
 
   it("has a real contact email and both phone numbers", () => {

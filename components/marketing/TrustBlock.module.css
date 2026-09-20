@@ -1,0 +1,111 @@
+.header {
+  margin-bottom: var(--space-7);
+  text-align: center;
+}
+
+.stamps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-7) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 11.5rem;
+  text-align: center;
+}
+
+.item:nth-child(1) { --tilt: -4deg; --i: 0; }
+.item:nth-child(2) { --tilt: 3deg; --i: 1; }
+.item:nth-child(3) { --tilt: -2deg; --i: 2; }
+.item:nth-child(4) { --tilt: 4deg; --i: 3; }
+.item:nth-child(5) { --tilt: -3deg; --i: 4; }
+
+/* Double ring (dashed outer, thin solid inner) like a passport stamp. */
+.stamp {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 8rem;
+  height: 8rem;
+  padding: var(--space-4);
+  border: 2px dashed rgba(247, 243, 234, 0.75);
+  border-radius: 50%;
+  rotate: var(--tilt);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--color-cream);
+  transition:
+    rotate var(--motion-duration) var(--motion-ease),
+    scale var(--motion-duration) var(--motion-ease);
+}
+
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(247, 243, 234, 0.45);
+  border-radius: 50%;
+}
+
+.item:hover .stamp {
+  rotate: 0deg;
+  scale: 0.96;
+}
+
+.text {
+  margin: var(--space-4) 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-cream-dark);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .item {
+      animation: press linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i) * 10%) entry calc(60% + var(--i) * 10%);
+    }
+  }
+}
+
+@keyframes press {
+  from {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    transition: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .stamps {
+    gap: var(--space-6) var(--space-4);
+  }
+
+  .item {
+    width: calc(50% - var(--space-3));
+  }
+
+  .text {
+    font-size: 0.875rem;
+  }
+}

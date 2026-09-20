@@ -7,6 +7,37 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home trust block as passport stamps
+
+Replaced the bulleted "Why book with us?" list with five round passport-style stamps on
+forest green: dashed outer ring, thin inner ring, slight alternating tilt, and a short
+serif label (No. 1, Secure, Licensed, 2–12, 5 languages) above each original trust
+sentence. Stamps press in one after another on scroll via CSS `animation-timeline: view()`
+and straighten on hover, both off under reduced motion; two per row on mobile.
+`TRUST_POINTS` (`lib/content/global.ts`) is now `{ stamp, text }` entries; its unit test
+checks both fields.
+
+**Bugs found and fixed:**
+
+- First desktop layout wrapped 4+1 (one stamp orphaned) and "languages" touched the inner
+  ring; narrowed the columns so all five fit one row and enlarged the stamp.
+- Code review (against the carousel), proven with a throwaway test before fixing: the
+  previous cleanup change let an in-flight autoplay slide finish after a pause and then
+  schedule the next slide, so the carousel advanced a full page while the pointer rested
+  on it (1128 px then 2256 px). The effect now carries a `cancelled` flag. An interrupted
+  slide now resolves its promise so autoplay is not stranded by an arrow click, and
+  `touchcancel` clears the touch pause. The repro is kept as an e2e regression test.
+
+**Notes/concerns:**
+
+- The stamp labels are new wording; "5 languages" is derived from English plus the four
+  listed (Russian, German, French, Dutch) and needs the owner's confirmation as a claim.
+- `getAllActiveTours` includes `priceTiers`, which the home carousel cards never use; a
+  lighter card query would shrink the ISR payload as the catalog grows. Not done yet.
+- Remaining Home item: newsletter signup.
+
+---
+
 ## 2026-09-20 — Redesign: home "Where is it?" as a Dolomites postcard
 
 Replaced the plain heading-plus-paragraph block with `WhereSection`: a wide rounded

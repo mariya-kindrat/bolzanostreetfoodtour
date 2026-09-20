@@ -106,6 +106,15 @@ test("where section lists the compass neighbours and links to private transfers"
   );
 });
 
+test("trust block shows five passport stamps with their sentences", async ({ page }) => {
+  await page.goto("/");
+  const block = page.getByTestId("trust-block");
+  await expect(block.getByRole("listitem")).toHaveCount(5);
+  await expect(block.getByText("No. 1", { exact: true })).toBeVisible();
+  await expect(block.getByText("2–12", { exact: true })).toBeVisible();
+  await expect(block.getByText(/Guaranteed Departures with min 2/)).toBeVisible();
+});
+
 test("wine tours are introduced by a sand-toned feature with place badges and a link", async ({
   page,
 }) => {

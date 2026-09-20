@@ -52,11 +52,17 @@ export const FOOTER_LEGAL_LINKS = [
 ];
 
 export const TRUST_POINTS = [
-  "The ONLY Street Food Tour of Bolzano",
-  "Secure bookings",
-  "English speaking licensed Local guides",
-  "Guaranteed Departures with min 2 passengers, max 12 in our semi-private tours",
-  "Exclusive private tours and excursions offered also in Russian, German, French and Dutch",
+  { stamp: "No. 1", text: "The ONLY Street Food Tour of Bolzano" },
+  { stamp: "Secure", text: "Secure bookings" },
+  { stamp: "Licensed", text: "English speaking licensed Local guides" },
+  {
+    stamp: "2–12",
+    text: "Guaranteed Departures with min 2 passengers, max 12 in our semi-private tours",
+  },
+  {
+    stamp: "5 languages",
+    text: "Exclusive private tours and excursions offered also in Russian, German, French and Dutch",
+  },
 ];
 
 export const STANDARD_CANCELLATION_POLICY =
