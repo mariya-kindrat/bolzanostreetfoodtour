@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { uploadPhoto } from "@/components/admin/uploadPhoto";
 import { PostMarkdown } from "@/components/blog/PostMarkdown";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { insertAtCursor } from "@/lib/admin/textInsert";
 import { slugify } from "@/lib/content/blogText";
 import type { BlogPost } from "@/lib/generated/prisma/client";
 import styles from "@/components/admin/BlogPostForm.module.css";
@@ -13,14 +16,18 @@ import styles from "@/components/admin/BlogPostForm.module.css";
 // fetch, the same convention as CategoryForm.
 export function BlogPostForm({ post }: { post?: BlogPost }) {
   const router = useRouter();
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
   const [title, setTitle] = useState(post?.title ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(post));
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [tags, setTags] = useState(post?.tags.join(", ") ?? "");
+  const [coverImageUrl, setCoverImageUrl] = useState(post?.coverImageUrl ?? "");
+  const [coverImageAlt, setCoverImageAlt] = useState(post?.coverImageAlt ?? "");
   const [content, setContent] = useState(post?.content ?? "");
   const [published, setPublished] = useState(Boolean(post?.publishedAt));
   const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   function handleTitle(value: string) {
@@ -28,8 +35,44 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
     if (!slugTouched) setSlug(slugify(value));
   }
 
+  async function upload(file: File): Promise<string | null> {
+    setError(null);
+    setUploading(true);
+    try {
+      return await uploadPhoto(file);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "The upload failed. Please try again.");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleCover(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const url = await upload(file);
+    if (url) setCoverImageUrl(url);
+  }
+
+  async function handleBodyPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const url = await upload(file);
+    if (!url) return;
+    const area = bodyRef.current;
+    const start = area?.selectionStart ?? content.length;
+    const end = area?.selectionEnd ?? content.length;
+    const next = insertAtCursor(content, start, end, `![Describe this photo](${url})`);
+    setContent(next.text);
+    requestAnimationFrame(() => area?.setSelectionRange(next.cursor, next.cursor));
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submitting || uploading) return;
     setError(null);
     setSubmitting(true);
 
@@ -38,6 +81,8 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
       slug,
       excerpt,
       tags,
+      coverImageUrl,
+      coverImageAlt,
       content,
       published,
       publishedAt: post?.publishedAt?.toISOString(),
@@ -119,6 +164,36 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
         <input id="tags" type="text" value={tags} onChange={(e) => setTags(e.target.value)} />
       </div>
 
+      <fieldset className={styles.cover}>
+        <legend>Cover photo (shown at the top of the post and on its card)</legend>
+        {coverImageUrl && (
+          <div className={styles.coverPreview}>
+            <Image src={coverImageUrl} alt="" fill sizes="20rem" />
+          </div>
+        )}
+        <label htmlFor="cover-file">Choose a photo (JPEG, PNG or WebP)</label>
+        <input
+          id="cover-file"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleCover}
+        />
+        {coverImageUrl && (
+          <>
+            <label htmlFor="cover-alt">Cover photo description (for screen readers)</label>
+            <input
+              id="cover-alt"
+              type="text"
+              value={coverImageAlt}
+              onChange={(e) => setCoverImageAlt(e.target.value)}
+            />
+            <button type="button" onClick={() => setCoverImageUrl("")}>
+              Remove cover photo
+            </button>
+          </>
+        )}
+      </fieldset>
+
       <div className={styles.editor}>
         <div>
           <label htmlFor="content">
@@ -128,17 +203,25 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
           <br />
           <textarea
             id="content"
+            ref={bodyRef}
             rows={20}
             required
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
+          <label htmlFor="body-photo">
+            Add a photo at the cursor (then edit the words in the brackets to describe it)
+          </label>
+          <input
+            id="body-photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleBodyPhoto}
+          />
+          {uploading && <Text size="sm">Uploading...</Text>}
         </div>
-        <div>
-          <p className={styles.previewLabel}>Preview</p>
-          <div className={styles.preview}>
-            <PostMarkdown content={content || "Nothing to preview yet."} />
-          </div>
+        <div className={styles.preview} role="region" aria-label="Preview">
+          <PostMarkdown content={content || "Nothing to preview yet."} />
         </div>
       </div>
 

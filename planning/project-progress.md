@@ -7,6 +7,29 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Blog CMS milestone B: photo upload
+
+Built: admin-only upload route POST `/api/admin/blog/upload` (JPEG/PNG/WebP, 4 MB max, stored in
+Vercel Blob with a random suffix; only the token name `BLOB_READ_WRITE_TOKEN` added to
+`.env.example`); pure helpers `fitWithin` and `insertAtCursor` in `lib/admin`; browser helpers
+`downscaleImage` (canvas, 2000 px, JPEG) and `uploadPhoto` in `components/admin`; cover photo and
+inline "Add a photo at the cursor" controls in `BlogPostForm`.
+
+**Bugs found and fixed:**
+
+- The Task 7 form could be double-submitted; fixed here with a submit guard (also blocked while an
+  upload is running). The preview pane is now a labeled region for screen readers.
+
+Per-task reviews were clean, with minor findings deferred: the ImageBitmap is not closed, a
+transparent PNG becomes black on the JPEG re-encode, and unsupported formats such as HEIC show a
+raw decode error.
+
+Notes: NOT yet verified with a real upload. The owner must create a Vercel Blob store per
+environment and enter `BLOB_READ_WRITE_TOKEN` in `.env.local` and Vercel, then try uploading a
+large photo as a cover and inline.
+
+---
+
 ## 2026-09-20 — Blog CMS milestone A: admin CRUD (text only)
 
 Built: Prisma migration adding excerpt, coverImageUrl, coverImageAlt and tags to BlogPost; pure
