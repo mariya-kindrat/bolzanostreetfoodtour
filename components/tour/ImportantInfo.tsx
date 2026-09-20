@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { Heading } from "@/components/ui/Heading";
-import { Text } from "@/components/ui/Text";
 import type { TourWithTiers } from "@/lib/content/tours";
+import styles from "@/components/tour/TourBody.module.css";
 
 const ROWS: { key: keyof TourWithTiers; label: string }[] = [
   { key: "whoShouldTakeIt", label: "Who should take it" },
@@ -17,15 +17,17 @@ export function ImportantInfo({ tour }: { tour: TourWithTiers }) {
   if (rows.length === 0) return null;
 
   return (
-    <div>
+    <div className={styles.block}>
       <Reveal>
         <Heading level={2}>Important information</Heading>
-        {rows.map((r) => (
-          <div key={r.key}>
-            <Heading level={4}>{r.label}</Heading>
-            <Text>{String(tour[r.key])}</Text>
-          </div>
-        ))}
+        <dl className={styles.info}>
+          {rows.map((r) => (
+            <div key={r.key}>
+              <dt>{r.label}</dt>
+              <dd>{String(tour[r.key])}</dd>
+            </div>
+          ))}
+        </dl>
       </Reveal>
     </div>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
+import { Kicker } from "@/components/ui/Kicker";
+import styles from "@/components/tour/TourBody.module.css";
 import { Section } from "@/components/ui/Section";
 import { CancellationPolicy } from "@/components/tour/CancellationPolicy";
 import { HighlightsList } from "@/components/tour/HighlightsList";
@@ -47,10 +49,13 @@ export default async function TourDetailPage({ params }: PageProps<"/tours/[slug
         <Container>
           <div className="detail-grid">
             <div>
-              <p>{tour.description}</p>
+              <div className={styles.block}>
+                <Kicker>About this tour</Kicker>
+                <p className={styles.lead}>{tour.description}</p>
+              </div>
               <HighlightsList highlights={tour.highlights} />
-              <ImportantInfo tour={tour} />
               <WhatToExpect tour={tour} />
+              <ImportantInfo tour={tour} />
               {!isQuoteOnly && <CancellationPolicy />}
             </div>
             <div>

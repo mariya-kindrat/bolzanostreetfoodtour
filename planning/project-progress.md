@@ -7,6 +7,24 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: tour detail body sections (BSFT-43, step 2 of 3)
+
+Restyled the detail body with one shared `TourBody.module.css`: an "About this tour" eyebrow
+and larger lead paragraph; Highlights as a numbered list (terracotta serif numerals, hairline
+dividers); What to expect as the tour's hero image with the food and history paragraphs in two
+columns beneath it (the data is two paragraphs, not steps, so no timeline), now placed before
+Important information; Important information as a two-column label/value grid; the
+cancellation policy as a sand card. All single column on mobile. Tour photos exist only as one
+hero image, so What to expect reuses it (owner-approved).
+
+**Review outcome:** one low finding, the hero image appearing twice on the page. Kept on
+purpose: it was the owner's decision, and it can be swapped for real per-tour gallery photos
+later. No bugs found; e2e assertions on price and cancellation wording still pass.
+
+Remaining BSFT-43: sticky booking/quote card and a "more tours" strip.
+
+---
+
 ## 2026-09-20 — Redesign: tour detail hero and quick-facts strip (BSFT-43, step 1 of 3)
 
 Rebuilt `TourHero` as a rounded photo inside the container with the category kicker, italic
