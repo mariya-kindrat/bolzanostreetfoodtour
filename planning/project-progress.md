@@ -7,6 +7,28 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: blog post page (BSFT-47 complete)
+
+`/blog/[slug]` now uses the plain (photo-less) `CatalogHeader` variant (month and year as the
+eyebrow, large italic title; posts have no images, so a photo band would put an unrelated picture
+on every post), a 42rem reading column (`PostBody`, paragraphs split on blank lines) with a
+"Back to the blog" pill, and a sand `MoreStories` strip of three other posts. `CatalogHeader`'s
+`lead` became optional. `pickMorePosts` (newest-first, excludes the current post) was written
+test-first. All 8 posts still carry the shared placeholder body from the content migration, so
+the reading column is short until the client supplies real copy (open item, unchanged).
+BSFT-47 is now complete.
+
+**Bugs found and fixed (code review):**
+
+- Post months were formatted in the server's local timezone, so a first-of-month UTC timestamp
+  could render as the previous month in a US timezone; a shared `formatPostMonth` (UTC, unit-tested
+  under `TZ=America/Los_Angeles`) now serves both the post page and the listing cards (the listing
+  from the previous step had the same latent bug).
+- `PostBody` used paragraph text as the React key, colliding on repeated paragraphs; it now uses
+  the index.
+
+---
+
 ## 2026-09-20 — Redesign: blog listing (BSFT-47, step 1 of 2)
 
 `/blog` now opens with the `CatalogHeader` photo band (farmhouse kitchen from the mosaic set,

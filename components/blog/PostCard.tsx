@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Heading } from "@/components/ui/Heading";
+import { formatPostMonth } from "@/lib/content/blog";
 import type { BlogPost } from "@/lib/generated/prisma/client";
 import styles from "@/components/blog/PostCard.module.css";
 
@@ -19,7 +20,7 @@ export function PostCard({
     <article className={`${styles.card} ${styles[tone]} ${featured ? styles.featured : ""}`}>
       {post.publishedAt && (
         <time className={styles.date} dateTime={post.publishedAt.toISOString()}>
-          {post.publishedAt.toLocaleDateString("en-US", { year: "numeric", month: "long" })}
+          {formatPostMonth(post.publishedAt)}
         </time>
       )}
       <Heading level={featured ? 2 : 3} as="h2" onDark={tone === "forest"}>

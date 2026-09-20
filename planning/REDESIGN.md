@@ -30,7 +30,7 @@ under its Jira story. Jira: BSFT-42 Done, EPIC-2 (BSFT-14) In Progress, the rest
 | Catalog and category pages (BSFT-44) | Done: header, chips, cards, categories tiles |
 | Private Transfers (BSFT-45) | Done |
 | About and Contact (BSFT-46) | Done |
-| Blog (BSFT-47) | In progress: listing done, post page next |
+| Blog (BSFT-47) | Done |
 | Legal (BSFT-48) | Not started |
 
 **Pending owner input:** social account URLs; review of draft copy (wine, Gateway, trust

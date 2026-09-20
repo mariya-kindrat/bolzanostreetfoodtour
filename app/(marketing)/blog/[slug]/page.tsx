@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MoreStories } from "@/components/blog/MoreStories";
+import { PostBody } from "@/components/blog/PostBody";
+import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { Container } from "@/components/ui/Container";
-import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
-import { Text } from "@/components/ui/Text";
-import { getBlogPostBySlug, getPublishedBlogPosts } from "@/lib/content/blog";
+import {
+  formatPostMonth,
+  getBlogPostBySlug,
+  getMorePosts,
+  getPublishedBlogPosts,
+} from "@/lib/content/blog";
 
 export const revalidate = 3600;
 
@@ -28,21 +34,20 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
   const post = await getBlogPostBySlug(slug);
   if (!post) notFound();
 
+  const more = await getMorePosts(post, 3);
+
   return (
-    <Section tone="white">
-      <Container>
-        <Heading level={1}>{post.title}</Heading>
-        {post.publishedAt && (
-          <Text size="sm" muted>
-            {post.publishedAt.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
-        )}
-        <Text>{post.content}</Text>
-      </Container>
-    </Section>
+    <>
+      <Section tone="white">
+        <Container>
+          <CatalogHeader
+            eyebrow={post.publishedAt ? formatPostMonth(post.publishedAt) : "Journal"}
+            title={post.title}
+          />
+          <PostBody content={post.content} />
+        </Container>
+      </Section>
+      <MoreStories posts={more} />
+    </>
   );
 }

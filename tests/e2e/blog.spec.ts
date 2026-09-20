@@ -33,3 +33,16 @@ test("blog list leads with the newest post and each card is a single link to its
   );
   for (const card of await cards.all()) await expect(card.getByRole("link")).toHaveCount(1);
 });
+
+test("a blog post shows its month, a way back and three other stories", async ({ page }) => {
+  await page.goto("/blog/thanksgiving-south-tyrol-style");
+  await expect(page.getByText("October 2020")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "More stories" })).toBeVisible();
+  const more = page.locator("section", { hasText: "More stories" }).locator("article");
+  await expect(more).toHaveCount(3);
+  await expect(page.locator("article a[href='/blog/thanksgiving-south-tyrol-style']")).toHaveCount(
+    0,
+  );
+  await page.getByRole("link", { name: /Back to the blog/ }).click();
+  await expect(page).toHaveURL(/\/blog$/);
+});

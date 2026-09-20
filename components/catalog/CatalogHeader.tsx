@@ -6,7 +6,7 @@ import styles from "@/components/catalog/CatalogHeader.module.css";
 type Props = {
   eyebrow: string;
   title: string;
-  lead: string;
+  lead?: string;
   photo?: { src: string; alt: string };
 };
 
@@ -17,7 +17,7 @@ export function CatalogHeader({ eyebrow, title, lead, photo }: Props) {
       <div className={styles.plain}>
         <Kicker>{eyebrow}</Kicker>
         <Heading level={1}>{title}</Heading>
-        <p className={styles.lead}>{lead}</p>
+        {lead && <p className={styles.lead}>{lead}</p>}
       </div>
     );
   }
@@ -36,7 +36,7 @@ export function CatalogHeader({ eyebrow, title, lead, photo }: Props) {
         <Heading level={1} onDark>
           {title}
         </Heading>
-        <p className={styles.lead}>{lead}</p>
+        {lead && <p className={styles.lead}>{lead}</p>}
       </div>
     </div>
   );
