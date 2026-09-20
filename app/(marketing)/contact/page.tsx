@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
@@ -17,7 +18,9 @@ export default function ContactPage() {
       <Container>
         <Heading level={1}>{CONTACT_CONTENT.heroTitle}</Heading>
         <Text>{CONTACT_CONTENT.intro}</Text>
-        <ContactForm />
+        <Suspense>
+          <ContactForm />
+        </Suspense>
         <Heading level={2}>Contact details</Heading>
         <Text>{CONTACT_INFO.email}</Text>
         <Text>{CONTACT_INFO.phoneUsTollFree} (from US, toll-free)</Text>

@@ -7,6 +7,30 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: tour detail booking card, mobile bar, related tours (BSFT-43 complete)
+
+Step 3 of the tour detail template. The booking and quote-only cards share
+`BookingCard.module.css`: a sticky card with the price in large italic serif, a short note and
+a forest pill button (quote-only tours read "Request a quote"). At 640px and below, a
+`MobileBookBar` sticks to the viewport bottom and rests at the end of `<main>`, so it never
+covers the footer. Both buttons link to `/contact?tour=<title>`, and `ContactForm` prefills the
+Subject ("Inquiry: <title>") via `useSearchParams` inside a `Suspense`, which keeps the contact
+page static. New `RelatedTours` strip (3 `TourCard`s on the sand tone) fed by the pure,
+unit-tested `pickRelatedTours` (same category first, then others). BSFT-43 is now complete.
+
+**Review findings fixed:**
+
+- `getRelatedTours` added a third full tours query per render; `getAllActiveTours` is now wrapped
+  in React `cache()` so the footer and the strip share one query.
+- The prefilled Subject used `defaultValue`, which ignores later query changes; the input is now
+  keyed on the tour so it resets.
+
+**Notes for later phases:** the booking buttons go to the contact form until the Phase 3
+booking engine replaces `BookingWidgetComingSoon`. Tours still have a single hero image, so the
+What to expect photo repeats it.
+
+---
+
 ## 2026-09-20 — Redesign: tour detail body sections (BSFT-43, step 2 of 3)
 
 Restyled the detail body with one shared `TourBody.module.css`: an "About this tour" eyebrow

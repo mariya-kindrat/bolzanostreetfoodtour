@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { db } from "@/lib/db";
 import type { Tour, PriceTier, Category } from "@/lib/generated/prisma/client";
 
@@ -11,13 +12,14 @@ export function getToursByCategoryId(categoryId: string): Promise<TourWithTiers[
   });
 }
 
-export function getAllActiveTours(): Promise<TourWithTiers[]> {
-  return db.tour.findMany({
+/** Cached per request: the footer and the related-tours strip share one query. */
+export const getAllActiveTours = cache((): Promise<TourWithTiers[]> =>
+  db.tour.findMany({
     where: { isActive: true },
     include: { priceTiers: true, category: true },
     orderBy: { title: "asc" },
-  });
-}
+  }),
+);
 
 export function getTourBySlug(slug: string): Promise<TourWithTiers | null> {
   return db.tour.findFirst({
@@ -44,4 +46,20 @@ export function pickOnePerCategory(tours: TourWithTiers[], max: number): TourWit
 
 export async function getFooterTours(): Promise<TourWithTiers[]> {
   return pickOnePerCategory(await getAllActiveTours(), 4);
+}
+
+/** Other tours, same-category ones first, capped at `max`. */
+export function pickRelatedTours(
+  current: TourWithTiers,
+  all: TourWithTiers[],
+  max: number,
+): TourWithTiers[] {
+  const others = all.filter((t) => t.id !== current.id);
+  const sameCategory = others.filter((t) => t.categoryId === current.categoryId);
+  const rest = others.filter((t) => t.categoryId !== current.categoryId);
+  return [...sameCategory, ...rest].slice(0, max);
+}
+
+export async function getRelatedTours(current: TourWithTiers, max: number) {
+  return pickRelatedTours(current, await getAllActiveTours(), max);
 }

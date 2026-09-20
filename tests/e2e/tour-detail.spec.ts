@@ -35,3 +35,22 @@ test("unknown tour slug renders the not-found page", async ({ page }) => {
   expect(response?.status()).toBe(404);
   await expect(page.getByRole("heading", { name: "Tour not found" })).toBeVisible();
 });
+
+test("tour detail lists related tours and links to a prefilled contact form", async ({ page }) => {
+  await page.goto("/tours/bolzano-street-food-tour");
+  await expect(page.getByRole("heading", { name: "More tours to explore" })).toBeVisible();
+  await page
+    .getByRole("complementary", { name: "Booking" })
+    .getByRole("link", { name: "Contact us" })
+    .click();
+  await expect(page.getByLabel("Subject")).toHaveValue("Inquiry: Bolzano Street Food Tour®");
+});
+
+test("quote-only tour offers a quote request", async ({ page }) => {
+  await page.goto("/tours/eastern-dolomites-christmas-markets");
+  await expect(
+    page
+      .getByRole("complementary", { name: "Booking" })
+      .getByRole("link", { name: "Request a quote" }),
+  ).toBeVisible();
+});

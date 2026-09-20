@@ -4,16 +4,13 @@ import { describeTourPrice } from "@/lib/content/pricing-display";
 import type { TourWithTiers } from "@/lib/content/tours";
 import styles from "@/components/tour/BookingCard.module.css";
 
-export function BookingWidgetComingSoon({ tour }: { tour: TourWithTiers }) {
+export function MobileBookBar({ tour, label }: { tour: TourWithTiers; label: string }) {
   return (
-    <aside aria-label="Booking" className={styles.card}>
-      <h3 className={styles.price}>{describeTourPrice(tour)}</h3>
-      <p className={styles.note}>
-        Online booking is coming soon. In the meantime, contact us to reserve your spot.
-      </p>
+    <div className={styles.bar}>
+      <span className={styles.barPrice}>{describeTourPrice(tour)}</span>
       <Link href={contactHref(tour.title)} className={styles.cta}>
-        Contact us
+        {label}
       </Link>
-    </aside>
+    </div>
   );
 }

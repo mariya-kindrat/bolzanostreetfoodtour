@@ -13,7 +13,9 @@ import { BookingWidgetComingSoon } from "@/components/tour/BookingWidgetComingSo
 import { TourHero } from "@/components/tour/TourHero";
 import { WhatToExpect } from "@/components/tour/WhatToExpect";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { getAllTourSlugs, getTourBySlug } from "@/lib/content/tours";
+import { MobileBookBar } from "@/components/tour/MobileBookBar";
+import { RelatedTours } from "@/components/tour/RelatedTours";
+import { getAllTourSlugs, getRelatedTours, getTourBySlug } from "@/lib/content/tours";
 import { buildTouristTripJsonLd } from "@/lib/seo/json-ld";
 
 export const revalidate = 3600;
@@ -39,6 +41,7 @@ export default async function TourDetailPage({ params }: PageProps<"/tours/[slug
   if (!tour) notFound();
 
   const isQuoteOnly = !tour.category.isBookable;
+  const related = await getRelatedTours(tour, 3);
 
   return (
     <>
@@ -68,6 +71,8 @@ export default async function TourDetailPage({ params }: PageProps<"/tours/[slug
           </div>
         </Container>
       </Section>
+      <RelatedTours tours={related} />
+      <MobileBookBar tour={tour} label={isQuoteOnly ? "Request a quote" : "Contact us"} />
     </>
   );
 }

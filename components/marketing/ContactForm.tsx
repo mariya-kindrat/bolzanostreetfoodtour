@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const tour = useSearchParams().get("tour");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,7 +38,13 @@ export function ContactForm() {
       <input id="contact-email" name="email" type="email" required />
 
       <label htmlFor="contact-subject">Subject</label>
-      <input id="contact-subject" name="subject" type="text" />
+      <input
+        key={tour}
+        id="contact-subject"
+        name="subject"
+        type="text"
+        defaultValue={tour ? `Inquiry: ${tour}` : undefined}
+      />
 
       <label htmlFor="contact-message">Message</label>
       <textarea id="contact-message" name="message" required />
