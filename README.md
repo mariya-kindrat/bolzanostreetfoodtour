@@ -84,6 +84,14 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
 
    Then open [http://localhost:3000](http://localhost:3000).
 
+### Blog (admin)
+
+Manage posts at `/admin/blog` (Clerk sign-in). A post has a title, excerpt, tags, an
+optional cover photo (with alt text) and a Markdown body; use Add photo in the body to
+upload and insert a picture. Unchecked "Published" saves a draft that is not shown on the
+site. Deleting a post is permanent. Photo uploads need `BLOB_READ_WRITE_TOKEN` in
+`.env.local` (Vercel dashboard > Storage > Blob store).
+
 ## Running tests
 
 - Unit: `npm run test`

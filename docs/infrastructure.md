@@ -90,3 +90,13 @@ same CI checks as any other PR.
 Deploys are automatic on push (`dev`) or merge (`main`) via Vercel's Git integration. To
 roll back, use Vercel's dashboard "Instant Rollback" to the previous deployment, or
 revert the merge commit on `main` and let CI/CD redeploy.
+
+## Vercel Blob (blog photos)
+
+Admin blog photo uploads are stored in Vercel Blob, one store per environment (dev and
+prod). The store issues `BLOB_READ_WRITE_TOKEN`: set it in Vercel and in `.env.local`;
+only the name is mirrored in `.env.example`, never the value. Get it from the Vercel
+dashboard > Storage > the Blob store. The project owner enters it, not an agent. Uploads
+are public and served from the `*.public.blob.vercel-storage.com` host (allowed in
+`next.config.ts` `images.remotePatterns`). Posts deleted in the admin leave their photos
+in the store.

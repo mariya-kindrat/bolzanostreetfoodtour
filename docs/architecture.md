@@ -32,20 +32,20 @@ captures unhandled exceptions only — routine flow logging goes through Pino/Ax
 
 ## Data model (Phase 1)
 
-| Model                                  | Purpose                                                                       |
-| -------------------------------------- | ----------------------------------------------------------------------------- |
+| Model                                  | Purpose                                                                                                                                                                                                                    |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Category`                             | Admin-manageable tour category (Street Food Tours, Cooking Classes, Wine Tours, Winter Tours, or any category an admin adds) — name/description/photo/slug/`sortOrder`/`isActive`/`isBookable`; see "Category model" below |
-| `Tour`                                 | A bookable tour/class; `categoryId` relates it to a `Category`               |
-| `PriceTier`                            | Per-tour Adult/Child/Infant price + minimum-person threshold                  |
-| `CustomQuestion`                       | Per-tour, admin-defined checkout question                                     |
-| `SeasonalAvailability`                 | Per-tour date range + capacity                                                |
-| `DateOverride`                         | Per-tour, per-date block or capacity exception                                |
-| `GlobalBlackout`                       | Date blocked across every tour                                                |
-| `Booking` / `BookingParticipant`       | A confirmed or pending booking and its participant counts by tier             |
-| `BookingHold`                          | Short-lived (10-15 min) capacity hold placed during checkout                  |
-| `Coupon`                               | Admin-managed percentage or fixed discount                                    |
-| `TransferRoute` / `TransferSupplement` | Private transfer rate table                                                   |
-| `BlogPost`, `AdminNote`                | Content and internal admin notes                                              |
+| `Tour`                                 | A bookable tour/class; `categoryId` relates it to a `Category`                                                                                                                                                             |
+| `PriceTier`                            | Per-tour Adult/Child/Infant price + minimum-person threshold                                                                                                                                                               |
+| `CustomQuestion`                       | Per-tour, admin-defined checkout question                                                                                                                                                                                  |
+| `SeasonalAvailability`                 | Per-tour date range + capacity                                                                                                                                                                                             |
+| `DateOverride`                         | Per-tour, per-date block or capacity exception                                                                                                                                                                             |
+| `GlobalBlackout`                       | Date blocked across every tour                                                                                                                                                                                             |
+| `Booking` / `BookingParticipant`       | A confirmed or pending booking and its participant counts by tier                                                                                                                                                          |
+| `BookingHold`                          | Short-lived (10-15 min) capacity hold placed during checkout                                                                                                                                                               |
+| `Coupon`                               | Admin-managed percentage or fixed discount                                                                                                                                                                                 |
+| `TransferRoute` / `TransferSupplement` | Private transfer rate table                                                                                                                                                                                                |
+| `BlogPost`, `AdminNote`                | Content and internal admin notes                                                                                                                                                                                           |
 
 ## Availability resolution (`lib/availability/resolve.ts`)
 
@@ -135,6 +135,7 @@ reads `!tour.category.isBookable` to decide whether to render `CancellationPolic
 which sidebar widget, `QuoteOnlyNotice` or `BookingWidgetComingSoon`, to show).
 
 **Consumers:**
+
 - `app/(marketing)/(catalog)/[categorySlug]/page.tsx` replaces the 3 previously hand-built
   catalog pages (`cooking-classes`, `wine-tours`, `winter-tours`) with one route driven by
   the table — `generateStaticParams` returns every active category's slug, so a new
@@ -329,3 +330,33 @@ behaviour is the database round-trip, verified by an integration test instead of
 Widening the gate to `app/` and `components/` is a follow-up for the later phases that
 ship their own tested UI code; those layers are currently covered by Playwright
 (including the multi-viewport and axe suites) rather than by Vitest.
+
+## Blog CMS (BSFT-72)
+
+Posts are `BlogPost` rows (`excerpt`, `coverImageUrl`, `coverImageAlt`, `tags String[]`,
+Markdown `content`, `publishedAt` null = draft) edited at `/admin/blog`.
+
+**Data flow.** `BlogPostForm` -> `fetch` -> `/api/admin/blog*` route handler ->
+`validateBlogBody` (pure) -> Prisma -> `revalidateBlog` (list, post, tag pages, sitemap),
+so an edit shows immediately despite the 3600 s ISR. Every mutation logs through Pino.
+
+**Photo flow.** The browser downscales the photo (`downscaleImage`, max 2000 px, JPEG 0.85)
+-> `POST /api/admin/blog/upload` -> `checkUpload` re-validates (JPEG/PNG/WebP, 4 MB max;
+the client is never trusted) -> Vercel Blob `put` (public, random suffix) -> the URL is
+stored in `coverImageUrl` or inserted inline in the Markdown.
+
+**Safety.** `PostMarkdown` uses `react-markdown` with `skipHtml`, so raw HTML in a post is
+dropped. Image URLs must be a site path or `https://*.public.blob.vercel-storage.com`
+(`isAllowedImageUrl`), checked on save and again at render; the Blob host is also listed in
+`next.config.ts` `images.remotePatterns`. The slug `tag` is reserved because
+`/blog/tag/[tag]` sits next to `/blog/[slug]`.
+
+**Decisions.**
+
+- No Blob cleanup on post delete: orphaned photos are negligible in size and count, a
+  deliberate v1 trade-off against tracking references across posts and edits.
+- Reading time is computed from the body (about 200 words per minute, minimum 1), never
+  stored, so it cannot drift from the text.
+- The byline is one constant, `BLOG_AUTHOR` in `lib/content/global.ts`, not a per-post
+  field: the blog has a single author. It is currently the placeholder `"[Owner name]"`
+  until the owner supplies the real name.
