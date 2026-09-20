@@ -219,6 +219,11 @@ availability/pricing/hold algorithms to `docs/architecture.md`.
 > with 2.2 (Home page). On 2026-09-18 EPIC-2 (BSFT-14) and stories BSFT-41 to BSFT-55 were
 > transitioned from Done back to To Do in real Jira, and the Phase 2 git history was
 > rewritten into one commit per story (see `planning/project-progress.md`).
+>
+> **2026-09-20:** BSFT-42 (2.2 Home page) and EPIC-2 (BSFT-14) moved To Do -> In Progress in
+> real Jira as the element-by-element redesign resumed (hero, header, Discover our tours, Why
+> Bolzano and the wine feature done; Gateway, Where is it, trust block and newsletter remain).
+> All other EPIC-2 stories stay To Do until their own redesign is approved.
 
 ### 2.1 — Alpine Editorial design system
 **Description:** Build the reusable design-system components (typography, color
