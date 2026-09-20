@@ -31,16 +31,21 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
     return items[count].offsetLeft - items[0].offsetLeft;
   }, [count]);
 
+  /** Copies are inert, so never rest on them: jump back to the identical live set. */
+  const wrapOffCopies = useCallback(() => {
+    const el = track.current!;
+    if (el.scrollLeft >= setWidth() - 1) el.scrollLeft -= setWidth();
+  }, [setWidth]);
+
   const slide = useCallback(
     (direction: 1 | -1) => {
       const el = track.current!;
-      const first = el.firstElementChild as HTMLElement;
-      const card = first.offsetWidth + parseFloat(getComputedStyle(el).columnGap);
+      const card = setWidth() / count;
       const distance = Math.max(1, Math.round(el.clientWidth / card)) * card;
 
       cancelAnimationFrame(frame.current);
       settleInterrupted.current?.();
-      if (el.scrollLeft >= setWidth()) el.scrollLeft -= setWidth();
+      wrapOffCopies();
       if (direction === -1 && el.scrollLeft < distance) el.scrollLeft += setWidth();
 
       const from = el.scrollLeft;
@@ -58,12 +63,13 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
           if (t < 1) frame.current = requestAnimationFrame(tick);
           else {
             settleInterrupted.current = null;
+            wrapOffCopies();
             resolve();
           }
         });
       });
     },
-    [setWidth],
+    [setWidth, count, wrapOffCopies],
   );
 
   useEffect(() => {
@@ -94,7 +100,7 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       onTouchEnd={() => setInside((v) => ({ ...v, touch: false }))}
       onTouchCancel={() => setInside((v) => ({ ...v, touch: false }))}
     >
-      <ul ref={track} className={styles.track}>
+      <ul ref={track} className={styles.track} onScrollEnd={wrapOffCopies}>
         {Children.map(children, (child) => (
           <li className={styles.slide}>{child}</li>
         ))}

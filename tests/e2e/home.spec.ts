@@ -19,26 +19,22 @@ test("'Discover our tours' next arrow scrolls the carousel", async ({ page }) =>
   await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
 });
 
-test("'Discover our tours' slides a page forward after resting, and wraps to the start", async ({
+test("'Discover our tours' wraps to the live cards as soon as a slide lands on the copies", async ({
   page,
 }) => {
   await page.goto("/");
   const track = page.locator("#discover-our-tours ul");
-  const loop = await track.evaluate((el) => {
+  const { loop, distance } = await track.evaluate((el) => {
     const items = el.children as HTMLCollectionOf<HTMLElement>;
-    return items[items.length / 2].offsetLeft - items[0].offsetLeft;
+    const loop = items[items.length / 2].offsetLeft - items[0].offsetLeft;
+    const card = loop / (items.length / 2);
+    return { loop, distance: Math.max(1, Math.round(el.clientWidth / card)) * card };
   });
-  await expect.poll(() => track.evaluate((el) => el.scrollLeft), { timeout: 8000 }).toBeGreaterThan(50);
-
   await page.locator("#discover-our-tours").hover();
   await page.waitForTimeout(1700);
-  await track.evaluate((el, at) => (el.scrollLeft = at), loop - 5);
-  const next = page.getByRole("button", { name: "Next tours" });
-  await next.click();
-  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(loop);
-  await page.waitForTimeout(1700);
-  await next.click();
-  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeLessThan(loop / 2);
+  await track.evaluate((el, at) => (el.scrollLeft = at), loop - distance);
+  await page.getByRole("button", { name: "Next tours" }).click();
+  await expect.poll(() => track.evaluate((el) => el.scrollLeft), { timeout: 4000 }).toBeLessThan(loop / 2);
 });
 
 test("'Discover our tours' keeps auto-advancing after a mouse click on an arrow", async ({
