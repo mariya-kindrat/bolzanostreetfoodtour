@@ -16,8 +16,11 @@ const IMAGE = "/images/home/mosaic/farmhouse-kitchen.jpg";
 // client uses import.meta, which fails there.
 const client = new Client({ connectionString: process.env.DATABASE_URL });
 
+let connected = false;
+
 test.beforeAll(async () => {
   await client.connect();
+  connected = true;
   await client.query(
     `INSERT INTO "BlogPost" (id, slug, title, excerpt, content, "coverImageUrl", "coverImageAlt", tags, "publishedAt", "updatedAt")
      VALUES ($1, $1, $2, $3, $4, $5, $6, $7, $8, now())`,
@@ -35,7 +38,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  await client.query(`DELETE FROM "BlogPost" WHERE id = $1`, [SLUG]);
+  if (connected) await client.query(`DELETE FROM "BlogPost" WHERE id = $1`, [SLUG]);
   await client.end();
 });
 
