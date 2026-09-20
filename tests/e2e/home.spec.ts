@@ -76,6 +76,20 @@ test("gateway section pairs the Italian and German market photos with a seam bad
   await expect(section.getByText("Deutsch")).toBeVisible();
 });
 
+test("where section lists the compass neighbours and links to private transfers", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const section = page.getByTestId("where-section");
+  for (const place of ["Austria", "Trentino", "Dolomites"]) {
+    await expect(section.getByRole("listitem").filter({ hasText: place })).toHaveCount(1);
+  }
+  await expect(section.getByRole("link", { name: /See private transfers/ })).toHaveAttribute(
+    "href",
+    "/private-transfers",
+  );
+});
+
 test("wine tours are introduced by a sand-toned feature with place badges and a link", async ({
   page,
 }) => {

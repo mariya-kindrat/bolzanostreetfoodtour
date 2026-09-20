@@ -7,6 +7,39 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home "Where is it?" as a Dolomites postcard
+
+Replaced the plain heading-plus-paragraph block with `WhereSection`: a wide rounded
+Dolomites photo (Tre Cime, the old hero image, already credited on `/photo-credits`) with a
+caption, and a cream card overlapping its bottom-left edge holding the eyebrow, heading
+("Bolzano, the capital of South Tyrol"), the location paragraph, a compass row (N Austria,
+S Trentino, E Dolomites), the transfers note and an outlined CTA to `/private-transfers`.
+The photo settles on scroll via CSS `animation-timeline: view()`, off under reduced motion.
+Copy in `HOMEPAGE_CONTENT.whereIsItSection`. Also moved the "Discover our tours" heading
+into `HOMEPAGE_CONTENT.toursHeading` and its inline layout style into `page.module.css`.
+
+**Bugs found and fixed:**
+
+- First layout left a large empty white area beside the hanging card on desktop, and the
+  mobile photo caption hid under the card. Photo made taller with a deeper overlap; caption
+  moves to the top-right on mobile.
+- Code review (against the carousel): a mouse click on an arrow focused the button, and the
+  focus-based pause then froze autoplay until the user clicked elsewhere. Pause on focus
+  now applies only to `:focus-visible` (keyboard) focus.
+- That fix exposed a latent flaw, caught by the existing arrow e2e test: the pause effect's
+  cleanup called `cancelAnimationFrame`, so any pause that landed after an arrow click
+  killed the slide it had just started. Cleanup now only clears the timer; the animation is
+  cancelled on unmount. New e2e test proves autoplay resumes after a mouse click (fails
+  without the fix, passes with it).
+
+**Notes/concerns:**
+
+- The heading repeats "capital of South Tyrol" from the client's paragraph; reword the
+  heading if the owner prefers.
+- Remaining Home items: trust block ("Why book with us?") and newsletter.
+
+---
+
 ## 2026-09-20 — Redesign: home Gateway section as a bilingual diptych
 
 Replaced the plain heading-plus-paragraph "market, menu, mix of two cultures" block with

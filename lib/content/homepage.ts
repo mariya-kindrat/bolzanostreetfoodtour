@@ -41,6 +41,7 @@ export const HOMEPAGE_CONTENT = {
       alt: "A grape-laden vine pergola forming a green tunnel over a vineyard path",
     },
   },
+  toursHeading: "Discover our tours",
   toursEyebrow: "Food, wine and culture in South Tyrol",
   toursIntro:
     "Private food tours for groups, Wine Tours, Cooking classes from the top of the " +
@@ -71,12 +72,26 @@ export const HOMEPAGE_CONTENT = {
       "here — among the stalls, not on a mountainside.",
   },
   whereIsItSection: {
-    heading: "Where is it?",
+    eyebrow: "Where is it?",
+    heading: "Bolzano, the capital of South Tyrol",
     body:
       "Bolzano is the capital city of South Tyrol (Alto Adige or Suedtirol), a bilingual " +
       "region in northeastern Italy bordering Austria and close to Trentino — with the " +
-      "Dolomites as its backdrop. Need private transportation to and from Bolzano and " +
-      "South Tyrol? Check our Transfers page for rates and services.",
+      "Dolomites as its backdrop.",
+    transfersNote:
+      "Need private transportation to and from Bolzano and South Tyrol? Check our " +
+      "Transfers page for rates and services.",
+    compass: [
+      { letter: "N", direction: "North", place: "Austria" },
+      { letter: "S", direction: "South", place: "Trentino" },
+      { letter: "E", direction: "East", place: "Dolomites" },
+    ],
+    cta: { label: "See private transfers", href: "/private-transfers" },
+    photo: {
+      src: "/images/home/hero-dolomites.jpg",
+      alt: "The Tre Cime di Lavaredo rising out of clouds in the Dolomites",
+      caption: "Tre Cime di Lavaredo, Dolomites",
+    },
   },
   testimonials: [
     {

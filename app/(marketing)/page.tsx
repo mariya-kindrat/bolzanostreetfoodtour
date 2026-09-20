@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Kicker } from "@/components/ui/Kicker";
@@ -8,6 +9,7 @@ import { Hero } from "@/components/marketing/Hero";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import { WineBanner } from "@/components/marketing/WineBanner";
 import { GatewaySection } from "@/components/marketing/GatewaySection";
+import { WhereSection } from "@/components/marketing/WhereSection";
 import { WhySection } from "@/components/marketing/WhySection";
 import { TourCard } from "@/components/marketing/TourCard";
 import { TourCarousel } from "@/components/marketing/TourCarousel";
@@ -42,9 +44,9 @@ export default async function HomePage() {
       <Section tone="white">
         <Container>
           <Reveal>
-            <div style={{ textAlign: "center", maxWidth: "44rem", marginInline: "auto", marginBottom: "var(--space-7)" }}>
+            <div className={styles.centeredHeader}>
               <Kicker>{HOMEPAGE_CONTENT.toursEyebrow}</Kicker>
-              <Heading level={2}>Discover our tours</Heading>
+              <Heading level={2}>{HOMEPAGE_CONTENT.toursHeading}</Heading>
               <Text muted>{HOMEPAGE_CONTENT.toursIntro}</Text>
             </div>
             {tours.length > 0 && (
@@ -76,8 +78,7 @@ export default async function HomePage() {
       <Section tone="white">
         <Container>
           <Reveal>
-            <Heading level={2}>{HOMEPAGE_CONTENT.whereIsItSection.heading}</Heading>
-            <Text>{HOMEPAGE_CONTENT.whereIsItSection.body}</Text>
+            <WhereSection />
           </Reveal>
         </Container>
       </Section>

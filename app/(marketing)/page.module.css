@@ -1,0 +1,5 @@
+.centeredHeader {
+  max-width: 44rem;
+  margin: 0 auto var(--space-7);
+  text-align: center;
+}
