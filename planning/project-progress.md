@@ -7,6 +7,30 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Blog CMS milestone C: public redesign
+
+Built: the public blog redesigned around the new fields: the post page has a cover band, byline
+(`BLOG_AUTHOR`, placeholder "[Owner name]" until the owner replaces it), reading time, tag links
+and a Markdown body; listing cards show the cover photo, excerpt and tags (typographic fallback for
+the 8 migrated posts, which still have the placeholder body); a tag filter row and static
+`/blog/tag/[tag]` pages; tag pages added to the sitemap; new e2e spec `blog-cms.spec.ts` that
+seeds and removes its own post.
+
+**Bugs found and fixed:**
+
+- The e2e seeding via `lib/db` failed under Playwright (specs load as CommonJS and the generated
+  Prisma client uses `import.meta`); the spec now seeds with plain `pg` SQL.
+- A tag shared by the desktop and mobile projects made the second worker read the first worker's
+  ISR-cached tag page; the spec now uses a tag unique per worker.
+
+Per-task reviews were clean, with minor findings deferred.
+
+Notes: the 8 migrated posts have no covers, tags or excerpts until the owner edits them in the new
+admin; the byline name is a placeholder. A tag with a single post shows one featured card that
+fills two thirds of the grid (existing PostGrid layout).
+
+---
+
 ## 2026-09-20 — Blog CMS milestone B: photo upload
 
 Built: admin-only upload route POST `/api/admin/blog/upload` (JPEG/PNG/WebP, 4 MB max, stored in

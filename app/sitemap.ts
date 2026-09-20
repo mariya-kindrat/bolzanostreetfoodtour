@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllTourSlugs } from "@/lib/content/tours";
-import { getPublishedBlogPosts } from "@/lib/content/blog";
+import { getPublishedBlogPosts, getPublishedTags } from "@/lib/content/blog";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -19,7 +19,11 @@ const STATIC_ROUTES = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [slugs, posts] = await Promise.all([getAllTourSlugs(), getPublishedBlogPosts()]);
+  const [slugs, posts, tags] = await Promise.all([
+    getAllTourSlugs(),
+    getPublishedBlogPosts(),
+    getPublishedTags(),
+  ]);
 
   return [
     ...STATIC_ROUTES.map((path) => ({ url: `${SITE_URL}${path}` })),
@@ -28,5 +32,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/blog/${post.slug}`,
       lastModified: post.publishedAt ?? undefined,
     })),
+    ...tags.map((tag) => ({ url: `${SITE_URL}/blog/tag/${tag}` })),
   ];
 }
