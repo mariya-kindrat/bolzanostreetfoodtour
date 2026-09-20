@@ -19,7 +19,8 @@ const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) *
 export function TourCarousel({ children }: { children: React.ReactNode }) {
   const track = useRef<HTMLUListElement>(null);
   const frame = useRef(0);
-  const [paused, setPaused] = useState(false);
+  const [inside, setInside] = useState({ hover: false, focus: false, touch: false });
+  const paused = inside.hover || inside.focus || inside.touch;
   const [stopped, setStopped] = useState(false);
   const count = Children.count(children);
 
@@ -40,16 +41,17 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       if (el.scrollLeft >= setWidth()) el.scrollLeft -= setWidth();
       if (direction === -1 && el.scrollLeft < distance) el.scrollLeft += setWidth();
 
-      const from = Math.round(el.scrollLeft / card) * card;
+      const from = el.scrollLeft;
+      const target = Math.round((from + direction * distance) / card) * card;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        el.scrollLeft = from + direction * distance;
+        el.scrollLeft = target;
         return Promise.resolve();
       }
       const start = performance.now();
       return new Promise<void>((resolve) => {
         frame.current = requestAnimationFrame(function tick(now) {
           const t = Math.min((now - start) / SLIDE_MS, 1);
-          el.scrollLeft = from + direction * distance * easeInOutCubic(t);
+          el.scrollLeft = from + (target - from) * easeInOutCubic(t);
           if (t < 1) frame.current = requestAnimationFrame(tick);
           else resolve();
         });
@@ -75,12 +77,12 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={styles.carousel}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
+      onMouseEnter={() => setInside((v) => ({ ...v, hover: true }))}
+      onMouseLeave={() => setInside((v) => ({ ...v, hover: false }))}
+      onFocus={() => setInside((v) => ({ ...v, focus: true }))}
+      onBlur={() => setInside((v) => ({ ...v, focus: false }))}
+      onTouchStart={() => setInside((v) => ({ ...v, touch: true }))}
+      onTouchEnd={() => setInside((v) => ({ ...v, touch: false }))}
     >
       <ul ref={track} className={styles.track}>
         {Children.map(children, (child) => (
