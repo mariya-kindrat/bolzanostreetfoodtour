@@ -19,6 +19,7 @@ const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) *
 export function TourCarousel({ children }: { children: React.ReactNode }) {
   const track = useRef<HTMLUListElement>(null);
   const frame = useRef(0);
+  const settleInterrupted = useRef<(() => void) | null>(null);
   const [inside, setInside] = useState({ hover: false, focus: false, touch: false });
   const paused = inside.hover || inside.focus || inside.touch;
   const [stopped, setStopped] = useState(false);
@@ -38,6 +39,7 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       const distance = Math.max(1, Math.round(el.clientWidth / card)) * card;
 
       cancelAnimationFrame(frame.current);
+      settleInterrupted.current?.();
       if (el.scrollLeft >= setWidth()) el.scrollLeft -= setWidth();
       if (direction === -1 && el.scrollLeft < distance) el.scrollLeft += setWidth();
 
@@ -49,11 +51,15 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       }
       const start = performance.now();
       return new Promise<void>((resolve) => {
+        settleInterrupted.current = resolve;
         frame.current = requestAnimationFrame(function tick(now) {
           const t = Math.min((now - start) / SLIDE_MS, 1);
           el.scrollLeft = from + (target - from) * easeInOutCubic(t);
           if (t < 1) frame.current = requestAnimationFrame(tick);
-          else resolve();
+          else {
+            settleInterrupted.current = null;
+            resolve();
+          }
         });
       });
     },
@@ -64,11 +70,15 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (paused || stopped || reduced) return;
     let timer: ReturnType<typeof setTimeout>;
+    let cancelled = false;
     const scheduleNext = () => {
-      timer = setTimeout(() => slide(1).then(scheduleNext), REST_MS);
+      timer = setTimeout(() => slide(1).then(() => cancelled || scheduleNext()), REST_MS);
     };
     scheduleNext();
-    return () => clearTimeout(timer);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [paused, stopped, slide]);
 
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
@@ -82,6 +92,7 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       onBlur={() => setInside((v) => ({ ...v, focus: false }))}
       onTouchStart={() => setInside((v) => ({ ...v, touch: true }))}
       onTouchEnd={() => setInside((v) => ({ ...v, touch: false }))}
+      onTouchCancel={() => setInside((v) => ({ ...v, touch: false }))}
     >
       <ul ref={track} className={styles.track}>
         {Children.map(children, (child) => (

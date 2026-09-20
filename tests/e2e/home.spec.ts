@@ -57,6 +57,22 @@ test("'Discover our tours' keeps auto-advancing after a mouse click on an arrow"
     .not.toBe(afterClick);
 });
 
+test("'Discover our tours' does not keep auto-advancing while the pointer rests on it", async ({
+  page,
+  hasTouch,
+}) => {
+  test.skip(hasTouch, "hover behaviour");
+  await page.goto("/");
+  const track = page.locator("#discover-our-tours ul");
+  const position = () => track.evaluate((el) => el.scrollLeft);
+  await expect.poll(position, { timeout: 8000 }).toBeGreaterThan(20);
+  await track.hover();
+  await page.waitForTimeout(2000);
+  const settled = await position();
+  await page.waitForTimeout(5000);
+  expect(await position()).toBe(settled);
+});
+
 test("why section shows the five senses and both photos", async ({ page }) => {
   await page.goto("/");
   const section = page.getByTestId("why-section");
