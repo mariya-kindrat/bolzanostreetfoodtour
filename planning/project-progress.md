@@ -7,6 +7,27 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Blog CMS milestone A: admin CRUD (text only)
+
+Built: Prisma migration adding excerpt, coverImageUrl, coverImageAlt and tags to BlogPost; pure
+text/image-URL helpers and blog validation (`lib/content/blogText.ts`, `blogImages.ts`,
+`lib/admin/blogValidation.ts`); admin API routes (POST `/api/admin/blog`, PATCH/DELETE
+`/api/admin/blog/[id]`); admin list at `/admin/blog` with delete; `PostMarkdown` renderer
+(react-markdown, raw HTML skipped, image host allow-list, `next.config` remotePatterns for the Blob
+host); post form with slug auto-fill and live preview at `/admin/blog/new` and
+`/admin/blog/[id]/edit`.
+
+**Bugs found and fixed:**
+
+- None found so far during implementation. Per-task reviews were clean, with minor findings
+  deferred: the image allow-list accepts `/\host`, `slugify` does not transliterate the German
+  sharp s, and boundary tests are missing.
+
+Notes: photo upload (milestone B) and the public redesign (milestone C) are still to do. The owner
+still needs to try the admin in a browser (needs Clerk sign-in); not yet verified by a human.
+
+---
+
 ## 2026-09-20 — Redesign: blog post page (BSFT-47 complete)
 
 `/blog/[slug]` now uses the plain (photo-less) `CatalogHeader` variant (month and year as the
