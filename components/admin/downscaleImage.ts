@@ -9,7 +9,10 @@ export async function downscaleImage(file: File, maxEdge = 2000): Promise<File> 
   canvas.height = height;
   const context = canvas.getContext("2d");
   if (!context) return file;
+  context.fillStyle = "#fff";
+  context.fillRect(0, 0, width, height);
   context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close();
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/jpeg", 0.85),
   );
