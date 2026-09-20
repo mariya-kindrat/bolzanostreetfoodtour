@@ -21,3 +21,22 @@ test("about page shows the story photo, sign-off and a link to the tours", async
   await page.getByRole("link", { name: /See our tours/ }).click();
   await expect(page).toHaveURL(/\/tours$/);
 });
+
+test("contact page offers tappable email and phone links and the meeting point directions", async ({
+  page,
+}) => {
+  await page.goto("/contact");
+  const details = page.getByRole("complementary", { name: "Contact details" });
+  await expect(
+    details.getByRole("link", { name: "info@bolzanostreetfoodtour.com" }),
+  ).toHaveAttribute("href", "mailto:info@bolzanostreetfoodtour.com");
+  await expect(details.getByRole("link", { name: "+39 366 227 6538" })).toHaveAttribute(
+    "href",
+    "tel:+393662276538",
+  );
+  await expect(details.getByRole("link", { name: "(800) 771-7756" })).toHaveAttribute(
+    "href",
+    "tel:+18007717756",
+  );
+  await expect(page.getByRole("heading", { name: "Meeting point directions" })).toBeVisible();
+});

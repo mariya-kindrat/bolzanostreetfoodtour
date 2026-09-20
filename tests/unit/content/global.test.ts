@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { NAV_ITEMS, TRUST_POINTS, CONTACT_INFO, withCategoryLinks } from "@/lib/content/global";
+import {
+  NAV_ITEMS,
+  TRUST_POINTS,
+  CONTACT_INFO,
+  telHref,
+  withCategoryLinks,
+} from "@/lib/content/global";
 import type { Category } from "@/lib/generated/prisma/client";
 
 function category(overrides: Partial<Category>): Category {
@@ -68,5 +74,15 @@ describe("withCategoryLinks", () => {
     const before = JSON.parse(JSON.stringify(NAV_ITEMS));
     withCategoryLinks(NAV_ITEMS, [category({ slug: "wine-tours" })]);
     expect(NAV_ITEMS).toEqual(before);
+  });
+});
+
+describe("telHref", () => {
+  it("keeps a leading plus and strips formatting", () => {
+    expect(telHref("+39 366 227 6538")).toBe("tel:+393662276538");
+  });
+
+  it("prefixes the country code when the number has none", () => {
+    expect(telHref("(800) 771-7756", "+1")).toBe("tel:+18007717756");
   });
 });

@@ -25,6 +25,8 @@ export const CONTACT_CONTENT = {
   intro:
     "Got questions or comments? Please drop us a line or contact us in the most convenient way for you. Our " +
     "team will be more than happy to assist you.",
+  languages:
+    "Our scheduled tours run in English. On request we can also operate them in Italian, German and Russian.",
   meetingPointDirections:
     "Piazza Walther - Walther Square, 39100 Bolzano. From the Train Station: once you exit the station, cross " +
     "the street, stay on your left and take Via Stazione. Walk for 200 meters and you will find Walther Square " +

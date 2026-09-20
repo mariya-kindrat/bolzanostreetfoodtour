@@ -12,18 +12,13 @@ import {
   FOOTER_BLURB,
   FOOTER_LEGAL_LINKS,
   NAV_ITEMS,
+  telHref,
 } from "@/lib/content/global";
 import type { Category } from "@/lib/generated/prisma/client";
 
 const RIDGE_PATH =
   "M0 48 L0 30 L90 18 L150 30 L240 6 L300 24 L380 12 L470 32 L560 14 L640 26 L720 4 " +
   "L790 22 L880 10 L960 30 L1050 16 L1140 28 L1230 8 L1320 26 L1380 18 L1440 30 L1440 48 Z";
-
-/** Digits-only tel: href; `countryCode` is added when the display number has none. */
-function telHref(display: string, countryCode = ""): string {
-  const digits = display.replace(/[^\d+]/g, "");
-  return `tel:${digits.startsWith("+") ? digits : countryCode + digits}`;
-}
 
 export function Footer({
   categories,

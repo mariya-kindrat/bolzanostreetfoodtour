@@ -7,6 +7,29 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: Contact page (BSFT-46 complete)
+
+`/contact` now has the `CatalogHeader` photo band (Schenna vineyards, eyebrow "Get in touch",
+the existing intro as the lead), a two-column layout with the restyled `ContactForm` (white
+rounded card, small-caps labels, cream fields with terracotta focus rings, forest pill submit;
+submit logic, API and `?tour=` prefill untouched; `autocomplete` on name and email and a
+`role="status"` result region) beside `ContactDetails` (sand card with `mailto:` and `tel:`
+links plus a languages note derived from the About copy), and `MeetingPoint` (the existing
+directions beside the arcade street photo). `telHref` moved from `Footer` to
+`lib/content/global.ts` (unit-tested first) so the footer and contact card share it. The form
+uses its own CSS module rather than the shared `Button`/`Input`, which the form never used.
+BSFT-46 is now complete.
+
+**Bugs found and fixed:**
+
+- Process slip again: `prettier --write` reformatted unrelated lines in `Footer.tsx`; the file was
+  reverted and only the helper move re-applied. Format only the lines being changed.
+- The email wrapped mid-word at 390px; the link font shrinks at 640px and below.
+
+**Review outcome:** clean, no findings.
+
+---
+
 ## 2026-09-20 — Redesign: About page (BSFT-46, step 1 of 2)
 
 `/about` now opens with the `CatalogHeader` photo band (the arched Bolzano alley from the

@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Text } from "@/components/ui/Text";
+import styles from "@/components/marketing/ContactForm.module.css";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -30,30 +29,48 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="contact-name">Name</label>
-      <input id="contact-name" name="name" type="text" required />
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.field}>
+        <label htmlFor="contact-name">Name</label>
+        <input id="contact-name" name="name" type="text" autoComplete="name" required />
+      </div>
 
-      <label htmlFor="contact-email">Email</label>
-      <input id="contact-email" name="email" type="email" required />
+      <div className={styles.field}>
+        <label htmlFor="contact-email">Email</label>
+        <input id="contact-email" name="email" type="email" autoComplete="email" required />
+      </div>
 
-      <label htmlFor="contact-subject">Subject</label>
-      <input
-        key={tour}
-        id="contact-subject"
-        name="subject"
-        type="text"
-        defaultValue={tour ? `Inquiry: ${tour}` : undefined}
-      />
+      <div className={styles.field}>
+        <label htmlFor="contact-subject">Subject</label>
+        <input
+          key={tour}
+          id="contact-subject"
+          name="subject"
+          type="text"
+          defaultValue={tour ? `Inquiry: ${tour}` : undefined}
+        />
+      </div>
 
-      <label htmlFor="contact-message">Message</label>
-      <textarea id="contact-message" name="message" required />
+      <div className={styles.field}>
+        <label htmlFor="contact-message">Message</label>
+        <textarea id="contact-message" name="message" required />
+      </div>
 
-      <Button variant="primary" type="submit">
+      <button type="submit" className={styles.submit}>
         Submit
-      </Button>
-      {status === "success" && <Text size="sm">Thanks — we&apos;ll be in touch soon.</Text>}
-      {status === "error" && <Text size="sm">Something went wrong. Please try again.</Text>}
+      </button>
+      <div role="status">
+        {status === "success" && (
+          <p className={`${styles.status} ${styles.success}`}>
+            Thanks — we&apos;ll be in touch soon.
+          </p>
+        )}
+        {status === "error" && (
+          <p className={`${styles.status} ${styles.error}`}>
+            Something went wrong. Please try again.
+          </p>
+        )}
+      </div>
     </form>
   );
 }

@@ -6,6 +6,12 @@ export const CONTACT_INFO = {
   phoneUsTollFree: "(800) 771-7756",
 };
 
+/** Digits-only tel: href; `countryCode` is added when the display number has none. */
+export function telHref(display: string, countryCode = ""): string {
+  const digits = display.replace(/[^\d+]/g, "");
+  return `tel:${digits.startsWith("+") ? digits : countryCode + digits}`;
+}
+
 export interface NavLink {
   label: string;
   href: string;
