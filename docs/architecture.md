@@ -202,7 +202,7 @@ and reviewable in the PR that changes it.
 
 CSS Modules (`*.module.css`, colocated next to the component) is the styling approach
 for new UI, starting with the homepage design-system rebuild: `Button`, `Input`,
-`Kicker`, `LabelChip`, `Section` and `TourTileGrid` each own a module. Inline
+`Kicker`, `LabelChip`, `Section`, `TourCard` and `TourCarousel` each own a module. Inline
 `style={{}}` remains only where a value is truly dynamic or computed per element —
 e.g. `Heading`/`Text`'s `onDark` prop switching between the cream and ink color tokens
 at render time — not as a substitute for a class. `Header` now owns a module
@@ -220,14 +220,6 @@ TypeScript code (e.g. `/style-guide`) reference the same values without hardcodi
 `var(--...)` string. `/style-guide` (`app/style-guide/page.tsx`) is the living reference
 for every token and primitive — Colors, Type scale, Typography (incl. `Kicker`), Shape &
 shadow, Buttons, and Label chip.
-
-The homepage's mosaic tile grid layout is driven by `lib/homepage/tileGridLayout.ts`
-(`computeTileLayout`) — a pure, unit-tested function that maps a tile count to a
-deterministic sequence of `large`/`wide`/`tall`/`small` grid spans, with no
-`Math.random()` so server and client renders agree. It deliberately mirrors the shape of
-`lib/hero/heroCarouselLayout.ts` (pure layout/timing functions, tested under the coverage
-gate, no dependency on the rendering library they feed) — the same pattern applied to the
-codebase's other 3D-adjacent layout problem.
 
 ## Homepage 3D accent
 

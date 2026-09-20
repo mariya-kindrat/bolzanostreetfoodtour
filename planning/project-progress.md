@@ -7,6 +7,37 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: "Discover our tours" becomes a paged tour carousel
+
+Replaced the static six-tile mosaic (`TourTileGrid`, `tileGridLayout`, `Tile` type,
+`HOMEPAGE_CONTENT.tiles`) with `TourCard` + `TourCarousel`: single-tour cards (photo,
+category pill, serif title, summary, outlined "Read more") styled after the owner's
+reference, under a centered eyebrow/heading/intro. The carousel slides one visible page
+(3/2/1 cards by breakpoint) over 1.5s, rests 4s, and always moves forward, looping via a
+duplicated (inert) card set. Pauses on hover/focus/touch, has a Pause/Play button, off
+under reduced motion. Docs updated in the same change.
+
+**Bugs found and fixed:**
+
+- Visually-hidden "about {tour}" span in each card was `position: absolute` with no
+  positioned ancestor, so the scroll container did not clip it and the document grew to
+  about 6800px wide on mobile (clicks intercepted, viewport widened). Fixed with
+  `position: relative` on `.card`.
+- Code review: carousel threw on zero tours (now not rendered), interrupted slides could
+  rest mid-card (start position now snaps to a card boundary), no user pause control
+  (WCAG 2.2.2, added), eyebrow copy hardcoded in the page (moved to `HOMEPAGE_CONTENT`).
+
+**Notes/concerns:**
+
+- With only 1-3 active tours the duplicated set shows in view; fine at the current tour
+  count, revisit if the catalog shrinks.
+- Orphaned assets: `public/images/home/tile-*.jpg` are no longer referenced but are still
+  in `photo-credits.ts`/`SOURCES.md`; left in place pending a decision.
+- The newsletter e2e test builds its email from `Date.now()` and can collide across the
+  desktop and mobile projects.
+
+---
+
 ## 2026-09-18 — Phase 2 history rewritten: one commit per story, Jira reset
 
 The redesign reworked essentially every Phase 2 deliverable, so the Phase 2 git history and

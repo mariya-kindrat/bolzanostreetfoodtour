@@ -2,16 +2,6 @@ import { describe, expect, it } from "vitest";
 import { HOMEPAGE_CONTENT } from "@/lib/content/homepage";
 
 describe("homepage content", () => {
-  it("has exactly 6 tour tiles, each with a real title, href, and category", () => {
-    expect(HOMEPAGE_CONTENT.tiles).toHaveLength(6);
-    for (const tile of HOMEPAGE_CONTENT.tiles) {
-      expect(tile.title).toBeTruthy();
-      expect(tile.href).toBeTruthy();
-      expect(tile.href).not.toBe("#");
-      expect(["food", "wine", "cooking", "winter"]).toContain(tile.category);
-    }
-  });
-
   it("has at least one testimonial with a real quote and author", () => {
     expect(HOMEPAGE_CONTENT.testimonials.length).toBeGreaterThan(0);
     for (const testimonial of HOMEPAGE_CONTENT.testimonials) {

@@ -1,5 +1,3 @@
-import type { Tile } from "@/types/homepage";
-
 export const HOMEPAGE_CONTENT = {
   heroTagline: "Discover, explore Italy's hidden gem — a tasting at a time",
   whySection: {
@@ -11,6 +9,7 @@ export const HOMEPAGE_CONTENT = {
       "diverse and unique gastronomical tradition; a mix of Mediterranean and Austrian " +
       "culinary background found nowhere else.",
   },
+  toursEyebrow: "Food, wine and culture in South Tyrol",
   toursIntro:
     "Private food tours for groups, Wine Tours, Cooking classes from the top of the " +
     "Dolomites to the Wine Road, seasonal food related excursions everywhere in South Tyrol " +
@@ -66,32 +65,4 @@ export const HOMEPAGE_CONTENT = {
       date: "21 Jun 2025",
     },
   ],
-  tiles: [
-    {
-      title: "Bolzano Street Food Tour®",
-      href: "/tours/bolzano-street-food-tour",
-      category: "food",
-      image: "/images/home/tile-street-food.jpg",
-    },
-    {
-      title: "Wine Tours",
-      href: "/wine-tours",
-      category: "wine",
-      image: "/images/home/tile-wine-tours.jpg",
-    },
-    {
-      title: "Cooking Classes",
-      href: "/cooking-classes",
-      category: "cooking",
-      image: "/images/home/tile-cooking-classes.jpg",
-    },
-    {
-      title: "Winter Tours",
-      href: "/winter-tours",
-      category: "winter",
-      image: "/images/home/tile-winter-tours.jpg",
-    },
-    { title: "Trento Street Food Tour", href: "/tours/trento-street-food-tour", category: "food" },
-    { title: "Bolzano SFT & Christmas Markets", href: "/tours/christmas-markets", category: "winter" },
-  ] satisfies Tile[],
 };

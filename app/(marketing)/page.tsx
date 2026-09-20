@@ -1,16 +1,19 @@
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
+import { Kicker } from "@/components/ui/Kicker";
 import { LabelChip } from "@/components/ui/LabelChip";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
 import { Reveal } from "@/components/motion/Reveal";
 import { Hero } from "@/components/marketing/Hero";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
-import { TourTileGrid } from "@/components/marketing/TourTileGrid";
+import { TourCard } from "@/components/marketing/TourCard";
+import { TourCarousel } from "@/components/marketing/TourCarousel";
 import { TrustBlock } from "@/components/marketing/TrustBlock";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { HOMEPAGE_CONTENT } from "@/lib/content/homepage";
 import { getActiveCategories } from "@/lib/content/categories";
+import { getAllActiveTours } from "@/lib/content/tours";
 import { buildLocalBusinessJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata = {
@@ -22,7 +25,7 @@ export const metadata = {
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const categories = await getActiveCategories();
+  const [categories, tours] = await Promise.all([getActiveCategories(), getAllActiveTours()]);
   return (
     <>
       <StructuredData data={buildLocalBusinessJsonLd()} />
@@ -38,9 +41,20 @@ export default async function HomePage() {
       <Section tone="white">
         <Container>
           <Reveal>
-            <Heading level={2}>Discover our tours</Heading>
-            <Text>{HOMEPAGE_CONTENT.toursIntro}</Text>
-            <TourTileGrid tiles={HOMEPAGE_CONTENT.tiles} />
+            <div style={{ textAlign: "center", maxWidth: "44rem", marginInline: "auto", marginBottom: "var(--space-7)" }}>
+              <Kicker>{HOMEPAGE_CONTENT.toursEyebrow}</Kicker>
+              <Heading level={2}>Discover our tours</Heading>
+              <Text muted>{HOMEPAGE_CONTENT.toursIntro}</Text>
+            </div>
+            {tours.length > 0 && (
+              <div id="discover-our-tours">
+                <TourCarousel>
+                  {tours.map((tour) => (
+                    <TourCard key={tour.id} tour={tour} />
+                  ))}
+                </TourCarousel>
+              </div>
+            )}
           </Reveal>
         </Container>
       </Section>

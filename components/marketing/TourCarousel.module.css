@@ -1,0 +1,63 @@
+.track {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 calc((100% - 2 * var(--space-5)) / 3);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.controls button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-forest);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-forest);
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.controls button[aria-pressed] {
+  width: auto;
+  padding-inline: var(--space-4);
+  font-size: 0.875rem;
+}
+
+.controls button:hover {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+.controls button:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1024px) {
+  .slide {
+    flex-basis: calc((100% - var(--space-5)) / 2);
+  }
+}
+
+@media (max-width: 640px) {
+  .slide {
+    flex-basis: 85%;
+  }
+}
