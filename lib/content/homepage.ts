@@ -47,6 +47,23 @@ export const HOMEPAGE_CONTENT = {
     "Dolomites to the Wine Road, seasonal food related excursions everywhere in South Tyrol " +
     "and much more!",
   gatewaySection: {
+    eyebrow: "Piazza Erbe",
+    photos: [
+      {
+        src: "/images/home/mosaic/market-parmigiano.jpg",
+        alt: "A vendor cutting Parmigiano Reggiano at a market stall in Bolzano",
+        language: "Italiano",
+        name: "Parmigiano Reggiano",
+        position: "70% center",
+      },
+      {
+        src: "/images/home/tile-street-food.jpg",
+        alt: "Shelves of South Tyrolean Speck and salami in a Bolzano shop",
+        language: "Deutsch",
+        name: "Südtiroler Speck",
+        position: "center",
+      },
+    ],
     heading: "A market, a menu, a mix of two cultures",
     body:
       "Bolzano's Piazza Erbe market has traded fruit, cheese, and speck since the Middle " +

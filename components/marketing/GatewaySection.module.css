@@ -1,0 +1,140 @@
+.header {
+  max-width: 44rem;
+  margin: 0 auto var(--space-7);
+  text-align: center;
+}
+
+/* Each figure spans two rows (photo, caption) via subgrid so the seam badge,
+   a sibling in row 1, centers on the photos and paints above both. */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+/* Every item is placed explicitly: auto-placement would push the figures out
+   of row 1 to avoid the explicitly placed seam badge. */
+.figure {
+  display: grid;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  grid-template-rows: subgrid;
+  row-gap: var(--space-4);
+  margin: 0;
+}
+
+.figure:last-of-type {
+  grid-column: 2;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.frame img {
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.seam {
+  z-index: 2;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  place-self: center;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(28, 27, 25, 0.18);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.75rem;
+  color: var(--color-terracotta-dark);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.language {
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5b5750;
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--type-h3);
+  color: var(--color-forest-dark);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .figure {
+      animation: meet-left linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    .figure:last-of-type {
+      animation-name: meet-right;
+    }
+  }
+}
+
+@keyframes meet-left {
+  from {
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes meet-right {
+  from {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .pair {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-6);
+  }
+
+  .figure {
+    animation: none;
+  }
+
+  .figure:last-of-type {
+    grid-column: 1;
+    grid-row: 3 / span 2;
+  }
+
+  /* Sits on the seam between the first caption and the second photo. */
+  .seam {
+    grid-column: 1;
+    grid-row: 3;
+    place-self: start center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.375rem;
+    transform: translateY(-50%);
+  }
+}

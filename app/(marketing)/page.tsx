@@ -7,6 +7,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { Hero } from "@/components/marketing/Hero";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import { WineBanner } from "@/components/marketing/WineBanner";
+import { GatewaySection } from "@/components/marketing/GatewaySection";
 import { WhySection } from "@/components/marketing/WhySection";
 import { TourCard } from "@/components/marketing/TourCard";
 import { TourCarousel } from "@/components/marketing/TourCarousel";
@@ -68,8 +69,7 @@ export default async function HomePage() {
       <Section tone="cream">
         <Container>
           <Reveal>
-            <Heading level={2}>{HOMEPAGE_CONTENT.gatewaySection.heading}</Heading>
-            <Text>{HOMEPAGE_CONTENT.gatewaySection.body}</Text>
+            <GatewaySection />
           </Reveal>
         </Container>
       </Section>

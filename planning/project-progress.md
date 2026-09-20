@@ -7,6 +7,38 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home Gateway section as a bilingual diptych
+
+Replaced the plain heading-plus-paragraph "market, menu, mix of two cultures" block with
+`GatewaySection`: centered eyebrow ("Piazza Erbe"), the existing heading and paragraph, then
+two equal photos side by side, Italian (Parmigiano vendor) and German (Südtiroler Speck),
+each captioned with a language tag and italic name, joined by a round "&" badge on the
+seam. The photos slide in from opposite sides on scroll (CSS `animation-timeline: view()`),
+off under reduced motion and on mobile, where they stack. Copy and photos in
+`HOMEPAGE_CONTENT.gatewaySection`. The speck photo is the old `tile-street-food.jpg`,
+already credited on `/photo-credits`.
+
+**Bugs found and fixed:**
+
+- First version anchored the "&" badge inside the left photo's block, so the right photo
+  painted over half of it on desktop, and on mobile it covered the first caption. Moved it
+  to a sibling on the shared grid (subgrid figures, badge in row 1).
+- Explicitly placing only the badge made grid auto-placement push the photos out of row 1;
+  all three items are now placed explicitly. The scroll-animation selector for the second
+  photo also had to change from `:last-child` to `:last-of-type` once the badge became the
+  last child.
+- Code review (against the carousel): on touch devices a tap fires an emulated
+  `mouseenter` with no `mouseleave`, leaving autoplay paused after the first tap. Hover
+  now counts only for `pointerType === "mouse"`.
+
+**Notes/concerns:**
+
+- The speck photo has a strong yellow-green background and is the loudest image on the page;
+  swap for a calmer mosaic photo if the owner prefers.
+- Untracked design screenshots in `public/images/home/` are still deliberately uncommitted.
+
+---
+
 ## 2026-09-20 — Redesign: home wine feature (`WineBanner`)
 
 Replaced the thin dark wine strip with a feature spread modelled on the owner's

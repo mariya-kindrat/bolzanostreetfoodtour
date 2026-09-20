@@ -48,6 +48,18 @@ test("why section shows the five senses and both photos", async ({ page }) => {
   await expect(section.getByRole("img")).toHaveCount(2);
 });
 
+test("gateway section pairs the Italian and German market photos with a seam badge", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const section = page.getByTestId("gateway-section");
+  await expect(section.getByRole("img")).toHaveCount(2);
+  await expect(section.getByText("Parmigiano Reggiano")).toBeVisible();
+  await expect(section.getByText("Südtiroler Speck")).toBeVisible();
+  await expect(section.getByText("Italiano")).toBeVisible();
+  await expect(section.getByText("Deutsch")).toBeVisible();
+});
+
 test("wine tours are introduced by a sand-toned feature with place badges and a link", async ({
   page,
 }) => {
