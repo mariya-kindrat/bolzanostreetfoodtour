@@ -18,3 +18,18 @@ test("a blog post page renders without layout breakage", async ({ page }) => {
     page.getByRole("heading", { name: "Thanksgiving, South Tyrol style!", level: 1 }),
   ).toBeVisible();
 });
+
+test("blog list leads with the newest post and each card is a single link to its story", async ({
+  page,
+}) => {
+  await page.goto("/blog");
+  const cards = page.locator("article");
+  await expect(cards.first().getByRole("heading", { level: 2 })).toHaveText(
+    "Thanksgiving, South Tyrol style!",
+  );
+  await expect(cards.first().getByRole("link")).toHaveAttribute(
+    "href",
+    "/blog/thanksgiving-south-tyrol-style",
+  );
+  for (const card of await cards.all()) await expect(card.getByRole("link")).toHaveCount(1);
+});

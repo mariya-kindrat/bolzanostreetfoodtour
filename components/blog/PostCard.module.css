@@ -1,0 +1,107 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 15rem;
+  padding: var(--space-6);
+  border-radius: 12px;
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.cream {
+  background: var(--color-cream);
+  border: 1px solid var(--color-cream-dark);
+}
+
+.sand {
+  background: var(--color-cream-dark);
+}
+
+.forest {
+  background: var(--color-forest);
+}
+
+.date {
+  margin-bottom: var(--space-3);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-terracotta-dark);
+}
+
+.forest .date {
+  color: var(--color-cream-dark);
+}
+
+/* Stretches the title link over the whole card so it is one tap target. */
+.link {
+  color: inherit;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+.link:focus-visible::after {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.more {
+  margin-top: auto;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--color-forest);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--color-forest);
+  transition:
+    background var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+}
+
+.forest .more {
+  border-color: var(--color-cream);
+  color: var(--color-cream);
+}
+
+.card:hover .more {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+.forest:hover .more {
+  background: var(--color-cream);
+  color: var(--color-forest-dark);
+}
+
+.featured {
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.featured h2 {
+  max-width: 40rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}

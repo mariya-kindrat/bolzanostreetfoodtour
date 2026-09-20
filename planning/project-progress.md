@@ -7,6 +7,29 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: blog listing (BSFT-47, step 1 of 2)
+
+`/blog` now opens with the `CatalogHeader` photo band (farmhouse kitchen from the mosaic set,
+eyebrow "Journal") above a `PostGrid`: the newest post as a wide forest card spanning two of
+three columns, the rest as typographic `PostCard`s whose tone cycles cream, sand and forest
+(posts have no images, so tone carries the variety instead of unrelated stock photos). The 8
+migrated posts land in three complete rows on desktop, 2 columns on tablet, 1 on mobile. Each
+card is a single link (the title, stretched over the card with `::after`), so the existing
+`article a` count of 8 holds; the "Read story" pill is decorative. The post page is step 2.
+The 8 posts still carry the shared placeholder body from the content migration; the redesign
+does not change that open item.
+
+**Bugs found and fixed:**
+
+- `PostCard` passed `as="h3"` for every card, so the featured card was an h3 and the page skipped
+  from h1 to h3 (WCAG heading order); all cards now render as h2 and `level` only sets the size.
+  Caught by my own new e2e test and independently by code review.
+- A `margin-bottom` rule on the card heading was dead (`Heading` sets it inline); removed.
+- First layout left one orphan card in the last row (7 cards in 3 columns); the featured post
+  now sits in the same grid spanning two columns, giving 9 cells.
+
+---
+
 ## 2026-09-20 — Redesign: Contact page (BSFT-46 complete)
 
 `/contact` now has the `CatalogHeader` photo band (Schenna vineyards, eyebrow "Get in touch",
