@@ -77,8 +77,8 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={styles.carousel}
-      onMouseEnter={() => setInside((v) => ({ ...v, hover: true }))}
-      onMouseLeave={() => setInside((v) => ({ ...v, hover: false }))}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setInside((v) => ({ ...v, hover: true }))}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setInside((v) => ({ ...v, hover: false }))}
       onFocus={() => setInside((v) => ({ ...v, focus: true }))}
       onBlur={() => setInside((v) => ({ ...v, focus: false }))}
       onTouchStart={() => setInside((v) => ({ ...v, touch: true }))}
