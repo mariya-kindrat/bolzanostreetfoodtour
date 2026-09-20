@@ -30,3 +30,18 @@ export async function getAllTourSlugs(): Promise<string[]> {
   const tours = await db.tour.findMany({ where: { isActive: true }, select: { slug: true } });
   return tours.map((t) => t.slug);
 }
+
+/** First tour of each category, in category order, capped at `max`. */
+export function pickOnePerCategory(tours: TourWithTiers[], max: number): TourWithTiers[] {
+  const byCategory = new Map<string, TourWithTiers>();
+  for (const tour of tours) {
+    if (!byCategory.has(tour.categoryId)) byCategory.set(tour.categoryId, tour);
+  }
+  return [...byCategory.values()]
+    .sort((a, b) => a.category.sortOrder - b.category.sortOrder)
+    .slice(0, max);
+}
+
+export async function getFooterTours(): Promise<TourWithTiers[]> {
+  return pickOnePerCategory(await getAllActiveTours(), 4);
+}

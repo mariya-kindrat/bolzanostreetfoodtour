@@ -209,7 +209,7 @@ at render time — not as a substitute for a class. `Header` now owns a module
 (`Header.module.css`) for its three-zone nav layout and dropdown, as of the 2026-09-18
 redesign pass; its scroll-driven tint/blur/shadow stay inline since those values are
 computed per scroll frame, the same truly-dynamic case as `Heading`/`Text`'s `onDark`.
-`Footer`, `ProductGrid`, `QuickFacts`, and most of `Hero`'s structural layers still use
+`ProductGrid`, `QuickFacts`, and most of `Hero`'s structural layers still use
 inline style throughout; converting them remains deferred to the sub-project 2 rollout.
 
 The token layer backing both CSS Modules and any remaining inline style lives in two

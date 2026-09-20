@@ -7,6 +7,43 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: site footer (ridgeline, tour cards, social icons)
+
+Rebuilt the footer, which was unstyled stacked text with untappable contact details. It now
+has a Dolomites ridgeline SVG on its top edge and four columns: brand (badge, tagline, short
+description, round Instagram/Facebook/YouTube icons), Contact (`mailto:` email plus `tel:`
+Italy and US toll-free numbers; the US number was previously not shown), Explore (live
+categories and All tours) and Our tours (mini cards with thumbnail, title and the existing
+`describeTourPrice` wording). Below: one row of Company and legal links with a Back to top
+pill, a hairline rule and a centered copyright line. Structure follows the owner's reference
+(`footer.png`), kept on forest green rather than the reference's charcoal-brown.
+`getFooterTours()` picks one tour per category via the pure, unit-tested
+`pickOnePerCategory`. Social icons are decorative until `SOCIAL_LINKS` hrefs are filled in
+(`lib/content/global.ts`), so there are no dead links.
+
+**Bugs found and fixed:**
+
+- First mobile layout let the long email address stretch one column and squeeze the others;
+  then the seven stacked bottom links made the page very tall. Contact and Legal are now
+  full-width and the link row is a two-column grid on phones.
+
+**Notes/concerns (from review, deliberately not changed yet):**
+
+- Tour selection is alphabetical within each category because tours have no featured or
+  sort-order field; adding one (with an admin control) belongs with Phase 4. The column is
+  titled "Our tours", not "Popular".
+- `getFooterTours()` reuses `getAllActiveTours()` (all tours with price tiers) to keep four
+  cards. Acceptable because marketing pages are statically generated and revalidated
+  hourly; a lighter query is a follow-up as the catalog grows.
+- `TourCarousel` still assumes more cards than fit the viewport. With 1-3 active tours the
+  inert copies would show. Fine at about 20 tours; needs a client-side fit check (no
+  duplication, no controls, no autoplay when everything fits) if the catalog ever shrinks.
+- The footer description is draft wording, and the social account URLs are still to come
+  from the owner. The three untracked design screenshots in `public/images/home/` remain
+  deliberately uncommitted.
+
+---
+
 ## 2026-09-20 — Redesign: home newsletter band (Home page redesign complete)
 
 Replaced the bare label-plus-field form with `NewsletterSection`: a rounded band with the

@@ -76,3 +76,17 @@ export const BRAND = {
   tagline: "Discover, explore Italy's hidden gem — a tasting at a time",
   legalEntity: "Italy Destination Services LLC",
 };
+
+export type SocialNetwork = "instagram" | "facebook" | "youtube";
+
+// Account URLs are supplied by the owner. An empty href renders the icon as a
+// plain decoration (no dead link) until the real URL is added here.
+export const SOCIAL_LINKS: { network: SocialNetwork; label: string; href: string }[] = [
+  { network: "instagram", label: "Instagram", href: "" },
+  { network: "facebook", label: "Facebook", href: "" },
+  { network: "youtube", label: "YouTube", href: "" },
+];
+
+export const FOOTER_BLURB =
+  "Small-group street food, wine and cooking tours through Bolzano and South Tyrol, " +
+  "led by licensed local guides.";
