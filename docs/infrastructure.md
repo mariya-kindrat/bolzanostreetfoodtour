@@ -91,6 +91,15 @@ Deploys are automatic on push (`dev`) or merge (`main`) via Vercel's Git integra
 roll back, use Vercel's dashboard "Instant Rollback" to the previous deployment, or
 revert the merge commit on `main` and let CI/CD redeploy.
 
+## Admin access (ADMIN_EMAILS)
+
+The admin panel is behind Clerk, and Clerk alone is not enough: any user who can sign up to the
+instance could otherwise use it. `middleware.ts` also requires a **verified** email on the Clerk
+user to appear in `ADMIN_EMAILS` (comma-separated). Set it in Vercel for every environment and in
+`.env.local`; only the name is mirrored in `.env.example`. An unset or empty value denies
+everyone, so a new environment cannot be open by accident. Independently, consider disabling
+public sign-up in the Clerk dashboard (Configure > Restrictions) so only invited people exist.
+
 ## Vercel Blob (blog photos)
 
 Admin blog photo uploads are stored in Vercel Blob, one store per environment (dev and

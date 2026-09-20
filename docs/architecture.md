@@ -29,6 +29,9 @@ captures unhandled exceptions only — routine flow logging goes through Pino/Ax
 - Admin auth is enforced once, centrally, in `middleware.ts` (Clerk) for every route
   matching `/admin(.*)`, rather than per-page — later admin pages need no auth logic
   of their own. See `docs/routes-and-components.md` for the route table.
+  Being signed in is not enough: the Clerk user must also have a **verified** email listed
+  in the `ADMIN_EMAILS` env var (`lib/admin/adminAccess.ts`), otherwise the request gets a
+  403. An unset or empty list denies everyone (fail closed). Set it in every environment.
 
 ## Data model (Phase 1)
 

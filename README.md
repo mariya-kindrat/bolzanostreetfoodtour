@@ -35,6 +35,9 @@ custom admin panel, and an AI agent — replacing the previous Wix site entirely
    migrations and hit the database; the app will run without the rest, just with those
    integrations disabled/erroring.
 
+   To open the admin locally, also set `ADMIN_EMAILS` to the email you sign in with (it must be
+   a verified email on your Clerk user); without it `/admin` returns 403 for everyone.
+
 3. **Install dependencies** (needed even if you plan to run via Docker, so editors/
    type-checking work and so `prisma generate` produces the client):
 

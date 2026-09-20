@@ -7,6 +7,35 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Admin access: only allow-listed verified emails (security)
+
+Found while the owner asked for a quick admin login: `middleware.ts` only called `auth.protect()`,
+so **any signed-in Clerk user was an admin**, and the admin code has no role or email check. If
+public sign-up is enabled on an instance, anyone could register and edit the site. The middleware
+now also requires a **verified** email on the Clerk user to appear in the new `ADMIN_EMAILS` env
+var (comma-separated); otherwise the request gets a 403. An unset or empty list denies everyone
+(fail closed), so a new environment cannot be open by accident. The list logic is pure and
+unit-tested (`lib/admin/adminAccess.ts`, 100% coverage); the middleware fetches the user through
+`clerkClient().users.getUser` on each admin request (admin-only traffic, so the extra call is
+acceptable). Name only in `.env.example`; docs updated (architecture, infrastructure, README).
+
+**Review (high effort) findings:** the 403 for API calls is now JSON (`{ error }`), which the admin
+forms already read; fixed. Two were declined with reasons: the per-request Clerk lookup is
+acceptable for admin-only traffic (a Clerk failure returns 500, so it fails closed; the follow-up
+is a session-token email claim, which needs a Clerk dashboard setting), and enforcement stays in
+one place, `middleware.ts`, per the documented architecture decision (the known Next.js
+middleware bypass was patched in 15.2.3; this project is on 16.3.5).
+
+**Owner action required:** set `ADMIN_EMAILS` to the email you sign in with, in `.env.local` and
+in Vercel for every environment (dev and prod), or `/admin` returns 403 for everyone. Also
+consider disabling public sign-up in the Clerk dashboard.
+
+**Not verified with a signed-in user** (agents cannot sign in to Clerk): the 403 for a non-listed
+user and the pass-through for a listed one. Signed-out behavior was checked and is unchanged
+(404 on admin paths before and after).
+
+---
+
 ## 2026-09-20 — Blog: sample posts with photos for the 8 migrated posts (BSFT-72)
 
 The 8 migrated posts still showed the migration placeholder as their body, so the redesigned blog
