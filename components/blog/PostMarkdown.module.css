@@ -1,0 +1,59 @@
+.prose {
+  color: #3d3a35;
+  font-size: var(--type-lg);
+  line-height: 1.8;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  margin: 0 0 var(--space-5);
+}
+
+.prose h2,
+.prose h3 {
+  margin: var(--space-7) 0 var(--space-3);
+  font-family: var(--font-serif);
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--color-forest-dark);
+}
+
+.prose h2 {
+  font-size: var(--type-h2);
+}
+
+.prose h3 {
+  font-size: var(--type-h3);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-5);
+}
+
+.prose li {
+  margin-bottom: var(--space-2);
+}
+
+.prose blockquote {
+  padding-left: var(--space-5);
+  border-left: 3px solid var(--color-terracotta);
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-forest-dark);
+}
+
+.prose a {
+  color: var(--color-forest);
+  text-decoration: underline;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: var(--space-6) 0;
+  border-radius: 12px;
+}

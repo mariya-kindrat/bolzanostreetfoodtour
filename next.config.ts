@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   env: {
     SENTRY_DSN: process.env.SENTRY_DSN,
   },
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
+  },
 };
 
 export default withSentryConfig(nextConfig, {
