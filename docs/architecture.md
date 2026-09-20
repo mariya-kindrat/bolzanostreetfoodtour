@@ -221,6 +221,43 @@ TypeScript code (e.g. `/style-guide`) reference the same values without hardcodi
 for every token and primitive — Colors, Type scale, Typography (incl. `Kicker`), Shape &
 shadow, Buttons, and Label chip.
 
+## Homepage composition and scroll motion (2026-09-20)
+
+The home page is a sequence of self-contained section components, each owning a CSS module
+and reading its copy from `HOMEPAGE_CONTENT` (`lib/content/homepage.ts`) or, for the trust
+stamps, `TRUST_POINTS` (`lib/content/global.ts`): hero, `TourCarousel`, `WhySection`,
+`WineBanner`, `GatewaySection`, `WhereSection`, `TrustBlock`, `NewsletterSection`, then the
+layout's `Footer`. `Section` alternates tones (`cream`, `white`, `sand` = `--color-cream-dark`,
+`forest`, `forest-dark`) so neighbouring sections never blend. Every new section was designed
+against the owner's Wanderlust-style references and approved one element at a time.
+
+**Scroll-driven motion is CSS only.** The new sections animate with
+`animation-timeline: view()` inside `@supports (animation-timeline: view())` and
+`@media (prefers-reduced-motion: no-preference)`. There is no scroll listener and no
+JavaScript for it: browsers without support (Firefox at time of writing) simply show the
+final state, and reduced motion disables it. Stacking and hover transforms live on different
+elements from the scroll animation because an animation with `fill: both` would otherwise
+override them. In grids that overlap items (`GatewaySection`, which uses subgrid so its seam badge can sit
+over both photos), every item is placed explicitly: CSS grid auto-placement would otherwise
+push the photos out of the row an explicitly placed sibling occupies.
+
+**`TourCarousel` design.** An endless, forward-only row: cards render twice (the second set is
+`inert`) and the position wraps back by exactly one set width as soon as a slide settles
+(and on `scrollend` for swipes), so the visible cards are never the dead copies. Slides move
+one visible page (3 desktop, 2 tablet, 1 mobile) over 1.5s with an ease, then rest 4s. The
+card pitch is the set width divided by the card count, never `offsetWidth`, which rounds and
+drifts on fractional (85%) mobile cards. Pausing tracks hover (real mouse pointers only),
+keyboard focus (`:focus-visible` only) and touch independently. The pause effect's cleanup
+only clears the timer and uses a `cancelled` flag; animation frames are cancelled on unmount,
+never on a pause, or a pause landing after an arrow click would kill that slide. Known
+limitation: it assumes more tours than fit the viewport (1-3 tours would show the copies).
+
+**Footer.** `Footer` takes `categories` and `tours` from the marketing layout. `getFooterTours`
+uses the pure `pickOnePerCategory` (one tour per category, category order, max 4), which is
+alphabetical within a category until tours gain a featured or sort field. `SOCIAL_LINKS`
+hrefs are empty until the owner supplies account URLs; an icon with no href renders as plain
+decoration, so there are no dead links.
+
 ## Homepage 3D accent
 
 The react-three-fiber hero accent (`components/three/`) is deliberately non-essential. As

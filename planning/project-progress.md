@@ -7,6 +7,42 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Session summary: Home page and footer redesign complete
+
+Resumed the interrupted Phase 2 redesign and finished the whole Home page plus the site
+footer, one element at a time (propose in chat, approve, build, screenshot on desktop and
+mobile, `/code-review`, commit under BSFT-42). Details and bugs are in the per-element
+entries below; this is the overview.
+
+**Shipped (all on `dev`, not pushed):** paged tour carousel (replacing the tile grid), Why
+Bolzano spread, wine feature with place badges, Gateway bilingual diptych, Where postcard,
+trust passport stamps, newsletter photo band, and the footer (ridgeline, contact links,
+categories, tour cards, social icons). Supporting changes: `sand` section tone, `Kicker`
+`onSand` variant, `pickOnePerCategory`/`getFooterTours`, `SOCIAL_LINKS`.
+
+**Recurring lessons:**
+
+- Element screenshots of tall sections resize the viewport mid-animation; verify scroll
+  animations with real scrolling at a fixed viewport instead.
+- Every layout bug found (badge clipped, badge in the wrong grid row, hidden captions,
+  4+1 wrapping) was caught by looking at screenshots, not by the test suite.
+- The carousel took most of the review findings; each real one was proven with a failing
+  test before the fix (autoplay under hover, wrap onto inert copies, fractional card pitch,
+  focus pause after a mouse click).
+- The full e2e run, not just the home spec, caught two regressions (an axe contrast failure
+  on the sand tone; an ambiguous privacy-link locator in `legal.spec.ts`).
+
+**State:** type-check, lint, 119 unit tests and the Playwright suite (168 passed, 14
+skipped by design) green. Jira: BSFT-42 Done, BSFT-14 In Progress, other EPIC-2 stories To
+Do. Docs updated: `routes-and-components.md`, `architecture.md` (new "Homepage composition
+and scroll motion" section), `REDESIGN.md` (status table).
+
+**Open:** social URLs and copy review from the owner; unsubscribe mechanism to verify before
+launch; unused `tile-*.jpg` images; three untracked reference screenshots kept out of the
+repo; next page candidate is the Tour Detail template (BSFT-43).
+
+---
+
 ## 2026-09-20 — Redesign: site footer (ridgeline, tour cards, social icons)
 
 Rebuilt the footer, which was unstyled stacked text with untappable contact details. It now

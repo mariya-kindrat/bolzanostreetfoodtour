@@ -16,6 +16,25 @@
 > as such. Work proceeds element-by-element with explicit approval at each step (see
 > `docs/superpowers/plans/` for the current phase's task breakdown).
 
+## Redesign status (updated 2026-09-20)
+
+Worked element by element, each proposed in chat, approved, code-reviewed, then committed
+under its Jira story. Jira: BSFT-42 Done, EPIC-2 (BSFT-14) In Progress, the rest To Do.
+
+| Page / element | State |
+|---|---|
+| Header navigation, hero | Done |
+| Home: tours carousel, Why, wine feature, Gateway, Where, trust stamps, newsletter | Done |
+| Site footer | Done |
+| Tour Detail template (BSFT-43) | Not started, next candidate (every card links here) |
+| Catalog and category pages (BSFT-44) | Not started |
+| Private Transfers, About and Contact, Blog, Legal (BSFT-45 to BSFT-48) | Not started |
+
+**Pending owner input:** social account URLs; review of draft copy (wine, Gateway, trust
+stamps, newsletter, footer description); decision on the unused `tile-*.jpg` images; whether
+the untracked reference screenshots in `public/images/home/` stay out of the repo.
+
+
 ## Phase 1 — Deep Analysis
 
 Run this first; wait for output before Phase 2. Do **not** write any code yet — this
