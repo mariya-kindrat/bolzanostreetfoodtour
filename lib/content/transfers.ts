@@ -9,6 +9,12 @@ export function getTransferRoutes() {
 }
 
 export const TRANSFERS_CONTENT = {
+  facts: [
+    { label: "Passengers", value: "Up to 7, with luggage" },
+    { label: "Book ahead", value: "At least 72 hours" },
+    { label: "Fees", value: "All fees included" },
+    { label: "Vehicle", value: "AC luxury minivan" },
+  ],
   intro: [
     "Enjoy the comfort of your AC private transfer in your deluxe vehicle from your arrival airport to your hotel in Bolzano and vice versa.",
     "Professional and experienced drivers with private chauffeur license. Private transfer up to 7 people with luggage.",

@@ -7,6 +7,22 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: private transfers header, key facts, what to expect (BSFT-45, step 1 of 2)
+
+`/private-transfers` now opens with the `CatalogHeader` photo band (Dolomites hero photo, since
+there is no transfer-specific photography), a four-item key facts strip (passengers, 72 h notice,
+fees, vehicle; content in `TRANSFERS_CONTENT.facts`), the tour-clients-only restriction as a sand
+notice card, the remaining intro paragraphs, and the airport and hotel "what to expect" text as
+two side-by-side cards (stacked on mobile). The tour-detail facts strip was extracted into a
+shared `components/ui/FactsStrip` used by both pages; `QuickFacts` keeps its own Container.
+Rate and supplement tables and everything below them are unchanged until step 2. Added an e2e
+test for the new top section; the existing 7-row table assertions still pass.
+
+**Review outcome:** clean, no findings. One self-caught slip: I briefly changed the card headings
+from an em dash to a colon (unrequested copy change) and restored the original text.
+
+---
+
 ## 2026-09-20 — Redesign: categories page as photo tiles (BSFT-44 complete)
 
 `/categories` now uses `CatalogHeader` (plain variant, H1 still "Our categories") and a new

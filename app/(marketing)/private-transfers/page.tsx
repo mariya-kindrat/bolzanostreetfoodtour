@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
+import { TransferIntro } from "@/components/transfers/TransferIntro";
 import { RatesTable } from "@/components/transfers/RatesTable";
 import { SupplementsTable } from "@/components/transfers/SupplementsTable";
 import { getTransferRoutes, TRANSFERS_CONTENT } from "@/lib/content/transfers";
@@ -22,19 +24,16 @@ export default async function PrivateTransfersPage() {
   return (
     <Section tone="white">
       <Container>
-        <Heading level={1}>Private Transfers</Heading>
-        {TRANSFERS_CONTENT.intro.map((p) => (
-          <Text key={p}>{p}</Text>
-        ))}
-        <Text>
-          <strong>Please note:</strong> {TRANSFERS_CONTENT.restriction}
-        </Text>
-
-        <Heading level={2}>Airport transfers — what to expect</Heading>
-        <Text>{TRANSFERS_CONTENT.airportWhatToExpect}</Text>
-
-        <Heading level={2}>Hotel transfers — what to expect</Heading>
-        <Text>{TRANSFERS_CONTENT.hotelWhatToExpect}</Text>
+        <CatalogHeader
+          eyebrow="Bolzano & South Tyrol"
+          title="Private Transfers"
+          lead={TRANSFERS_CONTENT.intro[0]}
+          photo={{
+            src: "/images/home/hero-dolomites.jpg",
+            alt: "The Tre Cime di Lavaredo rising out of clouds in the Dolomites",
+          }}
+        />
+        <TransferIntro />
 
         <div className="table-scroll" tabIndex={0} role="group" aria-label="Airport rates">
           <RatesTable routes={routes} />
