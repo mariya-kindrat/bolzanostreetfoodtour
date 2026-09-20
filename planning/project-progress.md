@@ -7,6 +7,33 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Blog: sample posts with photos for the 8 migrated posts (BSFT-72)
+
+The 8 migrated posts still showed the migration placeholder as their body, so the redesigned blog
+had nothing real to show. Each post now has sample copy (headings, lists, inline photo), an excerpt,
+tags and a cover photo, using only photos already in the repo (`prisma/blogPosts.ts`; the data is
+validated by `tests/unit/content/blogSeedData.test.ts` against the same validation as the admin
+form and checks every referenced image exists). `seedBlogPosts` fills a row only while its body is
+still the placeholder, so admin edits are never overwritten, and it no longer resets publish dates.
+`npm run db:seed:blog` seeds only the blog, leaving tours and categories untouched, and was run
+against the dev database (8 posts, 0 placeholders).
+
+**This is sample copy, not the client's writing:** replace it (or retire the posts) before launch.
+It avoids specific claims, but the owner should read and correct it.
+
+**Bugs found and fixed:**
+
+- The King Laurin legend was first written slightly wrong (he cast the spell himself and forgot
+  the twilight); corrected. One post duplicated its cover as an inline photo, and one used a
+  Markdown table that has no styling yet; both changed.
+- Environment issue, not a code bug: one working-tree file (`tests/unit/admin/publishDate.test.ts`)
+  was silently corrupted on disk (garbage bytes, changing between reads, mtime frozen, so git's
+  stat cache hid it). The committed blob was intact; the file was deleted and recreated from git.
+  A full content-hash scan of all tracked files found nothing else. If it recurs, run Disk First Aid
+  on the external drive.
+
+---
+
 ## 2026-09-20 — Blog CMS: final whole-branch review and fixes (BSFT-72)
 
 The final whole-branch review (all 14 tasks were already reviewed individually) found one

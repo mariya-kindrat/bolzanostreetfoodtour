@@ -92,6 +92,10 @@ upload and insert a picture. Unchecked "Published" saves a draft that is not sho
 site. Deleting a post is permanent. Photo uploads need `BLOB_READ_WRITE_TOKEN` in
 `.env.local` (Vercel dashboard > Storage > Blob store).
 
+The 8 migrated posts ship with sample copy and photos (`prisma/blogPosts.ts`); replace it
+with real stories. `npm run db:seed:blog` seeds only the blog and never overwrites a post
+you have already edited.
+
 ## Running tests
 
 - Unit: `npm run test`

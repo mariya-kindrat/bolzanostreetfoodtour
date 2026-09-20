@@ -13,6 +13,7 @@
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:blog": "tsx prisma/seed-blog.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

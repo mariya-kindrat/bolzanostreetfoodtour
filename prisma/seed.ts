@@ -2,6 +2,7 @@ import { PrismaClient, PriceTierType } from "../lib/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
 import { firstSentence } from "../lib/content/format";
+import { BLOG_POSTS, seedBlogPosts } from "./blogPosts";
 
 // Run standalone via `tsx prisma/seed.ts` (npm run db:seed), not through the
 // Prisma CLI, so prisma.config.ts's own dotenv loading never runs — load
@@ -702,60 +703,6 @@ const TRANSFER_ROUTES: TransferRouteSeed[] = [
   },
 ];
 
-const BLOG_PLACEHOLDER_BODY =
-  "PLACEHOLDER CONTENT — this post's original body copy was not re-extracted from the old " +
-  "site during the content migration (only the title, approximate publish date, and tag " +
-  "cloud survived). Replace with real copy, or retire the post, before launch.";
-
-interface BlogPostSeed {
-  slug: string;
-  title: string;
-  publishedAt: string; // ISO date
-}
-
-const BLOG_POSTS: BlogPostSeed[] = [
-  {
-    slug: "thanksgiving-south-tyrol-style",
-    title: "Thanksgiving, South Tyrol style!",
-    publishedAt: "2020-10-01",
-  },
-  {
-    slug: "elderflower-syrup-facts-and-myths",
-    title: "Elderflower Syrup: Facts and myths",
-    publishedAt: "2020-05-01",
-  },
-  {
-    slug: "armchair-travel-books-south-tyrol",
-    title: "Armchair Travel Books to take you to South Tyrol",
-    publishedAt: "2020-04-01",
-  },
-  {
-    slug: "10-reasons-to-visit-south-tyrol",
-    title: "10 Reasons to Visit South Tyrol this Year",
-    publishedAt: "2018-02-01",
-  },
-  {
-    slug: "stollen-or-zelten",
-    title: "Stollen or Zelten? That's the question!",
-    publishedAt: "2017-12-01",
-  },
-  {
-    slug: "christmas-traditions-south-tyrol",
-    title: "Christmas Traditions in South Tyrol",
-    publishedAt: "2017-12-15",
-  },
-  {
-    slug: "eat-drink-court-of-king-laurin",
-    title: "Eat and drink at the Court of King Laurin!",
-    publishedAt: "2017-09-01",
-  },
-  {
-    slug: "24-hours-in-bolzano-through-local-eyes",
-    title: "24 Hours in Bolzano through the Eyes of a Local",
-    publishedAt: "2017-09-15",
-  },
-];
-
 async function main() {
   const categoryIdBySlug = new Map<string, string>();
   const photoUrlBySlug = new Map<string, string>();
@@ -878,22 +825,7 @@ async function main() {
     });
   }
 
-  for (const p of BLOG_POSTS) {
-    // Parse date at noon UTC to avoid timezone shifts: "2020-10-01T12:00:00Z"
-    const publishedAt = new Date(`${p.publishedAt}T12:00:00Z`);
-    await db.blogPost.upsert({
-      where: { slug: p.slug },
-      create: {
-        slug: p.slug,
-        title: p.title,
-        content: BLOG_PLACEHOLDER_BODY,
-        publishedAt,
-      },
-      update: {
-        publishedAt,
-      },
-    });
-  }
+  await seedBlogPosts(db);
 
   console.log(
     `Seeded ${CATEGORIES.length} categories, ${TOURS.length} tours, ${TRANSFER_ROUTES.length} transfer routes, ${BLOG_POSTS.length} blog posts.`,
