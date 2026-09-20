@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  BLOG_AUTHOR,
   NAV_ITEMS,
   TRUST_POINTS,
   CONTACT_INFO,
@@ -84,5 +85,11 @@ describe("telHref", () => {
 
   it("prefixes the country code when the number has none", () => {
     expect(telHref("(800) 771-7756", "+1")).toBe("tel:+18007717756");
+  });
+});
+
+describe("BLOG_AUTHOR", () => {
+  it("is a non-empty byline name", () => {
+    expect(BLOG_AUTHOR.trim().length).toBeGreaterThan(0);
   });
 });

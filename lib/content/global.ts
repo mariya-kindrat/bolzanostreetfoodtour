@@ -96,3 +96,6 @@ export const SOCIAL_LINKS: { network: SocialNetwork; label: string; href: string
 export const FOOTER_BLURB =
   "Small-group street food, wine and cooking tours through Bolzano and South Tyrol, " +
   "led by licensed local guides.";
+
+/** Byline on every blog post. Placeholder until the owner supplies the real name. */
+export const BLOG_AUTHOR = "[Owner name]";

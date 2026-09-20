@@ -34,3 +34,19 @@ export function getAllBlogPostsForAdmin() {
 export function getBlogPostById(id: string) {
   return db.blogPost.findUnique({ where: { id } });
 }
+
+/** Unique tags across the given posts, sorted alphabetically. */
+export function collectTags(posts: { tags: string[] }[]): string[] {
+  return [...new Set(posts.flatMap((p) => p.tags))].sort();
+}
+
+export async function getPublishedTags() {
+  return collectTags(await getPublishedBlogPosts());
+}
+
+export function getPublishedPostsByTag(tag: string) {
+  return db.blogPost.findMany({
+    where: { publishedAt: { not: null }, tags: { has: tag } },
+    orderBy: { publishedAt: "desc" },
+  });
+}
