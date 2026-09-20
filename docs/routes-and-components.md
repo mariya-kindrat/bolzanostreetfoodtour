@@ -81,9 +81,13 @@
 | `DeleteCategoryButton`                                                                                                                          | `components/admin/DeleteCategoryButton.tsx`  | `/admin/categories`. Confirms via `window.confirm`, then `DELETE`s; surfaces the friendly FK-restrict error message inline if the category still has tours assigned.                                                                                                                                                                                          |
 | `PostMarkdown` | `components/blog/PostMarkdown.tsx` | `/blog/[slug]`, `BlogPostForm` preview. `react-markdown` with `skipHtml`; images render only when `isAllowedImageUrl` passes. |
 | `PostMeta` | `components/blog/PostMeta.tsx` | `/blog/[slug]`. Byline, date, reading time and tag links. |
+| `PostGrid` | `components/blog/PostGrid.tsx` | `/blog`, `/blog/tag/[tag]`. Lays out `PostCard`s: the newest post leads as a wide forest featured card spanning two of three columns, the rest cycle cream/sand/forest tones. |
+| `MoreStories` | `components/blog/MoreStories.tsx` | `/blog/[slug]`. "More stories" strip of three other posts on a sand section (cream/forest/cream cards). |
 | `TagFilter` | `components/blog/TagFilter.tsx` | `/blog`, `/blog/tag/[tag]`. Chip row of published tags. |
 | `BlogPostForm` | `components/admin/BlogPostForm.tsx` | `/admin/blog/new`, `/admin/blog/[id]/edit`. Title, slug, excerpt, tags, cover photo, Markdown body with Add photo and live preview, draft/published. Posts to `/api/admin/blog*`. Photos go through `downscaleImage` and `uploadPhoto`. |
 | `DeleteBlogPostButton` | `components/admin/DeleteBlogPostButton.tsx` | `/admin/blog`. Confirms via `window.confirm`, then `DELETE`s. |
+| `downscaleImage` | `components/admin/downscaleImage.ts` | `uploadPhoto`. Browser-only canvas downscale to a max 2000 px edge, re-encoded as JPEG 0.85. |
+| `uploadPhoto` | `components/admin/uploadPhoto.ts` | `BlogPostForm`. Downscales, POSTs to `/api/admin/blog/upload`, returns the stored photo URL or throws a friendly error. |
 
 ## Content modules (no page, but shared data every route above depends on)
 
