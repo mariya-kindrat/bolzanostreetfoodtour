@@ -107,3 +107,18 @@
     transform: none;
   }
 }
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--color-forest-dark);
+}
+
+.meta li:first-child {
+  font-weight: 700;
+}

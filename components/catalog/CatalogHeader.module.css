@@ -1,0 +1,57 @@
+.band {
+  position: relative;
+  min-height: 18rem;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: var(--space-6);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.band img {
+  object-fit: cover;
+}
+
+/* Keeps headline contrast independent of how light the photo is. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.3));
+}
+
+.text {
+  position: relative;
+  padding: var(--space-6);
+  max-width: 44rem;
+}
+
+.text h1,
+.plain h1 {
+  margin-bottom: var(--space-3);
+}
+
+.lead {
+  margin: 0;
+  font-size: var(--type-lg);
+  line-height: 1.6;
+  color: var(--color-cream);
+}
+
+.plain {
+  max-width: 44rem;
+  margin-bottom: var(--space-6);
+}
+
+.plain .lead {
+  color: #3d3a35;
+}
+
+@media (max-width: 640px) {
+  .band {
+    min-height: 16rem;
+  }
+
+  .text {
+    padding: var(--space-5);
+  }
+}

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
-import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
-import { Text } from "@/components/ui/Text";
+import { CategoryChips } from "@/components/catalog/CategoryChips";
+import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
 import { getToursByCategoryId } from "@/lib/content/tours";
 import { getActiveCategories, getCategoryBySlug } from "@/lib/content/categories";
@@ -36,13 +36,21 @@ export default async function CategoryPage({ params }: PageProps<"/[categorySlug
   const category = await getCategoryBySlug(categorySlug);
   if (!category) notFound();
 
-  const tours = await getToursByCategoryId(category.id);
+  const [tours, categories] = await Promise.all([
+    getToursByCategoryId(category.id),
+    getActiveCategories(),
+  ]);
 
   return (
     <Section tone="white">
       <Container>
-        <Heading level={1}>{category.name}</Heading>
-        <Text>{category.description}</Text>
+        <CatalogHeader
+          eyebrow="Tour category"
+          title={category.name}
+          lead={category.description}
+          photo={{ src: category.photoUrl, alt: category.altText }}
+        />
+        <CategoryChips categories={categories} activeSlug={category.slug} />
         <ProductGrid tours={tours} />
       </Container>
     </Section>

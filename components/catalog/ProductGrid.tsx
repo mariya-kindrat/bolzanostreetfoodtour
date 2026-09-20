@@ -1,17 +1,12 @@
-import { ProductCard } from "@/components/catalog/ProductCard";
+import { TourCard } from "@/components/marketing/TourCard";
 import type { TourWithTiers } from "@/lib/content/tours";
+import styles from "@/components/catalog/ProductGrid.module.css";
 
 export function ProductGrid({ tours }: { tours: TourWithTiers[] }) {
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "1.5rem",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-      }}
-    >
+    <div className={styles.grid}>
       {tours.map((tour) => (
-        <ProductCard key={tour.id} tour={tour} />
+        <TourCard key={tour.id} tour={tour} catalog />
       ))}
     </div>
   );

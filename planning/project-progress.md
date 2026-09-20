@@ -7,6 +7,29 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: tour catalog header, category chips, cards (BSFT-44, step 1 of 2)
+
+Rebuilt `/tours` and the dynamic category pages. New `CatalogHeader` (rounded category-photo
+band with eyebrow, italic title and lead over a full-height scrim; plain text variant for
+`/tours`), `CategoryChips` (plain-link pills with `aria-current`, no client JS) and a 3/2/1
+column `ProductGrid`. The old inline-styled `ProductCard` is deleted: listings now use
+`TourCard` with a `catalog` prop that adds a `TourMeta` row (price, duration, days offered,
+validity) and the "More details" label, so existing e2e link counts still hold. Home carousel
+and related-tours cards are unchanged. `/categories` (photo tiles) is step 2.
+
+**Bugs found and fixed:**
+
+- Mobile lead text had weak contrast on bright photo areas; the scrim now covers the full
+  height instead of fading out at 85%.
+- Code review: the new meta row dropped `validityLabel` (the old card showed it); restored.
+  Meta was also computed on every homepage card; it now lives in `TourMeta`, rendered only
+  for catalog cards.
+
+**Notes:** tours in one category share the category photo (no per-tour photos yet), so cards
+in a category look alike.
+
+---
+
 ## 2026-09-20 — Redesign: tour detail booking card, mobile bar, related tours (BSFT-43 complete)
 
 Step 3 of the tour detail template. The booking and quote-only cards share
