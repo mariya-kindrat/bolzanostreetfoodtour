@@ -1,15 +1,13 @@
 import Link from "next/link";
+import { PostMarkdown } from "@/components/blog/PostMarkdown";
 import styles from "@/components/blog/PostBody.module.css";
 
-/** Reading column: paragraphs split on blank lines, then a way back to the list. */
+/** Reading column (Markdown), then a way back to the list. */
 export function PostBody({ content }: { content: string }) {
-  const paragraphs = content.split(/\n{2,}/).filter((p) => p.trim());
   return (
     <>
       <div className={styles.body}>
-        {paragraphs.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+        <PostMarkdown content={content} />
       </div>
       <Link href="/blog" className={styles.back}>
         <span aria-hidden="true">&larr;</span> Back to the blog

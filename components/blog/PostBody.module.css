@@ -3,13 +3,6 @@
   margin-bottom: var(--space-7);
 }
 
-.body p {
-  margin: 0 0 var(--space-5);
-  font-size: var(--type-lg);
-  line-height: 1.8;
-  color: #3d3a35;
-}
-
 .back {
   display: inline-block;
   padding: 0.6rem 1.5rem;

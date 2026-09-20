@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MoreStories } from "@/components/blog/MoreStories";
 import { PostBody } from "@/components/blog/PostBody";
+import { PostMeta } from "@/components/blog/PostMeta";
 import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
@@ -11,6 +12,7 @@ import {
   getMorePosts,
   getPublishedBlogPosts,
 } from "@/lib/content/blog";
+import { snippet } from "@/lib/content/blogText";
 
 export const revalidate = 3600;
 
@@ -25,7 +27,8 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
   if (!post) return { title: "Post not found" };
   return {
     title: `${post.title} — Bolzano Street Food Tour Blog`,
-    description: post.content.slice(0, 155),
+    description: post.excerpt ?? snippet(post.content),
+    openGraph: post.coverImageUrl ? { images: [{ url: post.coverImageUrl }] } : undefined,
   };
 }
 
@@ -43,7 +46,13 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           <CatalogHeader
             eyebrow={post.publishedAt ? formatPostMonth(post.publishedAt) : "Journal"}
             title={post.title}
+            photo={
+              post.coverImageUrl
+                ? { src: post.coverImageUrl, alt: post.coverImageAlt ?? "" }
+                : undefined
+            }
           />
+          <PostMeta tags={post.tags} content={post.content} />
           <PostBody content={post.content} />
         </Container>
       </Section>

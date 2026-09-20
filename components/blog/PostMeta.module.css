@@ -1,0 +1,41 @@
+.meta {
+  max-width: 42rem;
+  margin-bottom: var(--space-6);
+}
+
+.byline {
+  margin: 0 0 var(--space-3);
+  font-size: var(--type-sm);
+  color: #5b5750;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.9rem;
+  border: 1px solid var(--color-terracotta);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-dark);
+}
+
+.tag:hover,
+.tag:focus-visible {
+  background: var(--color-terracotta-dark);
+  color: var(--color-cream);
+}
+
+.tag:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
