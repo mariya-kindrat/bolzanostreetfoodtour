@@ -41,6 +41,16 @@ export const HOMEPAGE_CONTENT = {
       alt: "A grape-laden vine pergola forming a green tunnel over a vineyard path",
     },
   },
+  newsletterSection: {
+    eyebrow: "The Bolzano letter",
+    heading: "A taste of Bolzano in your inbox",
+    body: "Seasonal tours, market finds and local secrets from the streets of South Tyrol.",
+    privacy: { label: "See our Privacy Policy", href: "/legal/privacy-policy" },
+    photo: {
+      src: "/images/home/mosaic/christmas-market-stall.jpg",
+      alt: "",
+    },
+  },
   toursHeading: "Discover our tours",
   toursEyebrow: "Food, wine and culture in South Tyrol",
   toursIntro:

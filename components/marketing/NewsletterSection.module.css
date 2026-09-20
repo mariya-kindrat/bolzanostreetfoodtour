@@ -1,0 +1,66 @@
+.band {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--color-forest-dark);
+  isolation: isolate;
+}
+
+.band img {
+  z-index: -2;
+  object-fit: cover;
+}
+
+/* Deep overlay keeps cream text above AA contrast on any part of the photo. */
+.band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(20, 38, 27, 0.84);
+}
+
+.content {
+  padding: var(--space-8) var(--space-5);
+  text-align: center;
+}
+
+.body {
+  max-width: 34rem;
+  margin: 0 auto var(--space-6);
+  line-height: 1.6;
+  color: var(--color-cream-dark);
+}
+
+.privacy {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: 0.875rem;
+  color: var(--color-cream-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.privacy:hover,
+.privacy:focus-visible {
+  color: var(--color-cream);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .band img {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.15);
+  }
+  to {
+    transform: scale(1);
+  }
+}

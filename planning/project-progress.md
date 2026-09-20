@@ -7,6 +7,42 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home newsletter band (Home page redesign complete)
+
+Replaced the bare label-plus-field form with `NewsletterSection`: a rounded band with the
+Christmas-market photo under a deep forest overlay (drifts on scroll via CSS
+`animation-timeline: view()`, off under reduced motion), eyebrow, heading, blurb, a joined
+cream pill form (email plus terracotta Sign up, stacking on mobile) and a Privacy Policy
+link. `NewsletterForm` now disables while sending, replaces itself with a thank-you on
+success, and shows an error on both a failed response and a network failure (previously a
+network failure was silent). Copy in `HOMEPAGE_CONTENT.newsletterSection`. This is the last
+Home element: hero, header, tours carousel, Why, wine, Gateway, Where, trust and newsletter
+are now all redesigned.
+
+**Bugs found and fixed:**
+
+- `legal.spec.ts` claims the legal pages are reachable "from the footer" but searched the
+  whole page, so the new privacy link made its locator ambiguous; scoped it to the footer.
+- Code review (against the carousel), proven with the wrap test before fixing: a forward
+  slide landed exactly at one full set and rested there, with only the inert copies on
+  screen, so the visible cards were dead links for a whole rest cycle. Slides now wrap off
+  the copies as soon as they settle, and `onScrollEnd` covers swipes.
+- Root cause behind the mobile half of that: the slide distance used the integer
+  `offsetWidth` plus gap, but mobile cards are fractional (85% width), so 21 cards drifted
+  8 px short of the loop point and never wrapped. The card pitch is now the exact set width
+  divided by the card count.
+- Code review: the newsletter status message was mounted already filled, which screen
+  readers usually do not announce. A single `role="status"` region is now always mounted
+  and only its text changes.
+
+**Notes/concerns:**
+
+- The band copy is draft wording. Before launch, verify an unsubscribe mechanism exists for
+  the newsletter (deliberately not claimed on the page).
+- `getAllActiveTours` still includes `priceTiers` that the home cards do not use.
+
+---
+
 ## 2026-09-20 — Redesign: home trust block as passport stamps
 
 Replaced the bulleted "Why book with us?" list with five round passport-style stamps on

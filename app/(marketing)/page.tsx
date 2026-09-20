@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
 import { Reveal } from "@/components/motion/Reveal";
 import { Hero } from "@/components/marketing/Hero";
-import { NewsletterForm } from "@/components/marketing/NewsletterForm";
+import { NewsletterSection } from "@/components/marketing/NewsletterSection";
 import { WineBanner } from "@/components/marketing/WineBanner";
 import { GatewaySection } from "@/components/marketing/GatewaySection";
 import { WhereSection } from "@/components/marketing/WhereSection";
@@ -92,7 +92,7 @@ export default async function HomePage() {
       <Section tone="cream">
         <Container>
           <Reveal>
-            <NewsletterForm />
+            <NewsletterSection />
           </Reveal>
         </Container>
       </Section>

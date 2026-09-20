@@ -134,3 +134,18 @@ test("newsletter signup captures an email", async ({ page }) => {
   await page.getByRole("button", { name: "Sign up" }).click();
   await expect(page.getByText("Thanks — you're signed up.")).toBeVisible();
 });
+
+test("newsletter band offers a privacy policy link", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.getByTestId("newsletter-band").getByRole("link", { name: "See our Privacy Policy" }),
+  ).toHaveAttribute("href", "/legal/privacy-policy");
+});
+
+test("newsletter shows an error when the signup request fails", async ({ page }) => {
+  await page.route("**/api/newsletter", (route) => route.abort());
+  await page.goto("/");
+  await page.getByLabel("Join our newsletter").fill("someone@example.com");
+  await page.getByRole("button", { name: "Sign up" }).click();
+  await expect(page.getByText("Something went wrong. Please try again.")).toBeVisible();
+});

@@ -1,13 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test("both legal pages are reachable from the footer", async ({ page }) => {
+  const footer = page.getByRole("contentinfo");
   await page.goto("/");
-  await page.getByRole("link", { name: "Privacy Policy" }).click();
+  await footer.getByRole("link", { name: "Privacy Policy" }).click();
   await expect(page).toHaveURL(/\/legal\/privacy-policy/);
   await expect(page.getByRole("heading", { name: "Data processors we use" })).toBeVisible();
 
   await page.goto("/");
-  await page.getByRole("link", { name: "Terms & Booking Conditions" }).click();
+  await footer.getByRole("link", { name: "Terms & Booking Conditions" }).click();
   await expect(page).toHaveURL(/\/legal\/terms-and-booking-conditions/);
 });
 
