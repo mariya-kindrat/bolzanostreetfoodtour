@@ -7,6 +7,38 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home wine feature (`WineBanner`)
+
+Replaced the thin dark wine strip with a feature spread modelled on the owner's
+reference: large rounded vineyard photo with two round white place badges overhanging its
+corners (Kaltern, Tramin), beside an eyebrow, italic heading, two paragraphs and an
+outlined CTA to `/wine-tours`. Sits on a new `sand` `Section` tone (`--color-cream-dark`).
+Badges pop in on scroll via CSS `animation-timeline: view()`, off under reduced motion.
+Copy in `HOMEPAGE_CONTENT.wineSection`. Two earlier concepts were tried and dropped in
+review with the owner (burgundy cellar-arch with a wine list; a burgundy token, tone and
+design-token entry were added and then removed again).
+
+**Bugs found and fixed:**
+
+- The full e2e run caught a WCAG AA failure the home spec did not: the terracotta eyebrow
+  was 4.06:1 on the sand tone. Added a `Kicker` `onSand` variant using
+  `--color-terracotta-dark`.
+- Code review (findings were against the earlier carousel): pause state was one boolean
+  shared by hover/focus/touch, so mouse-leave resumed autoplay while a button had focus;
+  slides also started from a rounded-back position, jumping after a free swipe. Pause is
+  now tracked per source, and each slide animates from the current position to a
+  card-aligned target.
+
+**Notes/concerns:**
+
+- The wine copy is draft wording (family cellars, growers known by name, Tramin naming)
+  and needs the client's review. The earlier wine-list tasting notes were removed with the
+  arch concept.
+- Two design reference screenshots (`home_our_tours.png`, `screenshot1.png`) sit untracked
+  in `public/images/home/`; deliberately not committed so they do not ship publicly.
+
+---
+
 ## 2026-09-20 — Redesign: home "Why Bolzano" editorial spread
 
 Replaced the plain heading-plus-paragraph block under the hero with `WhySection`: eyebrow,

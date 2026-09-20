@@ -1,0 +1,122 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+/* Badges overhang the photo, so the wrapper must not clip: the rounded
+   corners come from the image itself. */
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.photo img {
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(28, 27, 25, 0.18);
+  text-align: center;
+}
+
+.top {
+  top: -1.5rem;
+  right: -1.5rem;
+}
+
+.bottom {
+  bottom: -1.5rem;
+  left: -1.5rem;
+}
+
+.badgeLabel {
+  max-width: 4.5rem;
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: #5b5750;
+}
+
+.badgeName {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  color: var(--color-forest-dark);
+}
+
+.body {
+  margin: 0 0 var(--space-4);
+  line-height: 1.7;
+  color: #5b5750;
+}
+
+.cta {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--color-forest);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  color: var(--color-forest);
+  transition:
+    background var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .badge {
+      animation: pop linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  .top {
+    right: -0.5rem;
+  }
+
+  .bottom {
+    left: -0.5rem;
+  }
+}

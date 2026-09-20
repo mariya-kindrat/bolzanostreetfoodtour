@@ -11,3 +11,7 @@
 .onDark {
   color: var(--color-cream-dark);
 }
+
+.onSand {
+  color: var(--color-terracotta-dark);
+}

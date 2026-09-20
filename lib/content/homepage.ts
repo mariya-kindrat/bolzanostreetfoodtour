@@ -21,6 +21,26 @@ export const HOMEPAGE_CONTENT = {
       "diverse and unique gastronomical tradition; a mix of Mediterranean and Austrian " +
       "culinary background found nowhere else.",
   },
+  wineSection: {
+    eyebrow: "The wine road",
+    heading: "Between the Dolomites and the vines",
+    paragraphs: [
+      "South Tyrol's wine country begins minutes from Bolzano: vineyards climbing sunny " +
+        "terraces beneath the Dolomites, and a grape, Gewürztraminer, named after the " +
+        "village of Tramin.",
+      "Spend an afternoon walking the vines, tasting in family cellars and finishing with " +
+        "a local meal, with a guide who knows every grower by name.",
+    ],
+    badges: [
+      { label: "Wine Road", name: "Kaltern" },
+      { label: "Gewürztraminer", name: "Tramin" },
+    ],
+    cta: { label: "Explore wine tours", href: "/wine-tours" },
+    photo: {
+      src: "/images/tours/wine-tour-hero.jpg",
+      alt: "A grape-laden vine pergola forming a green tunnel over a vineyard path",
+    },
+  },
   toursEyebrow: "Food, wine and culture in South Tyrol",
   toursIntro:
     "Private food tours for groups, Wine Tours, Cooking classes from the top of the " +

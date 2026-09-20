@@ -14,6 +14,10 @@
   background: var(--color-forest);
 }
 
+.sand {
+  background: var(--color-cream-dark);
+}
+
 .forestDark {
   background: var(--color-forest-dark);
 }

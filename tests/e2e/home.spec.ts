@@ -48,13 +48,21 @@ test("why section shows the five senses and both photos", async ({ page }) => {
   await expect(section.getByRole("img")).toHaveCount(2);
 });
 
-test("wine tours are introduced by a dark cellar accent panel", async ({ page }) => {
+test("wine tours are introduced by a sand-toned feature with place badges and a link", async ({
+  page,
+}) => {
   await page.goto("/");
   const panel = page.getByTestId("wine-accent-panel");
   await expect(panel).toBeVisible();
   const section = page.locator("section").filter({ has: panel });
   const bg = await section.evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(bg).toBe("rgb(20, 38, 27)"); // --color-forest-dark, from Section tone="forest-dark" itself
+  expect(bg).toBe("rgb(237, 230, 214)"); // --color-cream-dark, from Section tone="sand"
+  await expect(panel.getByText("Kaltern", { exact: true })).toBeVisible();
+  await expect(panel.getByText("Tramin", { exact: true })).toBeVisible();
+  await expect(panel.getByRole("link", { name: /Explore wine tours/ })).toHaveAttribute(
+    "href",
+    "/wine-tours",
+  );
 });
 
 test("newsletter signup captures an email", async ({ page }) => {

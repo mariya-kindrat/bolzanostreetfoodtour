@@ -1,12 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Kicker } from "@/components/ui/Kicker";
-import { LabelChip } from "@/components/ui/LabelChip";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
 import { Reveal } from "@/components/motion/Reveal";
 import { Hero } from "@/components/marketing/Hero";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
+import { WineBanner } from "@/components/marketing/WineBanner";
 import { WhySection } from "@/components/marketing/WhySection";
 import { TourCard } from "@/components/marketing/TourCard";
 import { TourCarousel } from "@/components/marketing/TourCarousel";
@@ -58,23 +58,10 @@ export default async function HomePage() {
           </Reveal>
         </Container>
       </Section>
-      <Section tone="forest-dark">
+      <Section tone="sand">
         <Container>
           <Reveal>
-            <div data-testid="wine-accent-panel" style={{ display: "flex", alignItems: "center", gap: "1.5rem", position: "relative" }}>
-              <div style={{ position: "relative", width: 80, height: 60 }}>
-                <LabelChip number="02" label="Caldaro" corner="top-right" />
-              </div>
-              <div>
-                <Heading level={3} onDark>
-                  Wine Tours
-                </Heading>
-                <Text onDark muted>
-                  Kaltern · Tramin · Gewürztraminer — an afternoon among the vines, ending in
-                  the cellar.
-                </Text>
-              </div>
-            </div>
+            <WineBanner />
           </Reveal>
         </Container>
       </Section>
