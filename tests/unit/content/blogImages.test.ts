@@ -10,6 +10,11 @@ describe("isAllowedImageUrl", () => {
     expect(isAllowedImageUrl("//evil.test/x.jpg")).toBe(false);
   });
 
+  it("rejects backslash variants of protocol-relative urls", () => {
+    expect(isAllowedImageUrl("/\\evil.test/x.jpg")).toBe(false);
+    expect(isAllowedImageUrl("/\\\\evil")).toBe(false);
+  });
+
   it("allows the Vercel Blob public host over https", () => {
     expect(isAllowedImageUrl("https://abc123.public.blob.vercel-storage.com/blog/x.jpg")).toBe(
       true,
