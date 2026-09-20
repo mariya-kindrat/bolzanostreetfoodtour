@@ -41,6 +41,10 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       if (direction === -1 && el.scrollLeft < distance) el.scrollLeft += setWidth();
 
       const from = Math.round(el.scrollLeft / card) * card;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        el.scrollLeft = from + direction * distance;
+        return Promise.resolve();
+      }
       const start = performance.now();
       return new Promise<void>((resolve) => {
         frame.current = requestAnimationFrame(function tick(now) {
