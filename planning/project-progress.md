@@ -7,6 +7,35 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Blog CMS: final whole-branch review and fixes (BSFT-72)
+
+The final whole-branch review (all 14 tasks were already reviewed individually) found one
+Critical and three Important issues the per-task reviews could not see, all fixed in one wave:
+
+- **Publish date lost on unpublish then republish (Critical):** the post form had no date
+  control, so republishing a post silently replaced its original date with today's, with no way
+  to correct it. The form now has a "Publish date" input (pure, unit-tested helpers in
+  `lib/admin/publishDate.ts`, stored as noon UTC so timezones never shift the day), shown while
+  Published is checked. This was also a spec deviation ("a Published toggle with a date").
+- **Image allow-list accepted `/\host` (Important):** `isAllowedImageUrl` now rejects a second
+  slash or backslash (leaked into `og:image` metadata, not SSRF).
+- **Body photo insert overwrote text typed during the upload (Important):** it now inserts into the
+  live textarea value.
+- **Transparent PNGs turned black on JPEG re-encode (Important):** the canvas is filled white
+  first; the decoded bitmap is released.
+- Two doc inaccuracies in `docs/routes-and-components.md` corrected.
+
+Deferred minors (shipped): slugify does not transliterate the German sharp s (a title such as
+"Strasse" with the sharp s gives `stra-e`, the admin can retype the slug); validation tests only
+cover limit+1 boundaries; no test yet for PATCH slug-change revalidating the old slug; GFM tables
+and code blocks in posts have no styling; no axe run covers a post with a cover or a tag page.
+
+**Not yet verified by a human:** the admin UI in a browser (Clerk sign-in) and a real photo upload
+(needs a Vercel Blob store and `BLOB_READ_WRITE_TOKEN`, entered by the owner). `BLOG_AUTHOR` is
+still the placeholder `"[Owner name]"`, and the 8 migrated posts still carry placeholder bodies.
+
+---
+
 ## 2026-09-20 — Blog CMS milestone C: public redesign
 
 Built: the public blog redesigned around the new fields: the post page has a cover band, byline
