@@ -7,6 +7,7 @@ import { uploadPhoto } from "@/components/admin/uploadPhoto";
 import { PostMarkdown } from "@/components/blog/PostMarkdown";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { fromDateInputValue, toDateInputValue } from "@/lib/admin/publishDate";
 import { insertAtCursor } from "@/lib/admin/textInsert";
 import { slugify } from "@/lib/content/blogText";
 import type { BlogPost } from "@/lib/generated/prisma/client";
@@ -26,6 +27,7 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
   const [coverImageAlt, setCoverImageAlt] = useState(post?.coverImageAlt ?? "");
   const [content, setContent] = useState(post?.content ?? "");
   const [published, setPublished] = useState(Boolean(post?.publishedAt));
+  const [publishedDate, setPublishedDate] = useState(toDateInputValue(post?.publishedAt));
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -65,9 +67,19 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
     const area = bodyRef.current;
     const start = area?.selectionStart ?? content.length;
     const end = area?.selectionEnd ?? content.length;
-    const next = insertAtCursor(content, start, end, `![Describe this photo](${url})`);
+    const next = insertAtCursor(
+      area?.value ?? content,
+      start,
+      end,
+      `![Describe this photo](${url})`,
+    );
     setContent(next.text);
     requestAnimationFrame(() => area?.setSelectionRange(next.cursor, next.cursor));
+  }
+
+  function handlePublished(checked: boolean) {
+    setPublished(checked);
+    if (checked && !publishedDate) setPublishedDate(toDateInputValue(new Date()));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -85,7 +97,7 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
       coverImageAlt,
       content,
       published,
-      publishedAt: post?.publishedAt?.toISOString(),
+      publishedAt: fromDateInputValue(publishedDate),
     };
     const url = post ? `/api/admin/blog/${post.id}` : "/api/admin/blog";
 
@@ -231,10 +243,22 @@ export function BlogPostForm({ post }: { post?: BlogPost }) {
             id="published"
             type="checkbox"
             checked={published}
-            onChange={(e) => setPublished(e.target.checked)}
+            onChange={(e) => handlePublished(e.target.checked)}
           />{" "}
           Published (visible on the site; unchecked is a draft)
         </label>
+        {published && (
+          <div>
+            <label htmlFor="published-date">Publish date</label>
+            <br />
+            <input
+              id="published-date"
+              type="date"
+              value={publishedDate}
+              onChange={(e) => setPublishedDate(e.target.value)}
+            />
+          </div>
+        )}
       </div>
 
       <Button variant="primary" type="submit">
