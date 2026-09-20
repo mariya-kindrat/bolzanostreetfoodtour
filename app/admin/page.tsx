@@ -7,6 +7,9 @@ export default function AdminHomePage() {
       <p>
         <Link href="/admin/categories">Categories</Link>
       </p>
+      <p>
+        <Link href="/admin/blog">Blog</Link>
+      </p>
     </main>
   );
 }

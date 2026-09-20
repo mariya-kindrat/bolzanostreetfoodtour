@@ -25,3 +25,12 @@ export async function getMorePosts(current: BlogPost, max: number) {
 export function formatPostMonth(date: Date): string {
   return date.toLocaleDateString("en-US", { year: "numeric", month: "long", timeZone: "UTC" });
 }
+
+// Admin reads every post, drafts included, unlike the public helpers above.
+export function getAllBlogPostsForAdmin() {
+  return db.blogPost.findMany({ orderBy: { createdAt: "desc" } });
+}
+
+export function getBlogPostById(id: string) {
+  return db.blogPost.findUnique({ where: { id } });
+}
