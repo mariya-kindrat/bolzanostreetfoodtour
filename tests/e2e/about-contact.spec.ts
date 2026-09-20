@@ -13,3 +13,11 @@ test("contact form submission is captured", async ({ page }) => {
   await page.getByRole("button", { name: "Submit" }).click();
   await expect(page.getByText("Thanks — we'll be in touch soon.")).toBeVisible();
 });
+
+test("about page shows the story photo, sign-off and a link to the tours", async ({ page }) => {
+  await page.goto("/about");
+  await expect(page.getByRole("heading", { level: 1, name: "About Us" })).toBeVisible();
+  await expect(page.getByText("Buon Appetito! Mahlzeit! Happy Eating!")).toBeVisible();
+  await page.getByRole("link", { name: /See our tours/ }).click();
+  await expect(page).toHaveURL(/\/tours$/);
+});

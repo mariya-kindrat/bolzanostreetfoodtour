@@ -2,16 +2,18 @@ import { describe, expect, it } from "vitest";
 import { ABOUT_CONTENT, CONTACT_CONTENT } from "@/lib/content/about-contact";
 
 describe("about-contact content", () => {
-  it("has ABOUT_CONTENT with heroTitle and body", () => {
+  it("has ABOUT_CONTENT with heroTitle, lead, paragraphs and sign-off", () => {
     expect(ABOUT_CONTENT.heroTitle).toBe("About Us");
-    expect(ABOUT_CONTENT.body).toBeTruthy();
-    expect(ABOUT_CONTENT.body.length).toBeGreaterThan(0);
+    expect(ABOUT_CONTENT.lead).toBeTruthy();
+    expect(ABOUT_CONTENT.paragraphs.length).toBeGreaterThan(0);
+    expect(ABOUT_CONTENT.signOff).toBeTruthy();
   });
 
-  it("about body contains signature content phrases", () => {
-    expect(ABOUT_CONTENT.body).toContain("group of food lovers");
-    expect(ABOUT_CONTENT.body).toContain("Bolzano");
-    expect(ABOUT_CONTENT.body).toContain("Buon Appetito");
+  it("about copy contains signature content phrases", () => {
+    const copy = [ABOUT_CONTENT.lead, ...ABOUT_CONTENT.paragraphs, ABOUT_CONTENT.signOff].join(" ");
+    expect(copy).toContain("group of food lovers");
+    expect(copy).toContain("Bolzano");
+    expect(copy).toContain("Buon Appetito");
   });
 
   it("has CONTACT_CONTENT with heroTitle, intro, and meeting point directions", () => {

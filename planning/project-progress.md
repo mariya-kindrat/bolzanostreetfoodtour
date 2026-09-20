@@ -7,6 +7,27 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: About page (BSFT-46, step 1 of 2)
+
+`/about` now opens with the `CatalogHeader` photo band (the arched Bolzano alley from the
+mosaic set, which the home page does not use; eyebrow "Our story", the first sentence of the
+old copy as the lead) followed by `AboutStory`: a two-column spread with the cheese-vendor photo
+beside the copy in three paragraphs, the "Buon Appetito! Mahlzeit! Happy Eating!" sign-off as a
+large italic serif line, and a "See our tours" pill. `ABOUT_CONTENT` was restructured from one
+`body` string into `lead`, `paragraphs` and `signOff`; a throwaway test confirmed the joined
+text is byte-identical to the old copy (no wording changed). Photo sources are already in
+`public/images/home/SOURCES.md`. New e2e test covers the H1, sign-off and the tours link. The
+Contact page is step 2.
+
+**Bugs found and fixed:**
+
+- The sign-off first rendered at body size because `.text p` outranked `.sign`; selector is now
+  `.text .sign`.
+- Code review: the derived `body` getter had no production consumer (only its own test); removed,
+  and the unit tests now assert on `lead`, `paragraphs` and `signOff`.
+
+---
+
 ## 2026-09-20 — Redesign: private transfers tables and lower sections (BSFT-45 complete)
 
 Restyled the rate and supplement tables (`TransferTables.module.css`: serif italic caption,

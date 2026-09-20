@@ -29,7 +29,8 @@ under its Jira story. Jira: BSFT-42 Done, EPIC-2 (BSFT-14) In Progress, the rest
 | Tour Detail template (BSFT-43) | Done: hero and facts strip, body sections, booking card, mobile bar, related tours |
 | Catalog and category pages (BSFT-44) | Done: header, chips, cards, categories tiles |
 | Private Transfers (BSFT-45) | Done |
-| About and Contact, Blog, Legal (BSFT-46 to BSFT-48) | Not started |
+| About and Contact (BSFT-46) | In progress: About done, Contact next |
+| Blog, Legal (BSFT-47, BSFT-48) | Not started |
 
 **Pending owner input:** social account URLs; review of draft copy (wine, Gateway, trust
 stamps, newsletter, footer description); decision on the unused `tile-*.jpg` images; whether
