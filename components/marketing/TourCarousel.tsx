@@ -68,18 +68,17 @@ export function TourCarousel({ children }: { children: React.ReactNode }) {
       timer = setTimeout(() => slide(1).then(scheduleNext), REST_MS);
     };
     scheduleNext();
-    return () => {
-      clearTimeout(timer);
-      cancelAnimationFrame(frame.current);
-    };
+    return () => clearTimeout(timer);
   }, [paused, stopped, slide]);
+
+  useEffect(() => () => cancelAnimationFrame(frame.current), []);
 
   return (
     <div
       className={styles.carousel}
       onPointerEnter={(e) => e.pointerType === "mouse" && setInside((v) => ({ ...v, hover: true }))}
       onPointerLeave={(e) => e.pointerType === "mouse" && setInside((v) => ({ ...v, hover: false }))}
-      onFocus={() => setInside((v) => ({ ...v, focus: true }))}
+      onFocus={(e) => e.target.matches(":focus-visible") && setInside((v) => ({ ...v, focus: true }))}
       onBlur={() => setInside((v) => ({ ...v, focus: false }))}
       onTouchStart={() => setInside((v) => ({ ...v, touch: true }))}
       onTouchEnd={() => setInside((v) => ({ ...v, touch: false }))}

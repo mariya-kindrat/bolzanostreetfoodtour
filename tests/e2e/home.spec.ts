@@ -41,6 +41,22 @@ test("'Discover our tours' slides a page forward after resting, and wraps to the
   await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeLessThan(loop / 2);
 });
 
+test("'Discover our tours' keeps auto-advancing after a mouse click on an arrow", async ({
+  page,
+  hasTouch,
+}) => {
+  test.skip(hasTouch, "hover and mouse-click behaviour");
+  await page.goto("/");
+  const track = page.locator("#discover-our-tours ul");
+  await page.getByRole("button", { name: "Next tours" }).click();
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(1700);
+  const afterClick = await track.evaluate((el) => el.scrollLeft);
+  await expect
+    .poll(() => track.evaluate((el) => el.scrollLeft), { timeout: 9000 })
+    .not.toBe(afterClick);
+});
+
 test("why section shows the five senses and both photos", async ({ page }) => {
   await page.goto("/");
   const section = page.getByTestId("why-section");
