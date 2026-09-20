@@ -33,4 +33,29 @@ describe("Transfer and blog schema", () => {
     await db.blogPost.delete({ where: { id: post.id } });
     await db.adminNote.delete({ where: { id: note.id } });
   });
+
+  it("round-trips the blog CMS fields and defaults tags to empty", async () => {
+    const withFields = await db.blogPost.create({
+      data: {
+        slug: `cms-fields-${Date.now()}`,
+        title: "CMS fields",
+        content: "Body",
+        excerpt: "Short summary",
+        coverImageUrl: "/images/home/mosaic/farmhouse-kitchen.jpg",
+        coverImageAlt: "A farmhouse kitchen",
+        tags: ["recipes", "travel-tips"],
+      },
+    });
+    const plain = await db.blogPost.create({
+      data: { slug: `cms-plain-${Date.now()}`, title: "Plain", content: "Body" },
+    });
+
+    expect(withFields.tags).toEqual(["recipes", "travel-tips"]);
+    expect(withFields.excerpt).toBe("Short summary");
+    expect(plain.tags).toEqual([]);
+    expect(plain.excerpt).toBeNull();
+    expect(plain.coverImageUrl).toBeNull();
+
+    await db.blogPost.deleteMany({ where: { id: { in: [withFields.id, plain.id] } } });
+  });
 });
