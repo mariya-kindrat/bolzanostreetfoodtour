@@ -42,11 +42,11 @@ export default async function TourDetailPage({ params }: PageProps<"/tours/[slug
     <>
       <StructuredData data={buildTouristTripJsonLd(tour)} />
       <TourHero tour={tour} />
+      <QuickFacts tour={tour} />
       <Section tone="white">
         <Container>
           <div className="detail-grid">
             <div>
-              <QuickFacts tour={tour} />
               <p>{tour.description}</p>
               <HighlightsList highlights={tour.highlights} />
               <ImportantInfo tour={tour} />

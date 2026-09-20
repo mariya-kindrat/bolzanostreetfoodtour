@@ -1,0 +1,110 @@
+/* Badges overhang the photo, so the wrapper must not clip: the rounded
+   corners and the scrim come from the photo frame itself. */
+.hero {
+  position: relative;
+  margin-block: var(--space-6);
+}
+
+.photo {
+  position: relative;
+  min-height: 26rem;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+/* Keeps headline contrast independent of how light the photo is. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 85%);
+}
+
+.text {
+  position: relative;
+  padding: var(--space-6);
+  max-width: 44rem;
+}
+
+.text h1 {
+  margin-bottom: var(--space-2);
+}
+
+.sub {
+  margin: 0;
+  font-size: var(--type-lg);
+  color: var(--color-cream);
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 7.25rem;
+  height: 7.25rem;
+  padding: var(--space-2);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(28, 27, 25, 0.18);
+  text-align: center;
+}
+
+.price {
+  top: -1.5rem;
+  right: -1rem;
+}
+
+.duration {
+  top: 6.5rem;
+  right: -1rem;
+}
+
+.badgeLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5b5750;
+}
+
+.badgeValue {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  color: var(--color-forest-dark);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    margin-bottom: var(--space-8);
+  }
+
+  .photo {
+    min-height: 20rem;
+  }
+
+  .text {
+    padding-bottom: 5rem;
+  }
+
+  .price,
+  .duration {
+    top: auto;
+    bottom: -3rem;
+  }
+
+  .price {
+    right: 8rem;
+  }
+
+  .duration {
+    right: 0.5rem;
+  }
+}

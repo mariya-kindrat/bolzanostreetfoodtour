@@ -1,0 +1,24 @@
+.strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding-block: var(--space-5);
+  border-block: 1px solid var(--color-cream-dark);
+}
+
+.fact dt {
+  margin-bottom: var(--space-1);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5b5750;
+}
+
+.fact dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--type-lg);
+  color: var(--color-forest-dark);
+}

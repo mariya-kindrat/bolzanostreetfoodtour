@@ -7,6 +7,26 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: tour detail hero and quick-facts strip (BSFT-43, step 1 of 3)
+
+Rebuilt `TourHero` as a rounded photo inside the container with the category kicker, italic
+serif title and days offered over a stronger bottom scrim, plus two round overlapping badges
+(Price via `describeTourPrice`, Duration). On mobile the badges hang off the bottom edge so
+they never cover the title. `QuickFacts` moved out of the text column into a full-width strip
+under the hero (`QuickFacts.module.css`); Duration is dropped from it since the badge shows
+it, and `tourType` is now a "Tour type" fact. Remaining BSFT-43 steps: body sections as
+photo-backed itinerary blocks, then a sticky booking/quote card and a "more tours" strip.
+
+**Bugs found and fixed (code review):**
+
+- The hero rewrite silently dropped `tourType`; it is now shown in the facts strip.
+- Badge labels were 9px and long values could overflow the circle; labels are now 11px, the
+  circle is 7.25rem with `overflow-wrap`, checked against the longest price string.
+- Screenshot check found the mobile badges overlapping the days-offered line; fixed with
+  extra bottom padding on the hero text.
+
+---
+
 ## 2026-09-20 — Session summary: Home page and footer redesign complete
 
 Resumed the interrupted Phase 2 redesign and finished the whole Home page plus the site
