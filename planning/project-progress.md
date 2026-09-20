@@ -7,6 +7,28 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: categories page as photo tiles (BSFT-44 complete)
+
+`/categories` now uses `CatalogHeader` (plain variant, H1 still "Our categories") and a new
+`CategoryTiles` grid: 2 columns on desktop, 1 on mobile, each tile a full-bleed category photo
+with a tour count, italic serif name, three-line description and a "Browse tours" pill, the whole
+tile being one link. Counts come from the pure, unit-tested `countToursByCategory` over the cached
+`getAllActiveTours`, so there is no extra query. New e2e test covers the page (none existed).
+BSFT-44 is now complete.
+
+**Bugs found and fixed:**
+
+- Tile text was hard to read over the bright Street Food photo; the scrim was darkened to a
+  uniform 0.5 to 0.85 gradient.
+- The first e2e locator matched both the header nav and the tile (strict-mode violation); scoped
+  to `main`.
+- Process slip: `prettier --write` on whole directories reformatted about 18 unrelated files; all
+  were reverted with `git checkout` before committing. Format only the files being changed.
+
+**Review outcome:** clean, no findings.
+
+---
+
 ## 2026-09-20 — Redesign: tour catalog header, category chips, cards (BSFT-44, step 1 of 2)
 
 Rebuilt `/tours` and the dynamic category pages. New `CatalogHeader` (rounded category-photo

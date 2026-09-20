@@ -1,0 +1,106 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 22rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tile img {
+  object-fit: cover;
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.tile:hover img {
+  transform: scale(1.04);
+}
+
+/* Keeps text contrast independent of how light the photo is. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5));
+}
+
+.text {
+  position: relative;
+  padding: var(--space-6);
+}
+
+.count {
+  margin: 0 0 var(--space-2);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-cream-dark);
+}
+
+.text h2 {
+  margin-bottom: var(--space-2);
+}
+
+.desc {
+  margin: 0 0 var(--space-4);
+  max-width: 32rem;
+  line-height: 1.6;
+  color: var(--color-cream);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--color-cream);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--color-cream);
+  transition:
+    background var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+}
+
+.tile:hover .cta,
+.tile:focus-visible .cta {
+  background: var(--color-cream);
+  color: var(--color-forest-dark);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile img {
+    transition: none;
+  }
+
+  .tile:hover img {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tile {
+    min-height: 18rem;
+  }
+
+  .text {
+    padding: var(--space-5);
+  }
+}

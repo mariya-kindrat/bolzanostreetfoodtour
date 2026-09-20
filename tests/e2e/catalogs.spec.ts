@@ -27,3 +27,15 @@ test("winter tours catalog lists all 9 products linking to their own detail page
     expect(href).toMatch(/^\/tours\//);
   }
 });
+
+test("categories page shows one photo tile per category linking to its catalog", async ({
+  page,
+}) => {
+  await page.goto("/categories");
+  await expect(page.getByRole("heading", { level: 1, name: "Our categories" })).toBeVisible();
+  await expect(page.getByRole("main").getByRole("link", { name: /Wine Tours/ })).toHaveAttribute(
+    "href",
+    "/wine-tours",
+  );
+  await expect(page.getByText("3 tours").first()).toBeVisible();
+});

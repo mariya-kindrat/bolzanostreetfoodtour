@@ -27,7 +27,7 @@ under its Jira story. Jira: BSFT-42 Done, EPIC-2 (BSFT-14) In Progress, the rest
 | Home: tours carousel, Why, wine feature, Gateway, Where, trust stamps, newsletter | Done |
 | Site footer | Done |
 | Tour Detail template (BSFT-43) | Done: hero and facts strip, body sections, booking card, mobile bar, related tours |
-| Catalog and category pages (BSFT-44) | In progress: listings, header, chips, cards done; `/categories` tiles next |
+| Catalog and category pages (BSFT-44) | Done: header, chips, cards, categories tiles |
 | Private Transfers, About and Contact, Blog, Legal (BSFT-45 to BSFT-48) | Not started |
 
 **Pending owner input:** social account URLs; review of draft copy (wine, Gateway, trust

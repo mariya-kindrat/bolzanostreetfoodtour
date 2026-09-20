@@ -63,3 +63,9 @@ export function pickRelatedTours(
 export async function getRelatedTours(current: TourWithTiers, max: number) {
   return pickRelatedTours(current, await getAllActiveTours(), max);
 }
+
+export function countToursByCategory(tours: TourWithTiers[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const t of tours) counts.set(t.categoryId, (counts.get(t.categoryId) ?? 0) + 1);
+  return counts;
+}

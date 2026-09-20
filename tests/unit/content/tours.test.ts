@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { pickOnePerCategory, pickRelatedTours, type TourWithTiers } from "@/lib/content/tours";
+import {
+  countToursByCategory,
+  pickOnePerCategory,
+  pickRelatedTours,
+  type TourWithTiers,
+} from "@/lib/content/tours";
 
 function tour(id: string, categoryId: string, sortOrder: number): TourWithTiers {
   return { id, categoryId, category: { id: categoryId, sortOrder } } as unknown as TourWithTiers;
@@ -54,5 +59,21 @@ describe("pickRelatedTours", () => {
 
   it("returns an empty list when the current tour is the only one", () => {
     expect(pickRelatedTours(all[0], [all[0]], 3)).toEqual([]);
+  });
+});
+
+describe("countToursByCategory", () => {
+  it("counts tours per category id", () => {
+    const counts = countToursByCategory([
+      tour("a1", "a", 1),
+      tour("a2", "a", 1),
+      tour("b1", "b", 2),
+    ]);
+    expect(counts.get("a")).toBe(2);
+    expect(counts.get("b")).toBe(1);
+  });
+
+  it("has no entry for a category without tours", () => {
+    expect(countToursByCategory([]).get("a")).toBeUndefined();
   });
 });
