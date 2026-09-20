@@ -7,6 +7,29 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: private transfers tables and lower sections (BSFT-45 complete)
+
+Restyled the rate and supplement tables (`TransferTables.module.css`: serif italic caption,
+forest rule under small-caps headers, hairline rows, serif route names, terracotta prices, 34rem
+minimum width inside the existing `.table-scroll` wrapper, so the 7-row e2e counts and mobile
+scroll are unchanged). New `TransferDetails` holds the rest of the page: What's included and Not
+included as two columns with CSS-drawn `+` and `-` markers, Group transfers and Within South
+Tyrol as two cards, the cancellation policy as a sand card, and a forest "Ready to book?" band
+whose button goes to `/contact?tour=Private%20transfer` (reusing the tour-detail prefill, so
+the Subject reads "Inquiry: Private transfer"). `TRANSFERS_CONTENT.included` changed from one
+semicolon-separated string to an array with the same wording; only this page consumed it.
+BSFT-45 is now complete.
+
+**Bugs found and fixed:**
+
+- A Perl one-liner interpolated `${tables.wrap}` to an empty string when rewriting the page,
+  leaving the wrapper classes without their margin; caught in review of the file and fixed.
+
+**Review outcome:** clean, no findings. Mobile for this page is covered by the mobile-layout
+overflow spec; no separate mobile screenshot was taken for this step.
+
+---
+
 ## 2026-09-20 — Redesign: private transfers header, key facts, what to expect (BSFT-45, step 1 of 2)
 
 `/private-transfers` now opens with the `CatalogHeader` photo band (Dolomites hero photo, since

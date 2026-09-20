@@ -21,3 +21,13 @@ test("transfers page shows the key facts strip and the tour-clients-only notice"
     page.getByRole("heading", { level: 2, name: "Airport transfers — what to expect" }),
   ).toBeVisible();
 });
+
+test("transfers page lists inclusions and links the booking call to action to a prefilled form", async ({
+  page,
+}) => {
+  await page.goto("/private-transfers");
+  await expect(page.getByRole("heading", { level: 2, name: "What's included" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Not included" })).toBeVisible();
+  await page.getByRole("main").getByRole("link", { name: "Contact us" }).click();
+  await expect(page.getByLabel("Subject")).toHaveValue("Inquiry: Private transfer");
+});

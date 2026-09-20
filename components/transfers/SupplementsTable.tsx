@@ -1,9 +1,10 @@
+import styles from "@/components/transfers/TransferTables.module.css";
 import { formatPriceCents } from "@/lib/content/format";
 import type { TransferSupplement } from "@/lib/generated/prisma/client";
 
 export function SupplementsTable({ supplements }: { supplements: TransferSupplement[] }) {
   return (
-    <table>
+    <table className={styles.table}>
       <caption>Supplements — additional South Tyrol destinations</caption>
       <thead>
         <tr>
@@ -15,7 +16,7 @@ export function SupplementsTable({ supplements }: { supplements: TransferSupplem
         {supplements.map((s) => (
           <tr key={s.id}>
             <td>{s.label}</td>
-            <td>{formatPriceCents(s.priceCents)}</td>
+            <td className={styles.price}>{formatPriceCents(s.priceCents)}</td>
           </tr>
         ))}
       </tbody>

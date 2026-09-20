@@ -23,9 +23,12 @@ export const TRANSFERS_CONTENT = {
   restriction:
     "All transfer services are strictly reserved to Bolzano Street Food Tours clients who book our tours and " +
     "experiences. All transfer services must be booked at least 72 hrs prior to pickup.",
-  included:
-    "Professional Driver with basic English knowledge; AC Private luxury Minivan with panoramic roof, leather " +
-    "seats and automatic doors up to 7 passengers with luggage; All fees included; Sign bearing passenger's name.",
+  included: [
+    "Professional Driver with basic English knowledge",
+    "AC Private luxury Minivan with panoramic roof, leather seats and automatic doors up to 7 passengers with luggage",
+    "All fees included",
+    "Sign bearing passenger's name",
+  ],
   airportWhatToExpect:
     "After going through customs and baggage claim, outside Arrivals you will meet your private driver holding a " +
     "sign with your name, then be transferred to your hotel in Bolzano. In case of baggage/flight delay or " +

@@ -1,12 +1,11 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { CatalogHeader } from "@/components/catalog/CatalogHeader";
-import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
-import { Text } from "@/components/ui/Text";
+import { TransferDetails } from "@/components/transfers/TransferDetails";
 import { TransferIntro } from "@/components/transfers/TransferIntro";
 import { RatesTable } from "@/components/transfers/RatesTable";
 import { SupplementsTable } from "@/components/transfers/SupplementsTable";
+import tables from "@/components/transfers/TransferTables.module.css";
 import { getTransferRoutes, TRANSFERS_CONTENT } from "@/lib/content/transfers";
 
 export const metadata = {
@@ -35,33 +34,24 @@ export default async function PrivateTransfersPage() {
         />
         <TransferIntro />
 
-        <div className="table-scroll" tabIndex={0} role="group" aria-label="Airport rates">
+        <div
+          className={`table-scroll ${tables.wrap}`}
+          tabIndex={0}
+          role="group"
+          aria-label="Airport rates"
+        >
           <RatesTable routes={routes} />
         </div>
-        <div className="table-scroll" tabIndex={0} role="group" aria-label="Supplements">
+        <div
+          className={`table-scroll ${tables.wrap}`}
+          tabIndex={0}
+          role="group"
+          aria-label="Supplements"
+        >
           <SupplementsTable supplements={supplements} />
         </div>
 
-        <Heading level={2}>What&apos;s included</Heading>
-        <Text>{TRANSFERS_CONTENT.included}</Text>
-
-        <Heading level={2}>Not included</Heading>
-        <ul>
-          {TRANSFERS_CONTENT.notIncluded.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-
-        <Heading level={2}>Group transfers</Heading>
-        <Text>{TRANSFERS_CONTENT.groupTransfers}</Text>
-
-        <Heading level={2}>Transfers within South Tyrol</Heading>
-        <Text>{TRANSFERS_CONTENT.withinSouthTyrol}</Text>
-
-        <Heading level={2}>Cancellation policy</Heading>
-        <Text>{TRANSFERS_CONTENT.cancellationPolicy}</Text>
-
-        <Link href="/contact">Ready to book? Contact us</Link>
+        <TransferDetails />
       </Container>
     </Section>
   );

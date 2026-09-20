@@ -1,9 +1,10 @@
+import styles from "@/components/transfers/TransferTables.module.css";
 import { formatPriceCents } from "@/lib/content/format";
 import type { TransferRoute } from "@/lib/generated/prisma/client";
 
 export function RatesTable({ routes }: { routes: TransferRoute[] }) {
   return (
-    <table>
+    <table className={styles.table}>
       <caption>Airport rates</caption>
       <thead>
         <tr>
@@ -22,7 +23,7 @@ export function RatesTable({ routes }: { routes: TransferRoute[] }) {
             </td>
             <td>{r.maxPax}</td>
             <td>{r.maxLuggage}</td>
-            <td>{formatPriceCents(r.priceCents)}</td>
+            <td className={styles.price}>{formatPriceCents(r.priceCents)}</td>
             <td>{r.durationLabel}</td>
           </tr>
         ))}
