@@ -32,20 +32,20 @@ captures unhandled exceptions only — routine flow logging goes through Pino/Ax
 
 ## Data model (Phase 1)
 
-| Model                                  | Purpose                                                                                                                                                                                                                    |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Model                                  | Purpose                                                                       |
+| -------------------------------------- | ----------------------------------------------------------------------------- |
 | `Category`                             | Admin-manageable tour category (Street Food Tours, Cooking Classes, Wine Tours, Winter Tours, or any category an admin adds) — name/description/photo/slug/`sortOrder`/`isActive`/`isBookable`; see "Category model" below |
-| `Tour`                                 | A bookable tour/class; `categoryId` relates it to a `Category`                                                                                                                                                             |
-| `PriceTier`                            | Per-tour Adult/Child/Infant price + minimum-person threshold                                                                                                                                                               |
-| `CustomQuestion`                       | Per-tour, admin-defined checkout question                                                                                                                                                                                  |
-| `SeasonalAvailability`                 | Per-tour date range + capacity                                                                                                                                                                                             |
-| `DateOverride`                         | Per-tour, per-date block or capacity exception                                                                                                                                                                             |
-| `GlobalBlackout`                       | Date blocked across every tour                                                                                                                                                                                             |
-| `Booking` / `BookingParticipant`       | A confirmed or pending booking and its participant counts by tier                                                                                                                                                          |
-| `BookingHold`                          | Short-lived (10-15 min) capacity hold placed during checkout                                                                                                                                                               |
-| `Coupon`                               | Admin-managed percentage or fixed discount                                                                                                                                                                                 |
-| `TransferRoute` / `TransferSupplement` | Private transfer rate table                                                                                                                                                                                                |
-| `BlogPost`, `AdminNote`                | Content and internal admin notes                                                                                                                                                                                           |
+| `Tour`                                 | A bookable tour/class; `categoryId` relates it to a `Category`               |
+| `PriceTier`                            | Per-tour Adult/Child/Infant price + minimum-person threshold                  |
+| `CustomQuestion`                       | Per-tour, admin-defined checkout question                                     |
+| `SeasonalAvailability`                 | Per-tour date range + capacity                                                |
+| `DateOverride`                         | Per-tour, per-date block or capacity exception                                |
+| `GlobalBlackout`                       | Date blocked across every tour                                                |
+| `Booking` / `BookingParticipant`       | A confirmed or pending booking and its participant counts by tier             |
+| `BookingHold`                          | Short-lived (10-15 min) capacity hold placed during checkout                  |
+| `Coupon`                               | Admin-managed percentage or fixed discount                                    |
+| `TransferRoute` / `TransferSupplement` | Private transfer rate table                                                   |
+| `BlogPost`, `AdminNote`                | Content and internal admin notes                                              |
 
 ## Availability resolution (`lib/availability/resolve.ts`)
 
@@ -135,7 +135,6 @@ reads `!tour.category.isBookable` to decide whether to render `CancellationPolic
 which sidebar widget, `QuoteOnlyNotice` or `BookingWidgetComingSoon`, to show).
 
 **Consumers:**
-
 - `app/(marketing)/(catalog)/[categorySlug]/page.tsx` replaces the 3 previously hand-built
   catalog pages (`cooking-classes`, `wine-tours`, `winter-tours`) with one route driven by
   the table — `generateStaticParams` returns every active category's slug, so a new
