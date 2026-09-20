@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/Text";
 import { Reveal } from "@/components/motion/Reveal";
 import { Hero } from "@/components/marketing/Hero";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
+import { WhySection } from "@/components/marketing/WhySection";
 import { TourCard } from "@/components/marketing/TourCard";
 import { TourCarousel } from "@/components/marketing/TourCarousel";
 import { TrustBlock } from "@/components/marketing/TrustBlock";
@@ -33,8 +34,7 @@ export default async function HomePage() {
       <Section tone="cream">
         <Container>
           <Reveal>
-            <Heading level={2}>{HOMEPAGE_CONTENT.whySection.heading}</Heading>
-            <Text>{HOMEPAGE_CONTENT.whySection.body}</Text>
+            <WhySection />
           </Reveal>
         </Container>
       </Section>

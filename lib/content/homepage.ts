@@ -1,7 +1,19 @@
 export const HOMEPAGE_CONTENT = {
   heroTagline: "Discover, explore Italy's hidden gem — a tasting at a time",
   whySection: {
+    eyebrow: "Why Bolzano",
     heading: "Amazing Food, Culture & History!",
+    senses: ["See", "Hear", "Taste", "Touch", "Smell"],
+    photos: [
+      {
+        src: "/images/home/mosaic/market-cheese-vendor.jpg",
+        alt: "A vendor slicing Parmigiano at a market stall in Bolzano",
+      },
+      {
+        src: "/images/home/mosaic/bolzano-arcade-street.jpg",
+        alt: "Pastel arcaded buildings along a cobbled street in Bolzano's old town",
+      },
+    ],
     body:
       "There are many ways to describe Bolzano, but the way we like the most is with your " +
       "five senses! During this walk you will have the chance to see, hear, taste, touch and " +

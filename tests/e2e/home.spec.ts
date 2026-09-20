@@ -41,6 +41,13 @@ test("'Discover our tours' slides a page forward after resting, and wraps to the
   await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeLessThan(loop / 2);
 });
 
+test("why section shows the five senses and both photos", async ({ page }) => {
+  await page.goto("/");
+  const section = page.getByTestId("why-section");
+  await expect(section.getByRole("list", { name: "The five senses" }).getByRole("listitem")).toHaveCount(5);
+  await expect(section.getByRole("img")).toHaveCount(2);
+});
+
 test("wine tours are introduced by a dark cellar accent panel", async ({ page }) => {
   await page.goto("/");
   const panel = page.getByTestId("wine-accent-panel");

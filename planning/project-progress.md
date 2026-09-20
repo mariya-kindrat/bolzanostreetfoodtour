@@ -7,6 +7,26 @@ per-phase plan docs in `docs/superpowers/plans/`, which are local-only working n
 
 ---
 
+## 2026-09-20 — Redesign: home "Why Bolzano" editorial spread
+
+Replaced the plain heading-plus-paragraph block under the hero with `WhySection`: eyebrow,
+italic heading, drop-cap paragraph and five-senses pills on the left, and a large photo
+with a smaller overlapping one on the right (cheese vendor and old-town arcade, both from
+the existing Pexels set in `public/images/home/mosaic/`, so no new credits). The small
+photo lifts on scroll through CSS `animation-timeline: view()` (no JS), off under
+reduced motion and on mobile, where the layout stacks with photos first. Copy, pills and
+photos live in `HOMEPAGE_CONTENT.whySection`.
+
+**Code review:** no findings against this diff. It did raise that the carousel's arrows
+ignored reduced motion; fixed separately in the previous commit.
+
+**Notes/concerns:**
+
+- `animation-timeline` is unsupported in Firefox at time of writing; there the photos
+  simply do not lift (progressive enhancement, no fallback needed).
+
+---
+
 ## 2026-09-20 — Redesign: "Discover our tours" becomes a paged tour carousel
 
 Replaced the static six-tile mosaic (`TourTileGrid`, `tileGridLayout`, `Tile` type,
